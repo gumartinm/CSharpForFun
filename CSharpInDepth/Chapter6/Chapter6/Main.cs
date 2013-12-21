@@ -94,15 +94,6 @@ namespace Chapter6
 
 			/**
 			 * 
-			 * Listings 6.8 Looping over the lines in a file using an iterator block.
-			 */
-			foreach (string line in ReadLines ("TheLayofLeithian.txt")) {
-				Console.WriteLine(line);
-			}
-
-
-			/**
-			 * 
 			 * Listings 6.7 Demonstration of yield break working with try/finally.
 			 */
 			DateTime stopFinally = DateTime.Now.AddSeconds (2);
@@ -110,9 +101,38 @@ namespace Chapter6
 				Console.WriteLine ("Received {0}", i);
 				if (i > 3) {
 					Console.WriteLine ("Returning");
-					return;
+					// foreach must have a finally block, which calls Dispose in the iterator.
+					// When you call Dispose on an iterator created with an iterator block
+					// before it's finished iterating the state machine executes any finally
+					// blocks that are in the scope where the code is currently "paused".
+					// So this will call iterator's Dispose->will run finally (try{ yield return }finally{})
+					// If we have more than one block try{ yield return }finally{} in our iterator, Dispose
+					// will run the finally in the scope of the latest executed yield return.
+					//return;
+					break;
 				}
 				Thread.Sleep (300);
+			}
+
+
+			/**
+			 * 
+			 * Listings 6.8 Looping over the lines in a file using an iterator block.
+			 */
+			foreach (string line in ReadLines ("TheLayofLeithian.txt")) {
+				Console.WriteLine (line);
+			}
+
+			/**
+			 * 
+			 * Listings 6.9 Implementing LINQ's Where method using iterator blocks.
+			 */
+			IEnumerable<string> lines = ReadLines ("TheLayofLeithian.txt");
+			Predicate<string> predicate = delegate(string line) {
+				return line.StartsWith ("before");
+			};
+			foreach (string line in Where (lines, predicate)) {
+				Console.WriteLine(line);
 			}
 		}
 
@@ -182,6 +202,25 @@ namespace Chapter6
 				while ((line = reader.ReadLine()) != null)
 				{
 					yield return line;
+				}
+			}
+		}
+
+		public static IEnumerable<T> Where<T> (IEnumerable<T> source, Predicate<T> predicate)
+		{
+			if (source == null || predicate == null) {
+				throw new ArgumentNullException();
+			}
+			return WhereImpl(source, predicate);
+		}
+
+		private static IEnumerable<T> WhereImpl<T> (IEnumerable<T> source, Predicate<T> predicate)
+		{
+			foreach (T item in source)
+			{
+				if (predicate(item))
+				{
+					yield return item;
 				}
 			}
 		}
