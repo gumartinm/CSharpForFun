@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using System.IO;
 
 namespace Chapter6
 {
@@ -16,14 +18,13 @@ namespace Chapter6
 			 * Listings 6.1 and 6.2 Skeleton of th new collection type, with no iterator implementation.
 			 */
 			object[] values = {"a", "b", "c", "d", "e"};
-			IterationSampleBad badCollection = new IterationSampleBad(values, 3);
+			IterationSampleBad badCollection = new IterationSampleBad (values, 3);
 			try {
-				foreach(object x in badCollection)
-				{
-					Console.WriteLine(x);
+				foreach (object x in badCollection) {
+					Console.WriteLine (x);
 				}
-			} catch(NotImplementedException e) {
-				Console.WriteLine("Listings 6.1 and 6.2 exception: {0}", e);
+			} catch (NotImplementedException e) {
+				Console.WriteLine ("Listings 6.1 and 6.2 exception: {0}", e);
 			}
 
 
@@ -31,10 +32,9 @@ namespace Chapter6
 			 * 
 			 * Listings 6.3 Nested class implementing the collection's iterator.
 			 */
-			IterationSample collection = new IterationSample(values, 3);
-			foreach(object x in collection)
-			{
-				Console.WriteLine(x);
+			IterationSample collection = new IterationSample (values, 3);
+			foreach (object x in collection) {
+				Console.WriteLine (x);
 			}
 
 
@@ -42,10 +42,9 @@ namespace Chapter6
 			 * 
 			 * Listings 6.4 Iterating through the sample collection with C# 2 and yield return.
 			 */
-			IterationSampleYield yieldCollection = new IterationSampleYield(values, 3);
-			foreach(object x in yieldCollection)
-			{
-				Console.WriteLine(x);
+			IterationSampleYield yieldCollection = new IterationSampleYield (values, 3);
+			foreach (object x in yieldCollection) {
+				Console.WriteLine (x);
 			}
 
 
@@ -53,9 +52,68 @@ namespace Chapter6
 			 * 
 			 * Listings 6.5 Showing the sequence of calls between an iterator and its caller.
 			 */
-			IEnumerable<int> iterable = CreateEnumerable();
-			IEnumerator<int> iterator = iterable.GetEnumerator();
-			Console.WriteLine("Starting to iterate");
+			IEnumerable<int> iterable = CreateEnumerable ();
+			IEnumerator<int> iterator = iterable.GetEnumerator ();
+			Console.WriteLine ("Starting to iterate");
+			while (true) {
+				Console.WriteLine ("Calling MoveNext()...");
+				bool result = iterator.MoveNext ();
+				Console.WriteLine ("... MoveNext result={0}", result);
+				if (!result) {
+					break;
+				}
+				Console.WriteLine ("Fetching Current...");
+				Console.WriteLine ("... Current result={0}", iterator.Current);
+			}
+
+			IEnumerable<string> stringIterable = CreateStringEnumerable ();
+			IEnumerator<string> stringIterator = stringIterable.GetEnumerator ();
+			Console.WriteLine ("Starting to iterate");
+			while (true) {
+				Console.WriteLine ("Calling MoveNext()...");
+				bool result = stringIterator.MoveNext ();
+				Console.WriteLine ("... MoveNext result={0}", result);
+				if (!result) {
+					break;
+				}
+				Console.WriteLine ("Fetching Current...");
+				Console.WriteLine ("... Current result={0}", stringIterator.Current);
+			}
+
+
+			/**
+			 * 
+			 * Listings 6.6 Demonstration of yield break.
+			 */
+			DateTime stop = DateTime.Now.AddSeconds (2);
+			foreach (int i in CountWithTimeLimit(stop)) {
+				Console.WriteLine ("Received {0}", i);
+				Thread.Sleep (300);
+			}
+
+
+			/**
+			 * 
+			 * Listings 6.8 Looping over the lines in a file using an iterator block.
+			 */
+			foreach (string line in ReadLines ("TheLayofLeithian.txt")) {
+				Console.WriteLine(line);
+			}
+
+
+			/**
+			 * 
+			 * Listings 6.7 Demonstration of yield break working with try/finally.
+			 */
+			DateTime stopFinally = DateTime.Now.AddSeconds (2);
+			foreach (int i in CountWithTimeLimitFinally(stopFinally)) {
+				Console.WriteLine ("Received {0}", i);
+				if (i > 3) {
+					Console.WriteLine ("Returning");
+					return;
+				}
+				Thread.Sleep (300);
+			}
 		}
 
 		static IEnumerable<int> CreateEnumerable ()
@@ -72,6 +130,60 @@ namespace Chapter6
 			yield return -1;
 
 			Console.WriteLine("{0}End of CreateEnumerable()", Padding);
+		}
+
+		static IEnumerable<string> CreateStringEnumerable ()
+		{
+			string[] values = {"a", "b", "c"};
+			Console.WriteLine ("{0}Start of CreateStringEnumerable()", Padding);
+
+			for (int i=0; i < 3; i++) {
+				Console.WriteLine("{0}About to yield {1}", Padding, values[i]);
+				yield return values[i];
+				Console.WriteLine("{0}After yield", Padding);
+			}
+
+			Console.WriteLine("{0}Yielding final value", Padding);
+			yield return null;
+
+			Console.WriteLine("{0}End of CreateStringEnumerable()", Padding);
+		}
+
+		static IEnumerable<int> CountWithTimeLimit (DateTime limit)
+		{
+			for (int i = 1; i <= 100; i++) {
+				if (DateTime.Now >= limit)
+				{
+					yield break;
+				}
+				yield return i;
+			}
+		}
+
+		static IEnumerable<int> CountWithTimeLimitFinally (DateTime limit)
+		{
+			try {
+				for (int i = 1; i <= 100; i++) {
+					if (DateTime.Now >= limit) {
+						yield break;
+					}
+					yield return i;
+				}
+			} finally {
+				Console.WriteLine("Stopping!");
+			}
+		}
+
+		static IEnumerable<string> ReadLines (string filename)
+		{
+			using (TextReader reader = File.OpenText(filename))
+			{
+				string line;
+				while ((line = reader.ReadLine()) != null)
+				{
+					yield return line;
+				}
+			}
 		}
 	}
 
