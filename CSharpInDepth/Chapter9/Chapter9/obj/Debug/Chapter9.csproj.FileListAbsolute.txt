@@ -1,0 +1,9 @@
+C:\Users\Gustavo\Source\Repos\CSharpForFun\CSharpInDepth\Chapter9\Chapter9\bin\Debug\Chapter9.exe.config
+C:\Users\Gustavo\Source\Repos\CSharpForFun\CSharpInDepth\Chapter9\Chapter9\bin\Debug\Chapter9.exe
+C:\Users\Gustavo\Source\Repos\CSharpForFun\CSharpInDepth\Chapter9\Chapter9\bin\Debug\Chapter9.pdb
+C:\Users\Gustavo\Source\Repos\CSharpForFun\CSharpInDepth\Chapter9\Chapter9\obj\Debug\Chapter9.csprojResolveAssemblyReference.cache
+C:\Users\Gustavo\Source\Repos\CSharpForFun\CSharpInDepth\Chapter9\Chapter9\obj\Debug\Chapter9.Form1.resources
+C:\Users\Gustavo\Source\Repos\CSharpForFun\CSharpInDepth\Chapter9\Chapter9\obj\Debug\Chapter9.Properties.Resources.resources
+C:\Users\Gustavo\Source\Repos\CSharpForFun\CSharpInDepth\Chapter9\Chapter9\obj\Debug\Chapter9.csproj.GenerateResource.Cache
+C:\Users\Gustavo\Source\Repos\CSharpForFun\CSharpInDepth\Chapter9\Chapter9\obj\Debug\Chapter9.exe
+C:\Users\Gustavo\Source\Repos\CSharpForFun\CSharpInDepth\Chapter9\Chapter9\obj\Debug\Chapter9.pdb
