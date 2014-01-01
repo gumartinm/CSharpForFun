@@ -14,6 +14,8 @@ namespace Chapter9
 {
     public partial class Form1 : Form
     {
+        delegate T MyFunc<T>();
+
         public Form1()
         {
 
@@ -143,6 +145,58 @@ namespace Chapter9
 
             Console.WriteLine(compiled4("First", "Second"));
             Console.WriteLine(compiled4("First", "Fir"));
+
+            /**
+             * 
+             * Listing 9.11 Example of code requiring the new type inference rules.
+             */
+            Console.WriteLine("Listing 9.11 Example of code requiring the new type inference rules.");
+            PrintConvertedValue("I am a string", x => x.Length);
+
+            /**
+             * 
+             * Listing 9.12 Attempting to infer the return type of an anonymous method.
+             */
+            Console.WriteLine("Listing 9.12 Attempting to infer the return type of an anonymous method.");
+            WriteResult(delegate { return 5; });
+
+            /**
+             * 
+             * Listing 9.13 Code returning an integer or an object depending on the time of day.
+             */
+            Console.WriteLine("Listing 9.13 Code returning an integer or an object depending on the time of day.");
+            WriteResult(delegate
+            {
+                if (DateTime.Now.Hour < 12)
+                {
+                    return 10;
+                }
+                else 
+                {
+                    return new object();
+                }
+            });
+
+            /**
+             * 
+             * Listing 9.14 Flexible type inference comibning information from multiple arguments.
+             */
+            Console.WriteLine("Listing 9.14 Flexible type inference comibning information from multiple arguments.");
+            PrintType(1, new object());
+
+            /**
+             * 
+             * Listing 9.15 Multistage type inference.
+             */
+            Console.WriteLine("Listing 9.15 Multistage type inference.");
+            ConvertTwice("Another String", text => text.Length, length => Math.Sqrt(length));
+
+            /**
+             * 
+             * Listing 9.16 Sample of overloading choice influenced by delegate return type.
+             */
+            Console.WriteLine("Listing 9.16 Sample of overloading choice influenced by delegate return type.");
+            Execute(() => 1);
         }
 
         static void Log(string title, object sender, EventArgs e)
@@ -156,6 +210,40 @@ namespace Chapter9
                 object value = prop.GetValue(e);
                 Console.WriteLine("    {0}={1}", name, value);
             }
+        }
+
+        static void PrintConvertedValue<TInput, TOutput>(TInput input, Converter<TInput, TOutput> converter)
+        {
+            Console.WriteLine(converter(input));
+        }
+
+        static void WriteResult<T>(MyFunc<T> function)
+        {
+            Console.WriteLine(function());
+        }
+
+        static void PrintType<T>(T first, T second)
+        {
+            Console.WriteLine(typeof(T));
+        }
+
+        static void ConvertTwice<TInput, TMiddle, TOutput>(TInput input, 
+                                                           Converter<TInput, TMiddle> firstConversion,
+                                                           Converter<TMiddle, TOutput> secondConversion)
+        {
+            TMiddle middle = firstConversion(input);
+            TOutput output = secondConversion(middle);
+            Console.WriteLine(output);
+        }
+
+        static void Execute(Func<int> action)
+        {
+            Console.WriteLine("action returns an int: " + action());
+        }
+
+        static void Execute(Func<double> action)
+        {
+            Console.WriteLine("action returns a double: " + action());
         }
     }
 
