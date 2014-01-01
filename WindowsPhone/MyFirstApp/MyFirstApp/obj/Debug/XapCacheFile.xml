@@ -1,0 +1,12 @@
+﻿<xapCache source="C:\Users\Gustavo\Source\Repos\CSharpForFun\WindowsPhone\MyFirstApp\MyFirstApp\Bin\Debug\MyFirstApp_Debug_AnyCPU.xap" wasSigned="False" wasTritonized="False" certificateThumbprint="" TimeStampUrl="" signKeyFile="" signKeyPassword="" lastWriteTime="01/01/2014 23:53:17">
+  <file source="C:\Users\Gustavo\Source\Repos\CSharpForFun\WindowsPhone\MyFirstApp\MyFirstApp\obj\Debug\MyFirstApp.dll" archivePath="MyFirstApp.dll" lastWriteTime="01/01/2014 23:53:16" />
+  <file source="C:\Users\Gustavo\Source\Repos\CSharpForFun\WindowsPhone\MyFirstApp\MyFirstApp\Assets\AlignmentGrid.png" archivePath="Assets\AlignmentGrid.png" lastWriteTime="01/01/2014 23:27:21" />
+  <file source="C:\Users\Gustavo\Source\Repos\CSharpForFun\WindowsPhone\MyFirstApp\MyFirstApp\Assets\Tiles\FlipCycleTileLarge.png" archivePath="Assets\Tiles\FlipCycleTileLarge.png" lastWriteTime="01/01/2014 23:27:21" />
+  <file source="C:\Users\Gustavo\Source\Repos\CSharpForFun\WindowsPhone\MyFirstApp\MyFirstApp\Assets\Tiles\FlipCycleTileSmall.png" archivePath="Assets\Tiles\FlipCycleTileSmall.png" lastWriteTime="01/01/2014 23:27:21" />
+  <file source="C:\Users\Gustavo\Source\Repos\CSharpForFun\WindowsPhone\MyFirstApp\MyFirstApp\Assets\Tiles\IconicTileMediumLarge.png" archivePath="Assets\Tiles\IconicTileMediumLarge.png" lastWriteTime="01/01/2014 23:27:21" />
+  <file source="C:\Users\Gustavo\Source\Repos\CSharpForFun\WindowsPhone\MyFirstApp\MyFirstApp\Assets\Tiles\IconicTileSmall.png" archivePath="Assets\Tiles\IconicTileSmall.png" lastWriteTime="01/01/2014 23:27:21" />
+  <file source="C:\Users\Gustavo\Source\Repos\CSharpForFun\WindowsPhone\MyFirstApp\MyFirstApp\Bin\Debug\AppManifest.xaml" archivePath="AppManifest.xaml" lastWriteTime="01/01/2014 23:27:28" />
+  <file source="C:\Users\Gustavo\Source\Repos\CSharpForFun\WindowsPhone\MyFirstApp\MyFirstApp\Bin\Debug\Assets\ApplicationIcon.png" archivePath="Assets\ApplicationIcon.png" lastWriteTime="01/01/2014 23:27:21" />
+  <file source="C:\Users\Gustavo\Source\Repos\CSharpForFun\WindowsPhone\MyFirstApp\MyFirstApp\Bin\Debug\Assets\Tiles\FlipCycleTileMedium.png" archivePath="Assets\Tiles\FlipCycleTileMedium.png" lastWriteTime="01/01/2014 23:27:21" />
+  <file source="C:\Users\Gustavo\Source\Repos\CSharpForFun\WindowsPhone\MyFirstApp\MyFirstApp\Bin\Debug\Properties\WMAppManifest.xml" archivePath="WMAppManifest.xml" lastWriteTime="01/01/2014 23:27:29" />
+</xapCache>
