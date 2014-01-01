@@ -1,0 +1,6 @@
+C:\Users\Gustavo\Source\Repos\CSharpForFun\CSharpInDepth\Chapter10\Chapter10\bin\Debug\Chapter10.exe.config
+C:\Users\Gustavo\Source\Repos\CSharpForFun\CSharpInDepth\Chapter10\Chapter10\bin\Debug\Chapter10.exe
+C:\Users\Gustavo\Source\Repos\CSharpForFun\CSharpInDepth\Chapter10\Chapter10\bin\Debug\Chapter10.pdb
+C:\Users\Gustavo\Source\Repos\CSharpForFun\CSharpInDepth\Chapter10\Chapter10\obj\Debug\Chapter10.csprojResolveAssemblyReference.cache
+C:\Users\Gustavo\Source\Repos\CSharpForFun\CSharpInDepth\Chapter10\Chapter10\obj\Debug\Chapter10.exe
+C:\Users\Gustavo\Source\Repos\CSharpForFun\CSharpInDepth\Chapter10\Chapter10\obj\Debug\Chapter10.pdb

@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en"><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>gumartinm.name » index</title>
+    <link rel="stylesheet" href="/media/main.css" type="text/css" media="screen, projection">
+    <link rel="stylesheet" href="/media/main-print.css" type="text/css" media="print">
+    <!--[if IE]><link rel="stylesheet" href="/media/cache/main-ie.css?1280098410" type="text/css" media="screen, projection"><![endif]-->
+</head>
+<body>
+    <div class="container">
+        <div class="push-4 span-16">
+			<div class="push-1 span-15">  
+			<h1>gumartinm.name</h1>
+				<div class="span-10 project-grid">
+				<span class="span-5" style="float: left;">
+            		<h2>java</h2>
+            		<ul>
+                	<li>
+                    	<a href="https://github.com/gumartinm/JavaForFun/tree/master/Allgemeines/Threads" title="threads examples">threads</a>
+                	</li>
+            		</ul>
+        		</span>
+
+				<span class="span-5" style="float: left;">
+            		<h2>android</h2>
+            		<ul>
+                	<li>
+                    	<a href="https://github.com/gumartinm/JavaForFun/tree/master/Android/AndroidTetris" title="tetris">simple tetris for android</a>
+                	</li>
+					<li>
+                    	<a href="https://github.com/gumartinm/JavaForFun/tree/master/Android/MobiAdsReloaded" title="mobi ads">mobi ads</a>
+                	</li>
+					<li>
+						<a href="https://github.com/gumartinm/AndroidReversiForFun" title="reversi">reversi</a>
+					</li>
+            		</ul>
+        		</span>
+
+                <span class="span-5" style="float: left;">
+                    <h2>symfony</h2>
+                    <ul>
+                    <li>
+                        <a href="http://code.google.com/p/mobiads/" title="mobi ads">mobi ads</a>
+                    </li>
+                    </ul>
+                </span>
+
+        		<span class="span-5" style="float: left;">
+            		<h2>java spring</h2>
+            		<ul>
+                	<li>
+                    	<a href="https://github.com/gumartinm/JavaForFun/tree/master/SpringJava" title="examples with Spring: Annotations and Aspects">annotations and aspects</a>
+                	</li>
+                	<li>
+                    	<a href="https://github.com/gumartinm/SpringWebServicesForFun" title="examples with Spring Web Services">Spring Web Services</a>
+                	</li>
+					<li>
+                    	<a href="https://github.com/gumartinm/JavaForFun/tree/master/MyBatis/MyBatis-Spring" title="examples with MyBatis-Spring">MyBatis-Spring</a>
+                	</li>
+            		</ul>
+
+        		</span>
+				
+				<span class="span-5" style="float: left;">
+                    <h2>javapos</h2>
+                    <ul>
+                    <li>
+                        <a href="https://github.com/gumartinm/JavaForFun/tree/master/JavaPOS/KeyBoardDriver" title="driver JavaPOS for keyboards. Linux implementation.">KeyBoardDriver</a>
+                    </li>
+                    </ul>
+                </span>
+
+				<span class="span-5" style="float: left;">
+                    <h2>java mybatis</h2>
+                    <ul>
+                    <li>
+                        <a href="https://github.com/gumartinm/JavaForFun/tree/master/MyBatis/MyBatis" title="examples with MyBatis">MyBatis</a>
+                    </li>
+                    </ul>
+                </span>
+
+				<span class="span-5" style="float: left;">
+                    <h2>C</h2>
+                    <ul>
+                    <li>
+                        <a href="https://github.com/gumartinm/JavaTCPFork" title="daemon to fork processes, useful under low memory conditions using Java">JavaFork</a>
+                    </li>
+                    </ul>
+                </span>
+
+				<span class="span-5" style="float: left;">
+                    <h2>C#</h2>
+                    <ul>
+                    <li>
+                        <a href="https://github.com/gumartinm/CSharpForFun/tree/master/CSharpInDepth" title="">C# In Depth</a>
+                    </li>
+                    </ul>
+                </span>
+
+		
+    			<p style="clear: left;"><em><span class="inactive">Light color</span> means currently no plans for further development.</em></p>
+				</div>
+
+				<div class="span-5 last">
+    				<div style="border-left: 1px solid black; padding-left: 20px;">
+    				<h2>contact</h2>
+    				<ul>
+        			<li><a href="mailto:noemail@noemail.com">e-mail</a></li>
+        			<li><a href="http://blog.gumartinm.name/">blog</a></li>
+        			<li><a href="https://github.com/gumartinm">github</a></li>
+					<li><a href="http://git.gumartinm.name">git</a></li>
+    				</ul>
+    				<p>
+        				Gustavo Martin Morcuende<br>
+    				</p>
+					</div>
+				</div>
+			</div>
+        </div>
+    </div>
+</body>
+</html>
