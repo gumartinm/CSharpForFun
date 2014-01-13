@@ -1,0 +1,23 @@
+﻿<xapCache source="C:\Users\Gustavo\Source\Repos\CSharpForFun\WindowsPhone\Connect4MonoGame\Connect4MonoGame\bin\WindowsPhone\x86\Debug\Connect4MonoGame_Debug_x86.xap" wasSigned="False" wasTritonized="False" certificateThumbprint="" TimeStampUrl="" signKeyFile="" signKeyPassword="" lastWriteTime="1/13/2014 2:21:22 AM">
+  <file source="C:\Users\Gustavo\Source\Repos\CSharpForFun\WindowsPhone\Connect4MonoGame\Connect4MonoGame\obj\x86\Debug\Connect4MonoGame.dll" archivePath="Connect4MonoGame.dll" lastWriteTime="1/13/2014 2:21:20 AM" />
+  <file source="C:\Users\Gustavo\Source\Repos\CSharpForFun\WindowsPhone\Connect4MonoGame\Connect4MonoGame\Assets\AlignmentGrid.png" archivePath="Assets\AlignmentGrid.png" lastWriteTime="12/23/2012 3:11:54 PM" />
+  <file source="C:\Users\Gustavo\Source\Repos\CSharpForFun\WindowsPhone\Connect4MonoGame\Connect4MonoGame\Assets\Tiles\FlipCycleTileLarge.png" archivePath="Assets\Tiles\FlipCycleTileLarge.png" lastWriteTime="12/23/2012 3:11:56 PM" />
+  <file source="C:\Users\Gustavo\Source\Repos\CSharpForFun\WindowsPhone\Connect4MonoGame\Connect4MonoGame\Assets\Tiles\FlipCycleTileSmall.png" archivePath="Assets\Tiles\FlipCycleTileSmall.png" lastWriteTime="12/23/2012 3:11:56 PM" />
+  <file source="C:\Users\Gustavo\Source\Repos\CSharpForFun\WindowsPhone\Connect4MonoGame\Connect4MonoGame\Assets\Tiles\IconicTileMediumLarge.png" archivePath="Assets\Tiles\IconicTileMediumLarge.png" lastWriteTime="12/23/2012 3:11:56 PM" />
+  <file source="C:\Users\Gustavo\Source\Repos\CSharpForFun\WindowsPhone\Connect4MonoGame\Connect4MonoGame\Assets\Tiles\IconicTileSmall.png" archivePath="Assets\Tiles\IconicTileSmall.png" lastWriteTime="12/23/2012 3:11:56 PM" />
+  <file source="C:\Users\Gustavo\Source\Repos\CSharpForFun\WindowsPhone\Connect4MonoGame\Connect4MonoGame\bin\WindowsPhone\x86\Debug\AppManifest.xaml" archivePath="AppManifest.xaml" lastWriteTime="1/13/2014 1:11:56 AM" />
+  <file source="C:\Users\Gustavo\Source\Repos\CSharpForFun\WindowsPhone\Connect4MonoGame\Connect4MonoGame\bin\WindowsPhone\x86\Debug\Assets\ApplicationIcon.png" archivePath="Assets\ApplicationIcon.png" lastWriteTime="12/23/2012 3:11:54 PM" />
+  <file source="C:\Users\Gustavo\Source\Repos\CSharpForFun\WindowsPhone\Connect4MonoGame\Connect4MonoGame\bin\WindowsPhone\x86\Debug\Assets\Tiles\FlipCycleTileMedium.png" archivePath="Assets\Tiles\FlipCycleTileMedium.png" lastWriteTime="12/23/2012 3:11:56 PM" />
+  <file source="C:\Program Files (x86)\MonoGame\v3.0\Assemblies\WindowsPhone\x86\MonoGame.Framework.dll" archivePath="MonoGame.Framework.dll" lastWriteTime="2/25/2013 5:43:32 PM" />
+  <file source="C:\Program Files (x86)\MonoGame\v3.0\Assemblies\WindowsPhone\x86\SharpDX.Direct3D11.dll" archivePath="SharpDX.Direct3D11.dll" lastWriteTime="12/28/2012 5:17:34 PM" />
+  <file source="C:\Program Files (x86)\MonoGame\v3.0\Assemblies\WindowsPhone\x86\SharpDX.dll" archivePath="SharpDX.dll" lastWriteTime="12/28/2012 5:17:34 PM" />
+  <file source="C:\Program Files (x86)\MonoGame\v3.0\Assemblies\WindowsPhone\x86\SharpDX.XAudio2.dll" archivePath="SharpDX.XAudio2.dll" lastWriteTime="12/28/2012 5:17:34 PM" />
+  <file source="C:\Program Files (x86)\MonoGame\v3.0\Assemblies\WindowsPhone\x86\SharpDX.MediaFoundation.dll" archivePath="SharpDX.MediaFoundation.dll" lastWriteTime="12/28/2012 5:17:34 PM" />
+  <file source="C:\Program Files (x86)\MonoGame\v3.0\Assemblies\WindowsPhone\x86\SharpDX.DXGI.dll" archivePath="SharpDX.DXGI.dll" lastWriteTime="12/28/2012 5:17:34 PM" />
+  <file source="C:\Program Files (x86)\MonoGame\v3.0\Assemblies\WindowsPhone\x86\SharpDX.Direct3D11.xml" archivePath="SharpDX.Direct3D11.xml" lastWriteTime="12/28/2012 5:17:34 PM" />
+  <file source="C:\Program Files (x86)\MonoGame\v3.0\Assemblies\WindowsPhone\x86\SharpDX.xml" archivePath="SharpDX.xml" lastWriteTime="12/28/2012 5:17:34 PM" />
+  <file source="C:\Program Files (x86)\MonoGame\v3.0\Assemblies\WindowsPhone\x86\SharpDX.XAudio2.xml" archivePath="SharpDX.XAudio2.xml" lastWriteTime="12/28/2012 5:17:34 PM" />
+  <file source="C:\Program Files (x86)\MonoGame\v3.0\Assemblies\WindowsPhone\x86\SharpDX.MediaFoundation.xml" archivePath="SharpDX.MediaFoundation.xml" lastWriteTime="12/28/2012 5:17:34 PM" />
+  <file source="C:\Program Files (x86)\MonoGame\v3.0\Assemblies\WindowsPhone\x86\SharpDX.DXGI.xml" archivePath="SharpDX.DXGI.xml" lastWriteTime="12/28/2012 5:17:34 PM" />
+  <file source="C:\Users\Gustavo\Source\Repos\CSharpForFun\WindowsPhone\Connect4MonoGame\Connect4MonoGame\bin\WindowsPhone\x86\Debug\Properties\WMAppManifest.xml" archivePath="WMAppManifest.xml" lastWriteTime="1/13/2014 1:11:56 AM" />
+</xapCache>
