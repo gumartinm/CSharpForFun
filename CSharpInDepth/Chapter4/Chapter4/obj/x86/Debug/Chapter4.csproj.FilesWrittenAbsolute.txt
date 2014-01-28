@@ -1,0 +1,5 @@
+/home/gustavo/github/CSharpForFun/CSharpInDepth/Chapter4/Chapter4/obj/x86/Debug/.NETFramework,Version=v4.0.AssemblyAttribute.cs
+/home/gustavo/github/CSharpForFun/CSharpInDepth/Chapter4/Chapter4/bin/Debug/Chapter4.exe.mdb
+/home/gustavo/github/CSharpForFun/CSharpInDepth/Chapter4/Chapter4/bin/Debug/Chapter4.exe
+/home/gustavo/github/CSharpForFun/CSharpInDepth/Chapter4/Chapter4/obj/x86/Debug/Chapter4.exe
+/home/gustavo/github/CSharpForFun/CSharpInDepth/Chapter4/Chapter4/obj/x86/Debug/Chapter4.exe.mdb
