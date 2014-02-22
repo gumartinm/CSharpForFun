@@ -16,8 +16,7 @@ namespace Example.RemoteAgents.GTKLinux.Model
 
     async public Task<TResult> callRemoteService<TResult>(string uri, string method)
     {
-      TResult result = default(TResult);
-      POST postData = new POST();
+      var postData = new POST();
       postData.Id = "2114567586433855105";
       postData.JSONrpc = "2.0";
       postData.Method = method;
@@ -26,6 +25,8 @@ namespace Example.RemoteAgents.GTKLinux.Model
       HttpContent content = new StringContent(data, System.Text.Encoding.UTF8, "application/json-rpc");
 
       HttpResponseMessage response = await this.issueCall(uri, content);
+
+      TResult result = default(TResult);
 
       if (response.StatusCode == HttpStatusCode.OK) {
         Task<byte[]> responseBytes = response.Content.ReadAsByteArrayAsync();
