@@ -57,6 +57,7 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=c7439020c8fedf87">
       <Package>monodevelop</Package>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -16,24 +16,25 @@ namespace Example.RemoteAgents.GTKLinux.Model
 
     async public Task<TResult> callRemoteService<TResult>(string uri, string method)
     {
-      POSTResult<TResult> postResult;
+      TResult result = default(TResult);
       POST postData = new POST();
-      postData.id = "2114567586433855105";
-      postData.jsonrpc = "2.0";
-      postData.method = method;
+      postData.Id = "2114567586433855105";
+      postData.JSONrpc = "2.0";
+      postData.Method = method;
 
       string data = JsonConvert.SerializeObject(postData);
       HttpContent content = new StringContent(data, System.Text.Encoding.UTF8, "application/json-rpc");
 
       HttpResponseMessage response = await this.issueCall(uri, content);
 
-      //if (response.StatusCode == HttpStatusCode.OK) {
+      if (response.StatusCode == HttpStatusCode.OK) {
         Task<byte[]> responseBytes = response.Content.ReadAsByteArrayAsync();
         string responseString = System.Text.Encoding.UTF8.GetString(responseBytes.Result);
-        postResult = JsonConvert.DeserializeObject<POSTResult<TResult>>(responseString);
-      //}
+        POSTResult<TResult> postResult = JsonConvert.DeserializeObject<POSTResult<TResult>>(responseString);
+        result = postResult.Result;
+      }
 
-      return postResult.result;
+      return result;
     }
 
 
@@ -47,17 +48,17 @@ namespace Example.RemoteAgents.GTKLinux.Model
 
     private class POST
     {
-      public string id { get; set; }
-      public string jsonrpc { get; set; }
-      public string method { get; set; }
+      public string Id { get; set; }
+      public string JSONrpc { get; set; }
+      public string Method { get; set; }
     }
       
 
     private class POSTResult<TResult>
     {
-      public string id { get; set; }
-      public string jsonrpc { get; set; }
-      public TResult result { get; set; }
+      public string Id { get; set; }
+      public string JSONrpc { get; set; }
+      public TResult Result { get; set; }
     }
   }
 }
