@@ -19,8 +19,6 @@ namespace RemoteAgents.WindowsPhone.Model
             string data = JsonConvert.SerializeObject(postData);
             HttpContent content = new StringContent(data, System.Text.Encoding.UTF8, "application/json-rpc");
 
-            // TODO: find out why HttpClient is sendig two times the same POST. Is there something wrong with the .NET implementation?
-            // At least it is doing that, when error response from web server.
             HttpResponseMessage response = await this.doCall(uri, content);
 
             TResult result = default(TResult);

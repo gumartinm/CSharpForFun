@@ -48,7 +48,7 @@
         <!--ContentPanel. Colocar aquí el contenido adicional-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <TextBox x:Name="CurrentDateTextBox" HorizontalAlignment="Left" Height="72" Margin="0,57,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="456" IsReadOnly="True" InputScope="Date"/>
-            <Button x:Name="ButtonRetrieveRemoteData" Content="{Binding LocalizedResources.ButtonRetrieveRemoteData, Mode=OneWay, Source={StaticResource LocalizedStrings}}" HorizontalAlignment="Left" Margin="289,479,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.915,0.432" Click="ButtonRetrieveRemoteData_Click"/>
+            <Button x:Name="ButtonRetrieveRemoteData" Content="{Binding LocalizedResources.ButtonRetrieveRemoteData, Mode=OneWay, Source={StaticResource LocalizedStrings}}" HorizontalAlignment="Left" Margin="289,479,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.915,0.432"/>
 
         </Grid>
 
