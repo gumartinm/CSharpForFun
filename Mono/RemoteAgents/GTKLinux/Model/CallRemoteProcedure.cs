@@ -17,9 +17,9 @@ namespace Example.RemoteAgents.GTKLinux.Model
     async public Task<TResult> callRemoteService<TResult>(string uri, string method)
     {
       var postData = new POST();
-      postData.Id = "2114567586433855105";
-      postData.JSONrpc = "2.0";
-      postData.Method = method;
+      postData.id = "2114567586433855105";
+      postData.jsonrpc = "2.0";
+      postData.method = method;
 
       string data = JsonConvert.SerializeObject(postData);
       HttpContent content = new StringContent(data, System.Text.Encoding.UTF8, "application/json-rpc");
@@ -32,7 +32,7 @@ namespace Example.RemoteAgents.GTKLinux.Model
         Task<byte[]> responseBytes = response.Content.ReadAsByteArrayAsync();
         string responseString = System.Text.Encoding.UTF8.GetString(responseBytes.Result);
         POSTResult<TResult> postResult = JsonConvert.DeserializeObject<POSTResult<TResult>>(responseString);
-        result = postResult.Result;
+        result = postResult.result;
       }
 
       return result;
@@ -49,17 +49,31 @@ namespace Example.RemoteAgents.GTKLinux.Model
 
     private class POST
     {
-      public string Id { get; set; }
-      public string JSONrpc { get; set; }
-      public string Method { get; set; }
+      public string id { get; set; }
+      public string jsonrpc { get; set; }
+      public string method { get; set; }
     }
       
 
     private class POSTResult<TResult>
     {
-      public string Id { get; set; }
-      public string JSONrpc { get; set; }
-      public TResult Result { get; set; }
+      public string id { get; set; }
+      public string jsonrpc { get; set; }
+      public TResult result { get; set; }
+    }
+
+    // TODO: When error I receive from JSONRPC: {"jsonrpc":"2.0","id":"null","error":{"code":-32600,"message":"Invalid Request"}}
+    private class Error
+    {
+      public int code { get; set; }
+      public string message { get; set; }
+    }
+
+    private class ERRORResult
+    {
+      public string jsonrpc { get; set; }
+      public string id { get; set; }
+      public Error error { get; set; }
     }
   }
 }
