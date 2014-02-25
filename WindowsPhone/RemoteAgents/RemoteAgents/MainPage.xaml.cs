@@ -30,10 +30,18 @@ namespace RemoteAgents
 
         async private void ButtonRetrieveRemoteData_Click(object sender, RoutedEventArgs e)
         {
-            string currentDate = await view.getCurrentDate();
-            if (currentDate != null)
+            try
             {
-                this.CurrentDateTextBox.Text = currentDate;
+                string currentDate = await view.getCurrentDate();
+                if (currentDate != null)
+                {
+                    this.CurrentDateTextBox.Text = currentDate;
+                }
+            }
+            catch (Exception exception)
+            {
+                //TODO: logger for Windows Phone 8 :(
+                Console.WriteLine("ButtonGetDateClicked. Message: {0}  Stacktrace: {1}", exception.Message, exception.StackTrace);
             }
         }
 
