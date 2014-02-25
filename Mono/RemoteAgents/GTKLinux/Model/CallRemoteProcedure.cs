@@ -1,13 +1,15 @@
 ﻿using System;
-using System.Runtime.Remoting.Messaging;
-using Newtonsoft.Json;
+using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Runtime.Remoting.Lifetime;
+using System.Runtime.Remoting.Messaging;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Gtk;
-using System.Reflection;
-using System.Net;
-using System.Security.Cryptography.X509Certificates;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 
 namespace Example.RemoteAgents.GTKLinux.Model
 {
@@ -20,8 +22,15 @@ namespace Example.RemoteAgents.GTKLinux.Model
       postData.id = "2114567586433855105";
       postData.jsonrpc = "2.0";
       postData.method = method;
+      var jsonSettings = new JsonSerializerSettings{
+        Error = delegate(object sender, ErrorEventArgs args)
+        {
+          Console.WriteLine(args.ErrorContext.Error.Message);
+          args.ErrorContext.Handled = true;
+        }
+      };
 
-      string data = JsonConvert.SerializeObject(postData);
+      string data = JsonConvert.SerializeObject(postData, jsonSettings);
       HttpContent content = new StringContent(data, System.Text.Encoding.UTF8, "application/json-rpc");
 
       HttpResponseMessage response = await this.issueCall(uri, content);
@@ -31,17 +40,17 @@ namespace Example.RemoteAgents.GTKLinux.Model
       if (response.StatusCode == HttpStatusCode.OK) {
         Task<byte[]> responseBytes = response.Content.ReadAsByteArrayAsync();
         string responseString = System.Text.Encoding.UTF8.GetString(responseBytes.Result);
-        POSTResult<TResult> postResult = JsonConvert.DeserializeObject<POSTResult<TResult>>(responseString);
+
+        POSTResult<TResult> postResult = JsonConvert.DeserializeObject<POSTResult<TResult>>(responseString, jsonSettings);
         result = postResult.result;
       }
 
       return result;
     }
 
-
     async private Task<HttpResponseMessage> issueCall(string uri, HttpContent content)
     {
-        using (HttpClient client = new HttpClient())
+        using (HttpClient client = new HttpClient{ Timeout = TimeSpan.FromSeconds(5)})
         {
             return await client.PostAsync(uri, content);
         }
