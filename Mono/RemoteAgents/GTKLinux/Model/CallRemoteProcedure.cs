@@ -18,7 +18,6 @@ namespace Example.RemoteAgents.GTKLinux.Model
 
     async public Task<TResult> callRemoteService<TResult>(string uri, string method)
     {
-      TResult result = default(TResult);
       var postData = new POST();
       postData.id = "2114567586433855105";
       postData.jsonrpc = "2.0";
@@ -31,23 +30,19 @@ namespace Example.RemoteAgents.GTKLinux.Model
         }
       };
 
-      try {
-        string data = JsonConvert.SerializeObject(postData, jsonSettings);
-        HttpContent content = new StringContent(data, System.Text.Encoding.UTF8, "application/json-rpc");
+      string data = JsonConvert.SerializeObject(postData, jsonSettings);
+      HttpContent content = new StringContent(data, System.Text.Encoding.UTF8, "application/json-rpc");
 
-        HttpResponseMessage response = await this.issueCall(uri, content);
+      HttpResponseMessage response = await this.issueCall(uri, content);
 
-          if (response.StatusCode == HttpStatusCode.OK) {
-            Task<byte[]> responseBytes = response.Content.ReadAsByteArrayAsync();
-            string responseString = System.Text.Encoding.UTF8.GetString(responseBytes.Result);
+      TResult result = default(TResult);
 
-            POSTResult<TResult> postResult = JsonConvert.DeserializeObject<POSTResult<TResult>>(responseString, jsonSettings);
-            result = postResult.result;
-          }
-      }
-      catch (Exception e)
-      {
-          Console.WriteLine("callRemoteService exception. Message: {0}  Stacktrace: {1} ", e.Message, e.StackTrace);
+      if (response.StatusCode == HttpStatusCode.OK) {
+        Task<byte[]> responseBytes = response.Content.ReadAsByteArrayAsync();
+        string responseString = System.Text.Encoding.UTF8.GetString(responseBytes.Result);
+
+        POSTResult<TResult> postResult = JsonConvert.DeserializeObject<POSTResult<TResult>>(responseString, jsonSettings);
+        result = postResult.result;
       }
 
       return result;

@@ -34,10 +34,16 @@ namespace Example.RemoteAgents.GTKLinux
 
         async private void ButtonGetDateClicked(object sender, EventArgs a)
         {
-            string currentDate = await view.getCurrentDate();
-            if (currentDate != null)
+            try {
+                string currentDate = await view.getCurrentDate();
+                if (currentDate != null)
+                {
+                    this.RemoteDate.Buffer.Text = currentDate;
+                }
+            }
+            catch (Exception e)
             {
-                this.RemoteDate.Buffer.Text = currentDate;
+                Console.WriteLine("ButtonGetDateClicked. Message: {0}  Stacktrace: {1}", e.Message, e.StackTrace);
             }
         }
     }
