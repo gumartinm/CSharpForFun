@@ -32,7 +32,7 @@ namespace RemoteAgents
         {
             try
             {
-                string currentDate = await view.getCurrentDate();
+                string currentDate = await view.GetCurrentDateAsync();
                 if (currentDate != null)
                 {
                     this.CurrentDateTextBox.Text = currentDate;
