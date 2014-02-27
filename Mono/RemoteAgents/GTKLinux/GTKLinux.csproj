@@ -62,7 +62,7 @@ through JSON API.</Description>
       <Private>True</Private>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>..\..\..\..\..\..\..\usr\mymono\custom\log4net-1.2.13\net\4.0\log4net.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\usr\mymono\custom\log4net-1.2.13\cli\1.0\log4net.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
