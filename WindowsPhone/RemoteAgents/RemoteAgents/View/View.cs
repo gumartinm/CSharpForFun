@@ -5,11 +5,11 @@ namespace RemoteAgents.WindowsPhone.View
 {
     public class ViewImpl
     {
-        private static readonly ViewModelImpl vm = new ViewModelImpl();
+        private readonly ViewModelImpl vm = new ViewModelImpl();
 
-        async public Task<string> getCurrentDate()
+        async public Task<string> GetCurrentDateAsync()
         {
-            return await vm.getCurrentDate();
+            return await vm.GetCurrentDateAsync();
         }
     }
 }

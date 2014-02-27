@@ -8,9 +8,9 @@ namespace RemoteAgents.WindowsPhone.ViewModel
         private static readonly string uri = "http://gumartinm.name/spring-mainapp/CurrentDateService.json";
         private readonly CallRemoteProcedure remoteProcedure = new CallRemoteProcedure();
 
-        async public Task<string> getCurrentDate()
+        async public Task<string> GetCurrentDateAsync()
         {
-            return await remoteProcedure.callRemoteService<string>(uri, "getCurrentDate");
+            return await remoteProcedure.CallPostRemoteServiceAsync<string>(uri, "getCurrentDate");
         }
     }
 }
