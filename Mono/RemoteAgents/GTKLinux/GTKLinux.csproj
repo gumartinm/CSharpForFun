@@ -61,6 +61,9 @@ through JSON API.</Description>
       <Package>monodevelop</Package>
       <Private>True</Private>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\..\..\..\..\..\usr\mymono\custom\log4net-1.2.13\net\4.0\log4net.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="gtk-gui\gui.stetic">
@@ -84,5 +87,10 @@ through JSON API.</Description>
     <Folder Include="Model\" />
     <Folder Include="ViewModel\" />
     <Folder Include="View\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Log4Net.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

@@ -9,9 +9,9 @@ namespace Example.RemoteAgents.GTKLinux.View
   {
     private static readonly ViewModelImpl vm = new ViewModelImpl();
 
-    async public Task<string> getCurrentDate()
+    async public Task<string> GetCurrentDateAsync()
     {
-      return await vm.getCurrentDate();
+      return await vm.GetCurrentDateAsync();
     }
   }
 }

@@ -3,12 +3,15 @@ using Gtk;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Example.RemoteAgents.GTKLinux.View;
+using log4net;
 
 namespace Example.RemoteAgents.GTKLinux
 {
     public partial class MainWindow: Gtk.Window
     {
         ViewImpl view;
+        private static readonly ILog logger = LogManager.GetLogger(
+            System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 	    public MainWindow () : base (Gtk.WindowType.Toplevel)
 	    {
@@ -35,7 +38,7 @@ namespace Example.RemoteAgents.GTKLinux
         async private void ButtonGetDateClicked(object sender, EventArgs a)
         {
             try {
-                string currentDate = await view.getCurrentDate();
+                string currentDate = await view.GetCurrentDateAsync();
                 if (currentDate != null)
                 {
                     this.RemoteDate.Buffer.Text = currentDate;
@@ -43,7 +46,7 @@ namespace Example.RemoteAgents.GTKLinux
             }
             catch (Exception e)
             {
-                Console.WriteLine("ButtonGetDateClicked. Message: {0}  Stacktrace: {1}", e.Message, e.StackTrace);
+                logger.Error("ButtonGetDateClicked error: ", e);
             }
         }
     }

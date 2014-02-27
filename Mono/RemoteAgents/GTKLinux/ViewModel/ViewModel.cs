@@ -7,11 +7,11 @@ namespace Example.RemoteAgents.GTKLinux.ViewModel
   public class ViewModelImpl
   {
     private static readonly string uri = "http://gumartinm.name/spring-mainapp/CurrentDateService.json";
-    private static readonly CallRemoteProcedure remoteProcedure = new CallRemoteProcedure();
+    private readonly CallRemoteProcedure remoteProcedure = new CallRemoteProcedure();
 
-    async public Task<string> getCurrentDate()
+    async public Task<string> GetCurrentDateAsync()
     {
-      return await remoteProcedure.callRemoteService<string>(uri, "getCurrentDate");
+      return await remoteProcedure.PostRemoteServiceAsync<string>(uri, "getCurrentDate");
     }
   }
 }
