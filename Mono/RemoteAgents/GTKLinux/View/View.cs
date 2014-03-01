@@ -7,11 +7,11 @@ namespace Example.RemoteAgents.GTKLinux.View
 {
   public class ViewImpl
   {
-    private static readonly ViewModelImpl vm = new ViewModelImpl();
+    private readonly ViewModelImpl _vm = new ViewModelImpl();
 
     async public Task<string> GetCurrentDateAsync()
     {
-      return await vm.GetCurrentDateAsync();
+      return await _vm.GetCurrentDateAsync();
     }
   }
 }

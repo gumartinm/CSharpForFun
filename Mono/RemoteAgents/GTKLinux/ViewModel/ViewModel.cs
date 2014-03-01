@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Example.RemoteAgents.GTKLinux.Model;
+using GumartinM.JsonRPC4Mono;
+using System.ComponentModel;
 
 namespace Example.RemoteAgents.GTKLinux.ViewModel
 {
   public class ViewModelImpl
   {
-    private static readonly string uri = "http://gumartinm.name/spring-mainapp/CurrentDateService.json";
-    private readonly CallRemoteProcedure remoteProcedure = new CallRemoteProcedure();
+    private static readonly string uri = "http://127.0.0.1:8080/spring-mainapp/CurrentDateService.json";
+    private readonly JsonRpcHttpAsyncClient _remoteClient = new JsonRpcHttpAsyncClient(); 
 
     async public Task<string> GetCurrentDateAsync()
     {
-      return await remoteProcedure.PostRemoteServiceAsync<string>(uri, "getCurrentDate");
+      return await _remoteClient.PostRemoteServiceAsync<string>(uri, "getCurrentDate");
     }
   }
 }
