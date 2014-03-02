@@ -9,17 +9,23 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Example.RemoteAgents.WindowsPhone.Resources;
 using RemoteAgents.WindowsPhone.View;
+using NLog;
 
 namespace RemoteAgents
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        private readonly ViewImpl view;
+        private readonly ViewImpl _view;
+
+        /// <summary>
+        /// The logger.
+        /// </summary>
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         // Constructor
         public MainPage()
         {
-            view = new ViewImpl();
+            _view = new ViewImpl();
 
             InitializeComponent();
 
@@ -32,16 +38,11 @@ namespace RemoteAgents
         {
             try
             {
-                string currentDate = await view.GetCurrentDateAsync();
-                if (currentDate != null)
-                {
-                    this.CurrentDateTextBox.Text = currentDate;
-                }
+                this.CurrentDateTextBox.Text = await _view.GetCurrentDateAsync();
             }
             catch (Exception exception)
             {
-                //TODO: logger for Windows Phone 8 :(
-                Console.WriteLine("ButtonGetDateClicked. Message: {0}  Stacktrace: {1}", exception.Message, exception.StackTrace);
+                _logger.Error("ButtonGetDateClicked. Message: {0}  Stacktrace: {1}", exception.Message, exception.StackTrace);
             }
         }
 

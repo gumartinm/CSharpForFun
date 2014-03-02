@@ -42,8 +42,10 @@ namespace Connect4MonoGame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            
-            
+
+            //texture = new Texture2D(_spriteBatch.GraphicsDevice, 1, 1);
+            //texture.SetData<Color>(new Color[] { Color.Yellow });
+            texture = Content.Load<Texture2D>("redpiece.png");
             
 
             // TODO: use this.Content to load your game content here
@@ -80,11 +82,6 @@ namespace Connect4MonoGame
             
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
-            if (texture == null)
-            {
-                texture = new Texture2D(_spriteBatch.GraphicsDevice, 1, 1);
-                texture.SetData<Color>(new Color[] { Color.Yellow });
-            }
             _spriteBatch.Draw(texture, new Rectangle(120, 120, 300, 300), Color.Yellow);
             _spriteBatch.End();
             base.Draw(gameTime);
