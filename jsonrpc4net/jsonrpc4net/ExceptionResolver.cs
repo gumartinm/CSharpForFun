@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace GumartinM.JsonRPC4Mono
+namespace GumartinM.JsonRPC4NET
 {
     public class ExceptionResolver
     {

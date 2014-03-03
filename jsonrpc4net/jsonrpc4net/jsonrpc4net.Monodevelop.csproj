@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0C624E8F-9C80-457F-A7D1-39FA29E23F79}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>GumartinM.JsonRPC4Mono</RootNamespace>
+    <RootNamespace>GumartinM.JsonRPC4NET</RootNamespace>
     <AssemblyName>jsonrpc4net</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <Description>Dirty implementation of JSON RPC. Just trying to learn how
@@ -36,11 +36,11 @@ to use C#.</Description>
     <Reference Include="System.Net.Http">
       <HintPath>..\..\..\..\..\..\..\usr\mymono\lib\mono\4.5\System.Net.Http.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\..\..\..\..\..\..\usr\mymono\custom\log4net-1.2.13\cli\1.0\log4net.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=c7439020c8fedf87">
       <Package>monodevelop</Package>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\..\ThirdParty\Libs\NLog\net45\NLog.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

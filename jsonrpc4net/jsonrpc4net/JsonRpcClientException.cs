@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 
-namespace GumartinM.JsonRPC4Mono
+namespace GumartinM.JsonRPC4NET
 {
     public class JsonRpcClientException : System.Exception
     {

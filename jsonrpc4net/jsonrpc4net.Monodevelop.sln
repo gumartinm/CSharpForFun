@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jsonrpc4net", "jsonrpc4net\jsonrpc4net.csproj", "{0C624E8F-9C80-457F-A7D1-39FA29E23F79}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jsonrpc4net", "jsonrpc4net\jsonrpc4net.Monodevelop.csproj", "{0C624E8F-9C80-457F-A7D1-39FA29E23F79}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

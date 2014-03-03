@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using GumartinM.JsonRPC4Mono;
+using GumartinM.JsonRPC4NET;
 using System.ComponentModel;
 
 namespace Example.RemoteAgents.GTKLinux.ViewModel

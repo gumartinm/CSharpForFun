@@ -9,7 +9,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace GumartinM.JsonRPC4Mono
+namespace GumartinM.JsonRPC4NET
 {
     public class JsonRpcHttpAsyncClient
     {
@@ -117,7 +117,7 @@ namespace GumartinM.JsonRPC4Mono
                 return JsonConvert.DeserializeObject<POSTResult<TResult>>(json, _jsonSettings);
             }
 
-            throw new JsonRpcClientException(0, "There is not neither error nor result in JSON response data.", jsonObjects);
+            throw new JsonRpcClientException(0, "There is not error nor result in JSON response data.", jsonObjects);
         }
 
         /// <summary>
