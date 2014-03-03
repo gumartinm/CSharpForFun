@@ -57,15 +57,15 @@ through JSON API.</Description>
     <Reference Include="jsonrpc4net">
       <HintPath>..\..\..\jsonrpc4net\jsonrpc4net\bin\Debug\jsonrpc4net.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net.Http">
-      <HintPath>..\..\..\..\..\..\..\..\usr\mymono\lib\mono\4.5\System.Net.Http.dll</HintPath>
-    </Reference>
     <Reference Include="NLog">
       <HintPath>..\..\..\ThirdParty\Libs\NLog\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=c7439020c8fedf87">
       <Package>monodevelop</Package>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <HintPath>..\..\..\..\..\..\..\usr\mymono\lib\mono\4.5\System.Net.Http.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -89,5 +89,13 @@ through JSON API.</Description>
     <Folder Include="Model\" />
     <Folder Include="ViewModel\" />
     <Folder Include="View\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="NLog.xsd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
