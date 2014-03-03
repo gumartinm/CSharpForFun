@@ -97,8 +97,6 @@ namespace GumartinM.JsonRPC4Mono
     /// <typeparam name="TResult">The 1st type parameter.</typeparam>
     private POSTResult<TResult> ReadResponse<TResult>(byte[] jsonBytes)
     {
-      POSTResult<TResult> postResult = new POSTResult<TResult>();
-
       string json = System.Text.Encoding.UTF8.GetString(jsonBytes);
 
       JObject jsonObjects = JObject.Parse(json);
@@ -112,10 +110,10 @@ namespace GumartinM.JsonRPC4Mono
 
       if (jsonTokens.ContainsKey("result"))
       {
-        postResult = JsonConvert.DeserializeObject<POSTResult<TResult>>(json, _jsonSettings);
+        return JsonConvert.DeserializeObject<POSTResult<TResult>>(json, _jsonSettings);
       }
 
-      return postResult;
+      throw new JsonRpcClientException(0, "There is not neither error nor result in JSON response data.", jsonObjects);
     }
 
     /// <summary>
