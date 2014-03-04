@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace GumartinM.JsonRPC4NET
 {
@@ -29,7 +30,7 @@ namespace GumartinM.JsonRPC4NET
         private readonly JsonSerializerSettings _jsonSettings =
           new JsonSerializerSettings
           {
-              Error = delegate(object sender, ErrorEventArgs args)
+            Error = delegate(object sender, Newtonsoft.Json.Serialization.ErrorEventArgs args)
               {
                   _logger.Error(args.ErrorContext.Error.Message);
                   args.ErrorContext.Handled = true;
@@ -84,9 +85,12 @@ namespace GumartinM.JsonRPC4NET
 
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    byte[] jsonBytes = await response.Content.ReadAsByteArrayAsync();
+					//byte[] jsonBytes = await response.Content.ReadAsByteArrayAsync();
+                    Stream stream = await response.Content.ReadAsStreamAsync();
 
-                    return this.ReadResponse<TResult>(jsonBytes);
+                    //return this.ReadResponse<TResult>(jsonBytes);
+                    return await this.ReadResponseAsync<TResult>(stream);
+
                 }
 
                 throw new Exception("Unexpected response code: " + response.StatusCode);
@@ -103,6 +107,29 @@ namespace GumartinM.JsonRPC4NET
         {
             string json = System.Text.Encoding.UTF8.GetString(jsonBytes, 0, jsonBytes.Length);
 
+            return this.ReadResponse<TResult>(json);
+        }
+
+        /// <summary>
+        /// Reads the response.
+        /// </summary>
+        /// <returns>The response.</returns>
+        /// <param name="stream">Stream.</param>
+        /// <typeparam name="TResult">The 1st type parameter.</typeparam>
+        async private Task<POSTResult<TResult>> ReadResponseAsync<TResult>(Stream stream)
+		{
+			using (StreamReader streamReader = new StreamReader (stream, System.Text.Encoding.UTF8))
+			{
+                // This line makes this method useless (IMHO it is the same as the one working with bytes)
+                // How could I work with JSON saving memory?
+				string json = await streamReader.ReadToEndAsync();
+
+                return this.ReadResponse<TResult>(json);
+			}
+		}
+
+        private POSTResult<TResult> ReadResponse<TResult>(string json)
+        {
             JObject jsonObjects = JObject.Parse(json);
             IDictionary<string, JToken> jsonTokens = jsonObjects;
 

@@ -48,7 +48,7 @@ namespace GumartinM.JsonRPC4NET
             return new JsonRpcClientException(
               errorToken.Value<int?>("code") ?? 0,
               errorToken.Value<string>("message"),
-              errorToken.SelectToken("data"));
+              errorToken["data"]);
         }
 
         /// <summary>
@@ -59,7 +59,8 @@ namespace GumartinM.JsonRPC4NET
         /// <param name="message">Message.</param>
         private Exception CreateException(string exceptionTypeName, string message)
         {
-            return new Exception("Remote exception: " + exceptionTypeName + "Message: " + message);
+            return new Exception("Remote exception: " + exceptionTypeName +
+                                 " Remote message: " + message);
         }
     }
 }
