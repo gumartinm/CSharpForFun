@@ -158,8 +158,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="jsonrpc4net">
-      <HintPath>..\..\jsonrpc4net\jsonrpc4net\Bin\Debug\jsonrpc4net.dll</HintPath>
+    <Reference Include="jsonrpc4net, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\jsonrpc4net\jsonrpc4net\Bin\Debug\jsonrpc4net.dll</HintPath>
     </Reference>
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.2.1.0\lib\sl4-windowsphone71\NLog.dll</HintPath>
