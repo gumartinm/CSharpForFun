@@ -42,40 +42,12 @@ namespace GumartinM.JsonRPC4NET
         /// </summary>
         private readonly ExceptionResolver _exceptionResolver = new ExceptionResolver();
 
-
-
         /// <summary>
-        /// Posts the remote service async.
+        /// The JSON RPC version.
         /// </summary>
-        /// <returns>The remote service async.</returns>
-        /// <param name="uri">URI.</param>
-        /// <param name="method">Method.</param>
-        /// <typeparam name="TResult">The 1st type parameter.</typeparam>
-        async public Task<TResult> PostRemoteServiceAsync<TResult>(string uri, string method)
-        {
-            var postData = new POST();
-            postData.id = Interlocked.Increment(ref _nextId).ToString();
-            postData.jsonrpc = "2.0";
-            postData.method = method;
+        private readonly string _JSON_RPC_VERSION = "2.0";
 
-            string jsonData = JsonConvert.SerializeObject(postData, _jsonSettings);
 
-            POSTResult<TResult> postResult = await this.PostAsync<TResult>(uri, method, jsonData, CancellationToken.None);
-
-            return postResult.result;
-        }
-
-        /// <summary>
-        /// Posts the remote service async.
-        /// </summary>
-        /// <returns>The remote service async.</returns>
-        /// <param name="uri">URI.</param>
-        /// <param name="method">Method.</param>
-        /// <typeparam name="TResult">The 1st type parameter.</typeparam>
-        async public Task PostRemoteServiceAsync(string uri, string method)
-        {
-            await this.PostRemoteServiceAsync<object>(uri, method);
-        }
 
         /// <summary>
         /// Posts the with parameters remote service async.
@@ -83,18 +55,29 @@ namespace GumartinM.JsonRPC4NET
         /// <returns>The with parameters remote service async.</returns>
         /// <param name="uri">URI.</param>
         /// <param name="method">Method.</param>
-        /// <param name="parameters">Parameters.</param>
+        /// <param name="arguments">Arguments.</param>
         /// <typeparam name="TResult">The 1st type parameter.</typeparam>
-        async public Task<TResult> PostWithParametersRemoteServiceAsync<TResult>(string uri, string method, params object[] parameters)
+        async public Task<TResult> PostRemoteServiceAsync<TResult>(string uri, string method, params object[] arguments)
         {
-            var inputParameters = new List<object>(parameters);
-            var postData = new POSTParameters();
-            postData.id = Interlocked.Increment(ref _nextId).ToString();
-            postData.jsonrpc = "2.0";
-            postData.method = method;
-            postData.@params = inputParameters;
+            string jsonData;
 
-            string jsonData = JsonConvert.SerializeObject(postData, _jsonSettings);
+            if (arguments != null)
+            {
+                var inputParameters = new List<object>(arguments);
+                var postData = new POSTWithParameters();
+                postData.id = Interlocked.Increment(ref _nextId).ToString();
+                postData.jsonrpc = _JSON_RPC_VERSION;
+                postData.method = method;
+                postData.@params = inputParameters;
+                jsonData = JsonConvert.SerializeObject(postData, _jsonSettings);
+            } else
+            {
+                var postData = new POST();
+                postData.id = Interlocked.Increment(ref _nextId).ToString();
+                postData.jsonrpc = _JSON_RPC_VERSION;
+                postData.method = method;
+                jsonData = JsonConvert.SerializeObject(postData, _jsonSettings);
+            }
 
             POSTResult<TResult> postResult = await this.PostAsync<TResult>(uri, method, jsonData, CancellationToken.None);
 
@@ -108,9 +91,9 @@ namespace GumartinM.JsonRPC4NET
         /// <param name="uri">URI.</param>
         /// <param name="method">Method.</param>
         /// <param name="parameters">Parameters.</param>
-        async public Task PostWithParametersRemoteServiceAsync(string uri, string method, params object[] parameters)
+        async public Task PostRemoteServiceAsync(string uri, string method, params object[] parameters)
         {
-            await this.PostWithParametersRemoteServiceAsync<object>(uri, method, parameters);
+            await this.PostRemoteServiceAsync<object>(uri, method, parameters);
         }
 
         /// <summary>
@@ -219,20 +202,19 @@ namespace GumartinM.JsonRPC4NET
             public string method { get; set; }
         }
 
+        private class POSTWithParameters
+        {
+            public string id { get; set; }
+            public string jsonrpc { get; set; }
+            public string method { get; set; }
+            public List<object> @params { get; set; }
+        }
 
         private class POSTResult<TResult>
         {
             public string id { get; set; }
             public string jsonrpc { get; set; }
             public TResult result { get; set; }
-        }
-
-        private class POSTParameters
-        {
-            public string id { get; set; }
-            public string jsonrpc { get; set; }
-            public string method { get; set; }
-            public List<object> @params { get; set; }
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Example.RemoteAgents.GTKLinux.ViewModel
 
     async public Task SetWriteTextAsync(params object[] parameters)
     {
-      await _remoteClient.PostWithParametersRemoteServiceAsync(uriSetWriteText, "setWriteText", parameters);
+      await _remoteClient.PostRemoteServiceAsync(uriSetWriteText, "setWriteText", parameters);
     }
   }
 }
