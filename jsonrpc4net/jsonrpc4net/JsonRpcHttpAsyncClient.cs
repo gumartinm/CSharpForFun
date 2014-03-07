@@ -53,9 +53,64 @@ namespace GumartinM.JsonRPC4NET
         /// <typeparam name="TResult">The 1st type parameter.</typeparam>
         async public Task<TResult> PostRemoteServiceAsync<TResult>(string uri, string method)
         {
-            POSTResult<TResult> postResult = await this.PostAsync<TResult>(uri, method, CancellationToken.None);
+            var postData = new POST();
+            postData.id = Interlocked.Increment(ref _nextId).ToString();
+            postData.jsonrpc = "2.0";
+            postData.method = method;
+
+            string jsonData = JsonConvert.SerializeObject(postData, _jsonSettings);
+
+            POSTResult<TResult> postResult = await this.PostAsync<TResult>(uri, method, jsonData, CancellationToken.None);
 
             return postResult.result;
+        }
+
+        /// <summary>
+        /// Posts the remote service async.
+        /// </summary>
+        /// <returns>The remote service async.</returns>
+        /// <param name="uri">URI.</param>
+        /// <param name="method">Method.</param>
+        /// <typeparam name="TResult">The 1st type parameter.</typeparam>
+        async public Task PostRemoteServiceAsync(string uri, string method)
+        {
+            await this.PostRemoteServiceAsync<object>(uri, method);
+        }
+
+        /// <summary>
+        /// Posts the with parameters remote service async.
+        /// </summary>
+        /// <returns>The with parameters remote service async.</returns>
+        /// <param name="uri">URI.</param>
+        /// <param name="method">Method.</param>
+        /// <param name="parameters">Parameters.</param>
+        /// <typeparam name="TResult">The 1st type parameter.</typeparam>
+        async public Task<TResult> PostWithParametersRemoteServiceAsync<TResult>(string uri, string method, params object[] parameters)
+        {
+            var inputParameters = new List<object>(parameters);
+            var postData = new POSTParameters();
+            postData.id = Interlocked.Increment(ref _nextId).ToString();
+            postData.jsonrpc = "2.0";
+            postData.method = method;
+            postData.@params = inputParameters;
+
+            string jsonData = JsonConvert.SerializeObject(postData, _jsonSettings);
+
+            POSTResult<TResult> postResult = await this.PostAsync<TResult>(uri, method, jsonData, CancellationToken.None);
+
+            return postResult.result;
+        }
+
+        /// <summary>
+        /// Posts the with parameters remote service async.
+        /// </summary>
+        /// <returns>The with parameters remote service async.</returns>
+        /// <param name="uri">URI.</param>
+        /// <param name="method">Method.</param>
+        /// <param name="parameters">Parameters.</param>
+        async public Task PostWithParametersRemoteServiceAsync(string uri, string method, params object[] parameters)
+        {
+            await this.PostWithParametersRemoteServiceAsync<object>(uri, method, parameters);
         }
 
         /// <summary>
@@ -66,20 +121,13 @@ namespace GumartinM.JsonRPC4NET
         /// <param name="method">Method.</param>
         /// <param name="cancellation">Cancellation.</param>
         /// <typeparam name="TResult">The 1st type parameter.</typeparam>
-        async private Task<POSTResult<TResult>> PostAsync<TResult>(string uri, string method, CancellationToken cancellation)
+        async private Task<POSTResult<TResult>> PostAsync<TResult>(string uri, string method, string jsonData, CancellationToken cancellation)
         {
-            var postData = new POST();
-            postData.id = Interlocked.Increment(ref _nextId).ToString();
-            postData.jsonrpc = "2.0";
-            postData.method = method;
-
-            string data = JsonConvert.SerializeObject(postData, _jsonSettings);
-
             // see: http://stackoverflow.com/questions/1329739/nested-using-statements-in-c-sharp
             // see: http://stackoverflow.com/questions/5895879/when-do-we-need-to-call-dispose-in-dot-net-c
             //TODO: Am I really sure I have to call the Dispose method of HttpContent content? In this case, shouldn't it be stupid?
             // For HttpResponseMessage response I am sure I have to do it but I am not for HttpContent content.
-            using (HttpContent content = new StringContent(data, System.Text.Encoding.UTF8, "application/json-rpc"))
+            using (HttpContent content = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json-rpc"))
             using (HttpResponseMessage response = await this.PostAsync(uri, content, cancellation))
             {
 
@@ -177,6 +225,14 @@ namespace GumartinM.JsonRPC4NET
             public string id { get; set; }
             public string jsonrpc { get; set; }
             public TResult result { get; set; }
+        }
+
+        private class POSTParameters
+        {
+            public string id { get; set; }
+            public string jsonrpc { get; set; }
+            public string method { get; set; }
+            public List<object> @params { get; set; }
         }
     }
 }

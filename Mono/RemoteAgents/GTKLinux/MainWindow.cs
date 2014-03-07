@@ -16,6 +16,7 @@ namespace Example.RemoteAgents.GTKLinux
             _view = new ViewImpl();
 		    Build ();
             this.ButtonGetDate.Clicked += this.ButtonGetDateClicked;
+            this.SendDataButton.Clicked += this.SendDataButtonClicked;
 	    }
 
 	    protected void OnDeleteEvent (object sender, DeleteEventArgs a)
@@ -24,14 +25,26 @@ namespace Example.RemoteAgents.GTKLinux
 		    a.RetVal = true;
 	    }
 
-        async private void ButtonGetDateClicked(object sender, EventArgs a)
+        async private void ButtonGetDateClicked(object sender, EventArgs e)
         {
             try {
                 this.RemoteDate.Buffer.Text = await _view.GetCurrentDateAsync();
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                logger.Error("ButtonGetDateClicked error: ", e);
+                logger.ErrorException("ButtonGetDateClicked error: ", exception);
+            }
+        }
+
+        async private void SendDataButtonClicked(object sender, EventArgs e)
+        {
+            try {
+                await _view.SetWriteTextAsync(this.TextToSend.Buffer.Text,
+                                              this.SpinButtonNumbers.Value);
+            }
+            catch (Exception exception)
+            {
+                logger.ErrorException("SendDataButtonClicked error: ", exception);
             }
         }
     }
