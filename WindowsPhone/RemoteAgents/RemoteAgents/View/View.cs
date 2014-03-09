@@ -12,9 +12,9 @@ namespace RemoteAgents.WindowsPhone.View
             return await _vm.GetCurrentDateAsync();
         }
 
-        async public Task SetWriteTextAsync(params object[] parameters)
+        async public Task SetWriteTextAsync(string text, int number)
         {
-            await _vm.SetWriteTextAsync(parameters);
+            await _vm.SetWriteTextAsync(text, number);
         }
     }
 }

@@ -158,18 +158,16 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="jsonrpc4net, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\jsonrpc4net\jsonrpc4net\Bin\Debug\jsonrpc4net.dll</HintPath>
+    </Reference>
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.2.1.0\lib\sl4-windowsphone71\NLog.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\jsonrpc4net\jsonrpc4net\jsonrpc4net.WindowsPhone8.csproj">
-      <Project>{9FC57CC3-23D0-486B-A3E4-92C547561949}</Project>
-      <Name>jsonrpc4net.WindowsPhone8</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
