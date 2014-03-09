@@ -140,4 +140,13 @@
   <data name="ButtonRetrieveRemoteData" xml:space="preserve">
     <value>GetData</value>
   </data>
+  <data name="ButtonSendRemoteData" xml:space="preserve">
+    <value>SendData</value>
+  </data>
+  <data name="TextBlockRemoteDate" xml:space="preserve">
+    <value>RemoteDate:</value>
+  </data>
+  <data name="TextBlockSendText" xml:space="preserve">
+    <value>SendText:</value>
+  </data>
 </root>

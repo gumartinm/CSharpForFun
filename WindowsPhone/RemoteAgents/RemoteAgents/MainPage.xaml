@@ -49,6 +49,19 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <TextBox x:Name="CurrentDateTextBox" HorizontalAlignment="Left" Height="72" Margin="0,57,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="456" IsReadOnly="True" InputScope="Date"/>
             <Button x:Name="ButtonRetrieveRemoteData" Content="{Binding LocalizedResources.ButtonRetrieveRemoteData, Mode=OneWay, Source={StaticResource LocalizedStrings}}" HorizontalAlignment="Left" Margin="289,479,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.915,0.432"/>
+            <Button x:Name="ButtonSendRemoteData" Content="{Binding LocalizedResources.ButtonSendRemoteData, Mode=OneWay, Source={StaticResource LocalizedStrings}}" HorizontalAlignment="Left" Margin="29,479,0,0" VerticalAlignment="Top"/>
+            <TextBox x:Name="TextBoxSendText" HorizontalAlignment="Left" Height="182" Margin="10,236,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="251"/>
+            <TextBlock HorizontalAlignment="Left" Margin="29,192,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="29" Width="121" Text="{Binding LocalizedResources.TextBlockSendText, Mode=OneWay, Source={StaticResource LocalizedStrings}}">
+            	<Run Text="Send Text"/>
+            	<Run Text=":"/>
+            	<LineBreak/>
+            	<Run/>
+            </TextBlock>
+            <TextBlock HorizontalAlignment="Left" Margin="29,23,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="29" Width="121" Text="{Binding LocalizedResources.TextBlockRemoteDate, Mode=OneWay, Source={StaticResource LocalizedStrings}}">
+            	<Run Text="Remote Date:"/>
+            	<LineBreak/>
+            	<Run/>
+            </TextBlock>
 
         </Grid>
 

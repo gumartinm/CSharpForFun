@@ -106,6 +106,15 @@ namespace Example.RemoteAgents.WindowsPhone.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a SendData.
+        /// </summary>
+        public static string ButtonSendRemoteData {
+            get {
+                return ResourceManager.GetString("ButtonSendRemoteData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a LeftToRight.
         /// </summary>
         public static string ResourceFlowDirection {
@@ -120,6 +129,24 @@ namespace Example.RemoteAgents.WindowsPhone.Resources {
         public static string ResourceLanguage {
             get {
                 return ResourceManager.GetString("ResourceLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a RemoteDate:.
+        /// </summary>
+        public static string TextBlockRemoteDate {
+            get {
+                return ResourceManager.GetString("TextBlockRemoteDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SendText:.
+        /// </summary>
+        public static string TextBlockSendText {
+            get {
+                return ResourceManager.GetString("TextBlockSendText", resourceCulture);
             }
         }
     }
