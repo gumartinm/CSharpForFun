@@ -6,11 +6,18 @@ namespace RemoteAgents.WindowsPhone.ViewModel
     public class ViewModelImpl
     {
         private static readonly string uri = "http://gumartinm.name/spring-mainapp/CurrentDateService.json";
-        private readonly JsonRpcHttpAsyncClient _remoteProcedure = new JsonRpcHttpAsyncClient();
+        private static readonly string uriSetWriteText = "http://gumartinm.name/spring-mainapp/WriteTextService.json";
+        private readonly JsonRpcHttpAsyncClient _remoteClient = new JsonRpcHttpAsyncClient();
 
         async public Task<string> GetCurrentDateAsync()
         {
-            return await _remoteProcedure.PostRemoteServiceAsync<string>(uri, "getCurrentDate");
+            return await _remoteClient.PostRemoteServiceAsync<string>(uri, "getCurrentDate");
         }
+
+        async public Task SetWriteTextAsync(string text, int number)
+        {
+            await _remoteClient.PostRemoteServiceAsync(uriSetWriteText, "setWriteText", text, number);
+        }
+
     }
 }

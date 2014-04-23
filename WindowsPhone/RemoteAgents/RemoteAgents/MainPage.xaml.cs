@@ -42,13 +42,28 @@ namespace RemoteAgents
             }
             catch (Exception exception)
             {
-                _logger.Error("ButtonGetDateClicked. Message: {0}  Stacktrace: {1}", exception.Message, exception.StackTrace);
+                _logger.ErrorException("ButtonGetDateClicked error: ", exception);
+            }
+        }
+
+        async private void SendDataButtonClicked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                int number = 666;
+                await _view.SetWriteTextAsync(this.TextBoxSendText.Text,
+                                              number);
+            }
+            catch (Exception exception)
+            {
+                _logger.ErrorException("SendDataButtonClicked error: ", exception);
             }
         }
 
         private void registerEvents ()
         {
             this.ButtonRetrieveRemoteData.Click += ButtonRetrieveRemoteData_Click;
+            this.ButtonSendRemoteData.Click += SendDataButtonClicked;
         }
 
         // Código de ejemplo para compilar una ApplicationBar traducida
