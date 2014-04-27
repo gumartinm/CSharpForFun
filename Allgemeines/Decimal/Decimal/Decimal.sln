@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Decimal", "Decimal.csproj", "{6B44123C-847C-4DA5-9A04-71083AC7BA28}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6B44123C-847C-4DA5-9A04-71083AC7BA28}.Debug|x86.ActiveCfg = Debug|x86
+		{6B44123C-847C-4DA5-9A04-71083AC7BA28}.Debug|x86.Build.0 = Debug|x86
+		{6B44123C-847C-4DA5-9A04-71083AC7BA28}.Release|x86.ActiveCfg = Release|x86
+		{6B44123C-847C-4DA5-9A04-71083AC7BA28}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Decimal.csproj
+	EndGlobalSection
+EndGlobal
