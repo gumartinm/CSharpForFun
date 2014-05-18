@@ -7,11 +7,19 @@ using System.Collections.Concurrent;
 
 namespace Threads
 {
+    /// <summary>
+    /// 
+    /// Parallel Programming with Microsoft .NET
+    /// 
+    /// Taken from http://parallelpatterns.codeplex.com/
+    /// 
+    /// </summary>
     class MainClass
     {
         public static void Main(string[] args)
         {
             Chapter2.Test();
+            Chapter3.Test();
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Threads
 {
     /// <summary>
     /// 
-    /// Chapter2.
+    /// Chapter 2.
     /// Parallel Loops
     /// 
     /// Taken from http://msdn.microsoft.com/en-us/library/ff963552.aspx
@@ -19,6 +19,8 @@ namespace Threads
     {
         public static void Test()
         {
+            Console.WriteLine("Chapter 2");
+
             int n = 10;
 
             Console.WriteLine("For");
@@ -176,16 +178,20 @@ namespace Threads
             {
                 Parallel.For(0, n, options, (i) =>
                 {
+                    Thread.Sleep(1000);
+
                     // optionally check to see if cancellation happened
                     if (token.IsCancellationRequested)
                     {
+                        // IsCancellationRequested property to test for a cancellation request. For example, you would do this
+                        // if you need to perform local cleanup actions for a task that's in the process of being canceled.
                         Console.WriteLine("CancellationToken Check State {0}", i);
                         // optionally exit this iteration early
-                        return;
+                        // return;
                     }
+                    token.ThrowIfCancellationRequested();
 
                     Console.WriteLine("CancellationToken {0}", i);
-                    Thread.Sleep(500);
                 });
             }
             catch (OperationCanceledException ex)
