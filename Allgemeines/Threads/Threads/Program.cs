@@ -20,6 +20,8 @@ namespace Threads
         {
             Chapter2.Test();
             Chapter3.Test();
+            Chapter4.Test();
+            Chapter5.Test();
         }
     }
 }

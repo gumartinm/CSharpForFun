@@ -41,6 +41,8 @@ See: http://parallelpatterns.codeplex.com/</Description>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Chapter2.cs" />
     <Compile Include="Chapter3.cs" />
+    <Compile Include="Chapter4.cs" />
+    <Compile Include="Chapter5.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

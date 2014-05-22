@@ -210,6 +210,53 @@ namespace Threads
             // task threads. QUESTION: what methods throw AggregateException from some Task? I miss Javadoc... :(
             // task.Result calls task.Wait and task.Wait throws AggregateException :)
             Console.WriteLine(task.Result);
+
+
+            /**
+             * There are several ways to observe an unhandled task exception:
+             * 
+             * Invoking the faulted task's Wait method causes the task's unhandled exception to be observed. The exception is also thrown
+             * in the calling context of the Wait method. The Task class's static WaitAll method allows you to observe the unhandled
+             * exceptions of more than one task with a single method invocation. The Parallel.Invoke method includes an implicit call
+             * to WaitAll. Exceptions from all of the tasks are grouped together in an AggregateException object and thrown in the
+             * calling context of the WaitAll or Wait method.
+             * 
+             * Getting the Exception property of a faulted task causes the task's unhandled exception to be observed. The property returns
+             * the aggregate exception object. Getting the value does not automatically cause the exception to be thrown; however,
+             * the exception is considered to have been observed when you get the value of the Exception property. Use the Exception
+             * property instead of the Wait method or WaitAll method when you want to examine the unhandled exceptionbut do not want
+             * it to be rethrown in the current context.
+             * 
+             * Special handling occurs if a faulted task's unhandled exceptions are not observed by the time the task object is
+             * garbage-collected. For more information, see the section, "Unobserved Task Exceptions," later in this chapter.
+             */
+
+
+            /** 
+             * Unobserved Task Exceptions:
+             *
+             * If you don't give a faulted task the opportunity to propagate its exceptions (for example, by calling the Wait method),
+             * the runtime will escalate the task's unobserved exceptions according to the current .NET exception policy when the task
+             * is garbage-collected. Unobserved task exceptions will eventually be observed in the finalizer thread context.
+             * The finalizer thread is the system thread that invokes the Finalize method of objects that are ready to be garbage-collected.
+             * If an unhandled exception is thrown during the execution of a Finalize method, the runtime will, by default, terminate
+             * the current process, and no active try/finally blocks or additional finalizers will be executed, including finalizers
+             * that release handles to unmanaged resources. To prevent this from happening, you should be very careful that your
+             * application never leaks unobserved task exceptions. You can also elect to receive notification of any unobserved task
+             * exceptions by subscribing to the UnobservedTaskException event of the TaskScheduler class and choose to handle them as
+             * they propagate into the finalizer context.
+             *
+             * This last technique can be useful in scenarios such as hosting untrusted plug-ins that have benign exceptions that
+             * would be cumbersome to observe. For more information, see the section, "Further Reading," at the end of this chapter.
+             *
+             * During finalization, tasks that have a Status property of Faulted are treated differently from tasks with the status
+             * Canceled. The task's status determines how unobserved task exceptions that arise from task cancellation are treated
+             * during finalization. If the cancellation token that was passed as an argument to the StartNew method is the same
+             * token as the one embedded in the unobserved OperationCanceledException instance, the task does not propagate
+             * the operation-canceled exception to the UnobservedTaskException event or to the finalizer thread context. In other words,
+             * if you follow the cancellation protocol described in this chapter, unobserved cancellation exceptions will not be
+             * escalated into the finalizer's thread context.
+             */
         }
 
 

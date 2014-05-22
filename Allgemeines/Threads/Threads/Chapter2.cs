@@ -286,6 +286,10 @@ namespace Threads
                              },
                              _ => {}
             );
+            // The Parallel.ForEach loop will create a new instance of the Random class for each of its worker tasks.
+            // This instance will be passed as an argument to each partitioned iteration. Each partitioned iteration is responsible
+            // for returning the next value of the thread-local state. In this example, the returned value is always the same object
+            // that was passed in.
 
 
             // Console.WriteLine("Custom Task Scheduler for a Parallel Loop");
