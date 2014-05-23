@@ -22,6 +22,18 @@ namespace Threads
             Chapter3.Test();
             Chapter4.Test();
             Chapter5.Test();
+            Chapter6 chapter6 = new Chapter6();
+            var tree = new Threads.Chapter6.Tree<int>();
+            var levels = 10;
+            chapter6.FillTree(levels, tree, () => 40);
+
+            Console.WriteLine("Sequential Walk");
+            chapter6.SequentialWalk(tree, (data, level) => Console.WriteLine("Level: {0} Data: {1}", level, data));
+
+            Console.WriteLine("Parallel Walk");
+            // In my case the parallel walk is slower than the sequential one because the tasks are short and
+            // we waste more time creating new threads and synchronizing than running these simple tasks.
+            chapter6.ParallelWalk(tree, (data, level) => Console.WriteLine("Level: {0} Data: {1}", level, data));
         }
     }
 }
