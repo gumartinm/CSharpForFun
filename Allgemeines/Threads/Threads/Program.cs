@@ -18,12 +18,15 @@ namespace Threads
     {
         public static void Main(string[] args)
         {
+            Chapter1.Test();
             Chapter2.Test();
             Chapter3.Test();
             Chapter4.Test();
             Chapter5.Test();
             Chapter6 chapter6 = new Chapter6();
             var tree = new Threads.Chapter6.Tree<int>();
+            // WITH 10 LEVELS MONO STOPS WORKING WITH 806 THREADS!!!! (in my machine with 6GB RAM)
+            // DUNNO WHAT MAKES THE MONO VIRTUAL MACHINE STOP... :(
             var levels = 10;
             chapter6.FillTree(levels, tree, () => 40);
 
