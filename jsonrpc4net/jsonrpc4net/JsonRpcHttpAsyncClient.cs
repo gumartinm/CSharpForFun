@@ -113,10 +113,12 @@ namespace GumartinM.JsonRPC4NET
             using (HttpClient client = new HttpClient { Timeout = TimeSpan.FromSeconds(5) })
             using (HttpContent contentPOST = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json-rpc"))
             using (HttpResponseMessage response = await client.PostAsync(uri, contentPOST, cancellation))
+            //TODO: What if response is null? :(
             using (HttpContent contentRESULT = response.Content)
             {
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
+                    //TODO: What if contentRESULT is null? :(
                     return await this.ReadResponseAsync<TResult>(contentRESULT);
                 }
 
