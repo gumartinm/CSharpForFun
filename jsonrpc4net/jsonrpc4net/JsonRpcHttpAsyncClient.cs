@@ -110,21 +110,35 @@ namespace GumartinM.JsonRPC4NET
             // see: http://stackoverflow.com/questions/5895879/when-do-we-need-to-call-dispose-in-dot-net-c
             //TODO: Am I really sure I have to call the Dispose method of HttpContent content? In this case, shouldn't it be stupid?
             // For HttpResponseMessage response I am sure I have to do it but I am not for HttpContent content.
-            using (HttpContent content = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json-rpc"))
-            using (HttpResponseMessage response = await this.PostAsync(uri, content, cancellation))
+            using (HttpClient client = new HttpClient { Timeout = TimeSpan.FromSeconds(5) })
+            using (HttpContent contentPOST = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json-rpc"))
+            using (HttpResponseMessage response = await client.PostAsync(uri, contentPOST, cancellation))
+            using (HttpContent contentRESULT = response.Content)
             {
-
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-					//byte[] jsonBytes = await response.Content.ReadAsByteArrayAsync();
-                    Stream stream = await response.Content.ReadAsStreamAsync();
-
-                    //return this.ReadResponse<TResult>(jsonBytes);
-                    return await this.ReadResponseAsync<TResult>(stream);
-
+                    return await this.ReadResponseAsync<TResult>(contentRESULT);
                 }
 
                 throw new Exception("Unexpected response code: " + response.StatusCode);
+            }
+        }
+
+        async private Task<POSTResult<TResult>> ReadResponseAsync<TResult>(HttpContent content)
+        {
+            // Option a) with bytes
+            //byte[] jsonBytes = await contentRESULT.ReadAsByteArrayAsync();
+            //return this.ReadResponse<TResult>(jsonBytes);
+
+            // Option b) with stream
+            using (Stream stream = await content.ReadAsStreamAsync ())
+            using (StreamReader streamReader = new StreamReader (stream, System.Text.Encoding.UTF8))
+            {
+                // This line makes this method useless (IMHO it is the same as the one working with bytes)
+                // How could I work with JSON saving memory?
+                string json = await streamReader.ReadToEndAsync();
+
+                return this.ReadResponse<TResult>(json);
             }
         }
 
@@ -140,24 +154,6 @@ namespace GumartinM.JsonRPC4NET
 
             return this.ReadResponse<TResult>(json);
         }
-
-        /// <summary>
-        /// Reads the response.
-        /// </summary>
-        /// <returns>The response.</returns>
-        /// <param name="stream">Stream.</param>
-        /// <typeparam name="TResult">The 1st type parameter.</typeparam>
-        async private Task<POSTResult<TResult>> ReadResponseAsync<TResult>(Stream stream)
-		{
-			using (StreamReader streamReader = new StreamReader (stream, System.Text.Encoding.UTF8))
-			{
-                // This line makes this method useless (IMHO it is the same as the one working with bytes)
-                // How could I work with JSON saving memory?
-				string json = await streamReader.ReadToEndAsync();
-
-                return this.ReadResponse<TResult>(json);
-			}
-		}
 
         private POSTResult<TResult> ReadResponse<TResult>(string json)
         {
@@ -176,23 +172,6 @@ namespace GumartinM.JsonRPC4NET
             }
 
             throw new JsonRpcClientException(0, "There is not error nor result in JSON response data.", jsonObjects);
-        }
-
-        /// <summary>
-        /// Send a POST request to the specified Uri as an asynchronous operation.
-        /// </summary>
-        /// <param name="uri">The Uri the request is sent to.</param>
-        /// <param name="content">The HTTP request content sent to the server.</param>
-        /// <param name="System.Threading.CancellationToken">Cancellation token.</param>
-        /// <exception cref="System.InvalidOperationException">When some error.</exception>
-        /// <returns>System.Threading.Tasks.Task<![CDATA[<TResult>]]>.The task object representing the asynchronous operation.</returns>
-        async private Task<HttpResponseMessage> PostAsync(string uri, HttpContent content, CancellationToken cancellation)
-        {
-            using (HttpClient client = new HttpClient { Timeout = TimeSpan.FromSeconds(5) })
-            {
-                // TODO: cancellation
-                return await client.PostAsync(uri, content, cancellation);
-            }
         }
 
         private class POST
