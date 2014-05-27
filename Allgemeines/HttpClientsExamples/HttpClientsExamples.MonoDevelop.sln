@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpClientsExamples", "HttpClientsExamples\HttpClientsExamples.csproj", "{67B3556B-3F66-4209-AEFE-B88C43437475}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpClientsExamples", "HttpClientsExamples\HttpClientsExamples.MonoDevelop.csproj", "{67B3556B-3F66-4209-AEFE-B88C43437475}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
