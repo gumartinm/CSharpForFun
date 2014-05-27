@@ -112,6 +112,8 @@ namespace GumartinM.JsonRPC4NET
             // For HttpResponseMessage response I am sure I have to do it but I am not for HttpContent content.
             using (HttpClient client = new HttpClient { Timeout = TimeSpan.FromSeconds(5) })
             using (HttpContent contentPOST = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json-rpc"))
+            // TODO: in WindowsPhone 8 client.PostAsync does not seem to spawn new thread :/ WTF
+            // Using WindowsPhone 8 the result is returned in the same thread!!!!! WTF
             using (HttpResponseMessage response = await client.PostAsync(uri, contentPOST, cancellation))
             //TODO: What if response is null? :(
             using (HttpContent contentRESULT = response.Content)
