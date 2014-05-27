@@ -6,9 +6,9 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTitle ("HttpClientsExamples")]
 [assembly: AssemblyDescription ("")]
 [assembly: AssemblyConfiguration ("")]
-[assembly: AssemblyCompany ("")]
+[assembly: AssemblyCompany("gumartinm.name")]
 [assembly: AssemblyProduct ("")]
-[assembly: AssemblyCopyright ("gmm003es")]
+[assembly: AssemblyCopyright("Gustavo Martin Morcuende")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture ("")]
 // The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
