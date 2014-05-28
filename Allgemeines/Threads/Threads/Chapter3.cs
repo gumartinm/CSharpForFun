@@ -34,6 +34,11 @@ namespace Threads
             Task t2 = Task.Factory.StartNew(DoRight);
             Task.WaitAll(t1, t2);
 
+            /**
+             * Should I call Task.Dispose()? Answer:
+             * DO NOT BOTHER DISPOSING OF YOUR TASKS: http://blogs.msdn.com/b/pfxteam/archive/2012/03/25/10287435.aspx
+             */
+
 
             int n = 20;
             Console.WriteLine("Handling Exceptions 1/2: The Handle Method");
