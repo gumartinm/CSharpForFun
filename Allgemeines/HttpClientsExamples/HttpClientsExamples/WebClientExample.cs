@@ -130,7 +130,8 @@ namespace HttpClientsExamples
                  * DO NOT BOTHER DISPOSING OF YOUR TASKS: http://blogs.msdn.com/b/pfxteam/archive/2012/03/25/10287435.aspx
                  */
                 Task<Stream> task = client.OpenReadTaskAsync (line);
-                task.Start ();
+                // Don't do this. OpenReadTaskAsync is already launching a new Thread (OpenReadTaskAsync is intended to be used with async/await)
+                //task.Start ();
                 try {
                     Task.WaitAll (task);
                 } catch (AggregateException ae) {
@@ -144,12 +145,15 @@ namespace HttpClientsExamples
                         }
                     });
                 }
-                // I am starting to love the using statement instead of traditional try/finally block with check for null values and close.
-                using (Stream replyStream = task.Result)
-                using (StreamReader replyStreamReader = new StreamReader (replyStream))
+                if (task.Status == TaskStatus.RanToCompletion)
                 {
-                    string s = replyStreamReader.ReadToEnd ();
-                    Console.WriteLine (s);
+                    // I am starting to love the using statement instead of traditional try/finally block with check for null values and close.
+                    using (Stream replyStream = task.Result)
+                    using (StreamReader replyStreamReader = new StreamReader (replyStream))
+                    {
+                        string s = replyStreamReader.ReadToEnd ();
+                        Console.WriteLine (s);
+                    }
                 }
             }
         }

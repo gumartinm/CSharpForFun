@@ -8,6 +8,8 @@ namespace HttpClientsExamples
         {
             WebClientExample webclientExample = new WebClientExample();
             webclientExample.Test();
+            HttpWebRequestExample httpWebRequestExample = new HttpWebRequestExample();
+            httpWebRequestExample.Test();
         }
     }
 }
