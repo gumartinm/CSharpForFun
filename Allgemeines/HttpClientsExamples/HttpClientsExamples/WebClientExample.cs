@@ -6,6 +6,13 @@ using System.Threading.Tasks;
 
 namespace HttpClientsExamples
 {
+    /**
+     * BE CAREFUL!!! If calling Dispose may throw exception, you could hide
+     * exceptions being thrown inside the using blocks. If the Dispose methods
+     * do not throw any exception there is no problem,
+     * otherwise see: http://msdn.microsoft.com/en-us/library/aa355056%28v=vs.110%29.aspx
+     */
+
     public class WebClientExample
     {
         public void Test()
@@ -25,11 +32,23 @@ namespace HttpClientsExamples
                 // requested URI contains a query.
                 client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; Linux; Mono .NET 4.5)");
 
-                using (Stream replyStream = client.OpenRead (line))
-                using (StreamReader replyStreamReader = new StreamReader(replyStream))
-                {
-                    string s = replyStreamReader.ReadToEnd();
-                    Console.WriteLine(s);
+                try {
+                    // Be careful!!! If calling Dispose may throw exception, you could hide
+                    // exceptions being thrown inside the using blocks. In this case this Dispose methods
+                    // do not throw any exception but in other cases it could be different, so never forget it.
+                    // See: http://msdn.microsoft.com/en-us/library/aa355056%28v=vs.110%29.aspx
+                    using (Stream replyStream = client.OpenRead (line))
+                    using (StreamReader replyStreamReader = new StreamReader(replyStream))
+                    {
+                        string s = replyStreamReader.ReadToEnd();
+                        Console.WriteLine(s);
+                    }
+                }
+                catch(WebException e) {
+                    Console.WriteLine ("Synchronous WebClient, WebException: ", e);
+                }
+                catch(IOException e) {
+                    Console.WriteLine ("Synchronous WebClient, IOException: ", e);
                 }
             }
 
@@ -90,7 +109,12 @@ namespace HttpClientsExamples
             // You must be careful to provide a unique value for userState in your calls to multiple-invocation
             // overloads. Non-unique task IDs will cause the asynchronous class throw an ArgumentException.
             var taskId = Guid.NewGuid();
-            webClientAsync.OpenReadAsync(new Uri(line), taskId);
+            try {
+                webClientAsync.OpenReadAsync(new Uri(line), taskId);
+            } catch(WebException e) {
+                Console.WriteLine ("Asynchronous WebClient With Events, WebException: ", e);
+            }
+
             /**
              * I WILL NOT CALL Dispose when using WebClient in asynchronous way.
              * webClientAsync.Dispose ();
@@ -129,7 +153,17 @@ namespace HttpClientsExamples
                  * Should I call Task.Dispose()? Answer:
                  * DO NOT BOTHER DISPOSING OF YOUR TASKS: http://blogs.msdn.com/b/pfxteam/archive/2012/03/25/10287435.aspx
                  */
-                Task<Stream> task = client.OpenReadTaskAsync (line);
+                Task<Stream> task = null;
+                try {
+                    task = client.OpenReadTaskAsync (line);
+                } catch(WebException e) {
+                    Console.WriteLine ("Asynchronous WebClient With Tasks, WebException: ", e);
+                }
+
+                if (task == null) {
+                    return;
+                }
+
                 // Don't do this. OpenReadTaskAsync is already launching a new Thread (OpenReadTaskAsync is intended to be used with async/await)
                 //task.Start ();
                 try {
@@ -147,12 +181,16 @@ namespace HttpClientsExamples
                 }
                 if (task.Status == TaskStatus.RanToCompletion)
                 {
-                    // I am starting to love the using statement instead of traditional try/finally block with check for null values and close.
-                    using (Stream replyStream = task.Result)
-                    using (StreamReader replyStreamReader = new StreamReader (replyStream))
-                    {
-                        string s = replyStreamReader.ReadToEnd ();
-                        Console.WriteLine (s);
+                    try {
+                        using (Stream replyStream = task.Result)
+                        using (StreamReader replyStreamReader = new StreamReader (replyStream))
+                        {
+                            string s = replyStreamReader.ReadToEnd ();
+                            Console.WriteLine (s);
+                        }
+                    }
+                    catch(IOException e) {
+                        Console.WriteLine ("Asynchronous WebClient With Tasks, IOException: ", e);
                     }
                 }
             }
@@ -164,6 +202,7 @@ namespace HttpClientsExamples
 
             if (eventData.Cancelled)
             {
+                // Be careful!!! If you throw exception from this point your program will finish with "Unhandled Exception".
                 Console.WriteLine ("Task Cancelled. Taks Id: {0}", taskId);
                 return;
             }
@@ -171,6 +210,7 @@ namespace HttpClientsExamples
             Exception errorException = eventData.Error;
             if (errorException != null)
             {
+                // Be careful!!! If you throw exception from this point your program will finish with "Unhandled Exception".
                 Console.WriteLine ("Task with Exception. Taks Id: {0}, Exception: {1}", taskId, errorException);
                 return;
             }
@@ -188,7 +228,7 @@ namespace HttpClientsExamples
                 replyStream = (Stream) eventData.Result;
                 replyStreamReader = new StreamReader (replyStream);
                 Console.WriteLine (replyStreamReader.ReadToEnd ());
-                // throw new Exception("My Exception from Async CallBack");
+                //throw new Exception("My Exception from Async CallBack");
                 // IF YOU SEE THE MONO IMPLEMENTATION OF OpenReadAsync YOU WILL SEE THERE IS A try/catch Exception
                 // AND THAT CATCH EXCEPTION IS CALLING AGAIN MY OpenReadCallback. When calling OpenReadCallback in the catch
                 // Exception block eventData.Error will not be null. So, my OpenReadCallback could be called more than once if
@@ -196,6 +236,12 @@ namespace HttpClientsExamples
                 // BECAUSE OF THAT YOU MUST ALWAYS CHECK IN THE CALLBACK IMPLEMENTATION THE eventData.Cancelled AND eventData.Error VALUES!!!!
                 // (As I've done here) 
             }
+            // If there is any exception it will be caught later when checking the eventData.Error value.
+            // SEE THE MONO IMPLEMENTATION OF OpenReadAsync.
+            // catch(IOException e)
+            // {
+            //     Console.WriteLine ("OpenReadCallback, IOException: ", e);
+            // }
             finally
             {
                 if (replyStreamReader != null)
