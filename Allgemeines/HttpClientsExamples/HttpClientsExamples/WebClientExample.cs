@@ -33,6 +33,12 @@ namespace HttpClientsExamples
                 client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; Linux; Mono .NET 4.5)");
 
                 try {
+                    // HOW MAY I CHECK THE HTTP RESPONSE CODE? THIS SUCKS!!!
+                    // From this answer: http://stackoverflow.com/questions/3574659/how-to-get-status-code-from-webclient
+                    // When are we receiving WebException? When HTTP status code is not 200? I do not think so.
+                    // What if I just want to read data when HTTP OK? I am getting really angry.
+                    // C# is a great language but the API sucks IMHO.
+
                     // Be careful!!! If calling Dispose may throw exception, you could hide
                     // exceptions being thrown inside the using blocks. In this case this Dispose methods
                     // do not throw any exception but in other cases it could be different, so never forget it.
@@ -175,12 +181,18 @@ namespace HttpClientsExamples
                             return true;
                         } else {
                             Console.WriteLine ("Cancelling a Task, dunno what are you: {0}", e);
-                            return false;
+                            return true;
                         }
                     });
                 }
                 if (task.Status == TaskStatus.RanToCompletion)
                 {
+                    // HOW MAY I CHECK THE HTTP RESPONSE CODE? THIS SUCKS!!!
+                    // From this answer: http://stackoverflow.com/questions/3574659/how-to-get-status-code-from-webclient
+                    // When are we receiving WebException? When HTTP status code is not 200? I do not think so.
+                    // What if I just want to read data when HTTP OK? I am getting really angry.
+                    // C# is a great language but the API sucks IMHO.
+
                     try {
                         using (Stream replyStream = task.Result)
                         using (StreamReader replyStreamReader = new StreamReader (replyStream))
@@ -198,6 +210,13 @@ namespace HttpClientsExamples
 
         private void OpenReadCallback (Object sender, OpenReadCompletedEventArgs eventData)
         {
+            // HOW MAY I CHECK THE HTTP RESPONSE CODE? THIS SUCKS!!!
+            // From this answer: http://stackoverflow.com/questions/3574659/how-to-get-status-code-from-webclient
+            // When are we receiving WebException? When HTTP status code is not 200? I do not think so.
+            // What if I just want to read data when HTTP OK? I am getting really angry.
+            // The Mono implementation does not seem to throw WebException... so, the stack overflow answer must be wrong... FUUUUU
+            // C# is a great language but the API sucks IMHO.
+
             var taskId = (Guid) eventData.UserState;
 
             if (eventData.Cancelled)

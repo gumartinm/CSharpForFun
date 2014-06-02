@@ -28,12 +28,19 @@ namespace HttpClientsExamples
             HttpWebRequest httpWebRequest = (HttpWebRequest) WebRequest.Create(uri);
             try {
                 using(HttpWebResponse httpWebResponse = (HttpWebResponse) httpWebRequest.GetResponse())
-                using(Stream replyStream = httpWebResponse.GetResponseStream())
-                using(StreamReader replyStreamReader = new StreamReader(replyStream))
                 {
-                    Console.WriteLine(replyStreamReader.ReadToEnd());
-                    httpWebResponse.Dispose ();
+                    // May httpWebResponse be null? API says nothing (as usual...) API sucks.
+                    if (httpWebResponse.StatusCode == HttpStatusCode.OK)
+                    {
+                        using(Stream replyStream = httpWebResponse.GetResponseStream())
+                        using(StreamReader replyStreamReader = new StreamReader(replyStream))
+                        {
+                            Console.WriteLine(replyStreamReader.ReadToEnd());
+                            httpWebResponse.Dispose ();
+                        }
+                    }
                 }
+
             }
             catch(ProtocolViolationException e) {
                 Console.WriteLine ("Synchronous HttpWebRequest, ProtocolViolationException: ", e);
@@ -68,32 +75,32 @@ namespace HttpClientsExamples
                         return true;
                     } else {
                         Console.WriteLine ("Cancelling a Task, dunno what are you: {0}", e);
-                        return false;
+                        return true;
                     }
                 });
             }
             if (task.Status == TaskStatus.RanToCompletion)
             {
-                try {
-                    using(HttpWebResponse httpWebResponse = (HttpWebResponse) task.Result)
-                    using(Stream replyStream = httpWebResponse.GetResponseStream())
-                    using (StreamReader replyStreamReader = new StreamReader (replyStream))
+                using(HttpWebResponse httpWebResponse = (HttpWebResponse) task.Result)
+                {
+                    // May httpWebResponse be null? API says nothing (as usual...) API sucks.
+                    if (httpWebResponse.StatusCode == HttpStatusCode.OK)
                     {
-                        string s = replyStreamReader.ReadToEnd ();
-                        Console.WriteLine (s);
+                        try {
+                            using(Stream replyStream = httpWebResponse.GetResponseStream())
+                            using (StreamReader replyStreamReader = new StreamReader (replyStream))
+                            {
+                                string s = replyStreamReader.ReadToEnd ();
+                                Console.WriteLine (s);
+                            }
+                        }
+                        catch(ProtocolViolationException e) {
+                            Console.WriteLine ("Asynchronous HttpWebRequest, ProtocolViolationException: ", e);
+                        }
+                        catch(IOException e) {
+                            Console.WriteLine ("Asynchronous HttpWebRequest, IOException: ", e);
+                        }
                     }
-                }
-                catch(ProtocolViolationException e) {
-                    Console.WriteLine ("Asynchronous HttpWebRequest, ProtocolViolationException: ", e);
-                }
-                catch(NotSupportedException e) {
-                    Console.WriteLine ("Asynchronous HttpWebRequest, NotSupportedException: ", e);
-                }
-                catch(WebException e) {
-                    Console.WriteLine ("Asynchronous HttpWebRequest, WebException: ", e);
-                }
-                catch(IOException e) {
-                    Console.WriteLine ("Asynchronous HttpWebRequest, IOException: ", e);
                 }
             }
         }
