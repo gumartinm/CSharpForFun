@@ -6,10 +6,10 @@ namespace HttpClientsExamples
     {
         public static void Main(string[] args)
         {
-            WebClientExample webclientExample = new WebClientExample();
-            webclientExample.Test();
-            HttpWebRequestExample httpWebRequestExample = new HttpWebRequestExample();
-            httpWebRequestExample.Test();
+            //WebClientExample webclientExample = new WebClientExample();
+            //webclientExample.Test();
+            //HttpWebRequestExample httpWebRequestExample = new HttpWebRequestExample();
+            //httpWebRequestExample.Test();
             HttpClientExample httpClientExample = new HttpClientExample();
             httpClientExample.Test();
         }
