@@ -172,8 +172,7 @@ namespace HttpClientsExamples
             }
 
 
-            // TODO: you must write another example with HttpCompletionOption.ResponseHeadersRead and I want
-            // to use in WebClientExamples and HttpWebRequestExample the same logic as in httpWebResponse.EnsureSuccessStatusCode
+            // TODO: you must write another example with HttpCompletionOption.ResponseHeadersRead
         }
 
         private async Task<string> DoGetAsync(string uri)

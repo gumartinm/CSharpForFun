@@ -30,17 +30,14 @@ namespace HttpClientsExamples
                 using(HttpWebResponse httpWebResponse = (HttpWebResponse) httpWebRequest.GetResponse())
                 {
                     // May httpWebResponse be null? API says nothing (as usual...) API sucks.
-                    if (httpWebResponse.StatusCode == HttpStatusCode.OK)
+                    this.EnsureSuccessStatusCode (httpWebResponse.StatusCode);
+
+                    using(Stream replyStream = httpWebResponse.GetResponseStream())
+                    using(StreamReader replyStreamReader = new StreamReader(replyStream))
                     {
-                        using(Stream replyStream = httpWebResponse.GetResponseStream())
-                        using(StreamReader replyStreamReader = new StreamReader(replyStream))
-                        {
-                            Console.WriteLine(replyStreamReader.ReadToEnd());
-                            httpWebResponse.Dispose ();
-                        }
+                        Console.WriteLine(replyStreamReader.ReadToEnd());
                     }
                 }
-
             }
             catch(ProtocolViolationException e) {
                 Console.WriteLine ("Synchronous HttpWebRequest, ProtocolViolationException: ", e);
@@ -84,25 +81,43 @@ namespace HttpClientsExamples
                 using(HttpWebResponse httpWebResponse = (HttpWebResponse) task.Result)
                 {
                     // May httpWebResponse be null? API says nothing (as usual...) API sucks.
-                    if (httpWebResponse.StatusCode == HttpStatusCode.OK)
-                    {
-                        try {
-                            using(Stream replyStream = httpWebResponse.GetResponseStream())
-                            using (StreamReader replyStreamReader = new StreamReader (replyStream))
-                            {
-                                string s = replyStreamReader.ReadToEnd ();
-                                Console.WriteLine (s);
-                            }
+                    this.EnsureSuccessStatusCode (httpWebResponse.StatusCode);
+
+                    try {
+                        using(Stream replyStream = httpWebResponse.GetResponseStream())
+                        using (StreamReader replyStreamReader = new StreamReader (replyStream))
+                        {
+                            string s = replyStreamReader.ReadToEnd ();
+                            Console.WriteLine (s);
                         }
-                        catch(ProtocolViolationException e) {
-                            Console.WriteLine ("Asynchronous HttpWebRequest, ProtocolViolationException: ", e);
-                        }
-                        catch(IOException e) {
-                            Console.WriteLine ("Asynchronous HttpWebRequest, IOException: ", e);
-                        }
+                    }
+                    catch(ProtocolViolationException e) {
+                        Console.WriteLine ("Asynchronous HttpWebRequest, ProtocolViolationException: ", e);
+                    }
+                    catch(IOException e) {
+                        Console.WriteLine ("Asynchronous HttpWebRequest, IOException: ", e);
                     }
                 }
             }
+        }
+
+        /**
+         * Taken from HttpResponseMessage.cs Mono implementation. 
+         */
+        private bool IsSuccessStatusCode(HttpStatusCode statusCode) {
+            // Successful codes are 2xx
+            return statusCode >= HttpStatusCode.OK && statusCode < HttpStatusCode.MultipleChoices;
+        }
+
+        /**
+         * Taken from HttpResponseMessage.cs Mono implementation. 
+         */
+        private void EnsureSuccessStatusCode(HttpStatusCode statusCode)
+        {
+            if (this.IsSuccessStatusCode(statusCode))
+                return;
+
+            throw new Exception (string.Format ("{0}", (int) statusCode));
         }
     }
 }
