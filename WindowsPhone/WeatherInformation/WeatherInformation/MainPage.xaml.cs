@@ -46,7 +46,7 @@ namespace WeatherInformation
 
         private void Settings_Click(object sender, EventArgs e)
         {
-
+            NavigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative));
         }
 
         // Código de ejemplo para compilar una ApplicationBar traducida

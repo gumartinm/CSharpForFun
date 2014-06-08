@@ -44,11 +44,7 @@ namespace WeatherInformation
                 IsolatedStorageSettings.ApplicationSettings.Save();
             }
 
-            bool locationConsentValue;
-            if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<bool>("LocationConsent", out locationConsentValue))
-            {
-                this.GetLocation();
-            }
+            this.GetLocation();
         }
 
         private async void GetLocation()

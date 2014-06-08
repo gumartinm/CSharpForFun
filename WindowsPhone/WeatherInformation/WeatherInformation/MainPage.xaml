@@ -81,7 +81,7 @@
             </phone:PivotItem>
 
             <!--Elemento Pivot dos-->
-            <phone:PivotItem Header="second">
+            <phone:PivotItem Header="current">
                 <!--Lista de líneas dobles sin ajuste de texto-->
                 <phone:LongListSelector Margin="0,0,-12,0" ItemsSource="{Binding ForecastItems}">
                     <phone:LongListSelector.ItemTemplate>

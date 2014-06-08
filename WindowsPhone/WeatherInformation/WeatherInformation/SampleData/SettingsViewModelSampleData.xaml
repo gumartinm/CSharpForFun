@@ -1,0 +1,12 @@
+﻿<vm:SettingsViewModel
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="clr-namespace:WeatherInformation.ViewModels"
+    SampleProperty="Valor de propiedad Sample Text">
+
+    <vm:SettingsViewModel.SettingsItems>
+        <vm:ItemViewModel LineOne="Temperature units" LineTwo="fahrenheit" LineThree="15ºC" LineFour="10ºC" LineFive="/Assets/Tiles/IconicTileMediumLarge.png"/>
+        <vm:ItemViewModel LineOne="Language" LineTwo="spanish" LineThree="16ºC" LineFour="10ºC" LineFive="/Assets/Tiles/IconicTileMediumLarge.png"/>
+    </vm:SettingsViewModel.SettingsItems>
+
+</vm:SettingsViewModel>

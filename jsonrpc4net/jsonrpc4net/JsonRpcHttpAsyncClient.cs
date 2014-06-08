@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.IO;
+using System.Text;
 
 namespace GumartinM.JsonRPC4NET
 {
@@ -114,29 +115,41 @@ namespace GumartinM.JsonRPC4NET
             using (HttpContent contentPOST = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json-rpc"))
             // TODO: in WindowsPhone 8 client.PostAsync does not seem to spawn new thread :/ WTF
             // Using WindowsPhone 8 the result is returned in the same thread!!!!! WTF
-            using (HttpResponseMessage response = await client.PostAsync(uri, contentPOST, cancellation))
-            //TODO: What if response is null? :(
-            using (HttpContent contentRESULT = response.Content)
+            using (HttpResponseMessage response = await client.PostAsync(uri, contentPOST, cancellation))   
             {
-                if (response.StatusCode == HttpStatusCode.OK)
+                //TODO: What if response is null? :(
+                response.EnsureSuccessStatusCode();
+
+                using (HttpContent contentRESULT = response.Content)
                 {
                     //TODO: What if contentRESULT is null? :(
                     return await this.ReadResponseAsync<TResult>(contentRESULT);
                 }
-
-                throw new Exception("Unexpected response code: " + response.StatusCode);
             }
         }
 
         async private Task<POSTResult<TResult>> ReadResponseAsync<TResult>(HttpContent content)
         {
+            /**
+             * Taken from HttpContent.cs ReadAsStringAsync() Mono implementation.
+             */
+            Encoding encoding;
+            if (content.Headers != null && content.Headers.ContentType != null && content.Headers.ContentType.CharSet != null)
+            {
+                encoding = Encoding.GetEncoding(content.Headers.ContentType.CharSet);
+            }
+            else
+            {
+                encoding = Encoding.UTF8;
+            }
+
             // Option a) with bytes
             //byte[] jsonBytes = await contentRESULT.ReadAsByteArrayAsync();
             //return this.ReadResponse<TResult>(jsonBytes);
 
             // Option b) with stream
             using (Stream stream = await content.ReadAsStreamAsync ())
-            using (StreamReader streamReader = new StreamReader (stream, System.Text.Encoding.UTF8))
+            using (StreamReader streamReader = new StreamReader(stream, encoding))
             {
                 // This line makes this method useless (IMHO it is the same as the one working with bytes)
                 // How could I work with JSON saving memory?
