@@ -40,7 +40,8 @@ namespace ProcessLauncher
 
 
             // Define variables shared by class methods. 
-            StringBuilder processOutput = null;
+            StringBuilder processOutput = new StringBuilder();
+
             Process process = new Process();
 
             process.StartInfo = startInfo;

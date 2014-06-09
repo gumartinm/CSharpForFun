@@ -8,12 +8,14 @@ namespace ProcessLauncher
         {
             LinuxWindowsProcess process = new LinuxWindowsProcess();
             Console.WriteLine("Linux");
-            var output = process.Test("ls", "-lah");
-            Console.WriteLine("stdout: {0}", output.ToString());
+            var linuxOutput = process.Test("ls", "-lah");
+            Console.WriteLine("stdout: {0}", linuxOutput.ToString());
 
-            // Console.WriteLine("Windows");
-            // output = process.Test("dir", "/a");
-            // Console.WriteLine("stdout: {0}", output.ToString());
+            Console.WriteLine("Windows");
+            var windowsOutput = process.Test("cmd.exe", "/C dir /A");
+            Console.WriteLine("stdout: {0}", windowsOutput.ToString());
+
+            Console.ReadLine();
         }
     }
 }
