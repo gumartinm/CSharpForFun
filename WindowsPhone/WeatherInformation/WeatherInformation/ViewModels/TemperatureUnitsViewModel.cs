@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace WeatherInformation.ViewModels
 {
-    public class SettingsViewModel : INotifyPropertyChanged
+    public class TemperatureUnitsViewModel : INotifyPropertyChanged
     {
-        public SettingsViewModel()
+        public TemperatureUnitsViewModel()
         {
-            this.SettingsItems = new ObservableCollection<ItemViewModel>();
+            this.TemperatureUnitsItems = new ObservableCollection<ItemViewModel>();
         }
 
         private string _sampleProperty = "Sample Runtime Property Value";
 
-        public ObservableCollection<ItemViewModel> SettingsItems { get; private set; }
+        public ObservableCollection<ItemViewModel> TemperatureUnitsItems { get; private set; }
         /// <summary>
         /// Propiedad Sample ViewModel; esta propiedad se usa en la vista para mostrar su valor mediante un enlace
         /// </summary>
@@ -50,15 +50,13 @@ namespace WeatherInformation.ViewModels
         public void LoadData()
         {
                 // TODO: How to do the same using StaticResources? :/
-                this.SettingsItems.Add(new ItemViewModel()
+                this.TemperatureUnitsItems.Add(new ItemViewModel()
                 {
-                    LineOne = "Temperature units",
-                    LineTwo = "fahrenheit"
+                    LineOne = "fahrenheit"
                 });
-                this.SettingsItems.Add(new ItemViewModel()
+                this.TemperatureUnitsItems.Add(new ItemViewModel()
                 {
-                    LineOne = "Language",
-                    LineTwo = "spanish"
+                    LineOne = "centigrade"
                 });
 
 

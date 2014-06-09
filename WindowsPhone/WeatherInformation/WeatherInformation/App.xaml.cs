@@ -14,6 +14,8 @@ namespace WeatherInformation
     public partial class App : Application
     {
         private static MainViewModel viewModel = null;
+        private static SettingsViewModel _settingsViewModel = null;
+        private static TemperatureUnitsViewModel _temperatureUnitsViewModel = null;
 
         /// <summary>
         /// ViewModel estático que usan las vistas con el que se van a enlazar.
@@ -28,6 +30,31 @@ namespace WeatherInformation
                     viewModel = new MainViewModel();
 
                 return viewModel;
+            }
+        }
+
+        public static SettingsViewModel SettingsViewModel
+        {
+            get
+            {
+                // Retrasar la creación del modelo de vista hasta que sea necesario
+                if (_settingsViewModel == null)
+                    _settingsViewModel = new SettingsViewModel();
+
+                return _settingsViewModel;
+            }
+        }
+
+
+        public static TemperatureUnitsViewModel TemperatureUnitsViewModel
+        {
+            get
+            {
+                // Retrasar la creación del modelo de vista hasta que sea necesario
+                if (_temperatureUnitsViewModel == null)
+                    _temperatureUnitsViewModel = new TemperatureUnitsViewModel();
+
+                return _temperatureUnitsViewModel;
             }
         }
 
