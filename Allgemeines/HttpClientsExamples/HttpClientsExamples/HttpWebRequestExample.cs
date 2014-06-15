@@ -64,6 +64,13 @@ namespace HttpClientsExamples
             httpWebRequest = (HttpWebRequest) WebRequest.Create(uri);
             Task<WebResponse> task = httpWebRequest.GetResponseAsync ();
             try {
+                // DO NOT DO THIS. THERE COULD BE DEADLOCK. ALL DEPENDS ON THE SynchronizationContext
+                // How may I know what SynchronizationContext is going to be used? :/
+                // See: http://msdn.microsoft.com/en-us/magazine/gg598924.aspx
+                //      http://blog.stephencleary.com/2012/07/dont-block-on-async-code.html
+                //      http://stackoverflow.com/questions/22699048/why-does-task-waitall-not-block-or-cause-a-deadlock-here
+                // AFAIK, I SHOULD USE Task.WhenAll INSTEAD!!!! Because it creates a task (a new thread instead of blocking the current one)
+                // http://msdn.microsoft.com/en-us/library/system.threading.tasks.task.whenall%28v=vs.110%29.aspx
                 Task.WaitAll (task);
             } catch (AggregateException ae) {
                 ae.Handle (e => {
