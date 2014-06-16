@@ -80,6 +80,8 @@ namespace Collation
             // Neither in German nor in Spanish they are the same word. I do not understand collations :(
             result = String.Compare(koennen[0], koennen[1], CultureInfo.GetCultureInfo("es-ES"), CompareOptions.IgnoreCase);
             Console.WriteLine("Spanish result: {0}", result);
+
+            Console.ReadLine();
         }
 
         private static void printValues(string[] words)
