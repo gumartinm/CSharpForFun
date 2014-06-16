@@ -62,6 +62,7 @@ namespace Collation
             printValues (words);
 
             // It is the same word in German, as expected.
+            // I DO NOT GET THE SAME RESULTS FOR THIS COMPARISON USING JAVA!!!! O.o WTF!!! :(
             string[] strasse = {"strasse", "straße" };
             Console.WriteLine("strasse ");
             int result = String.Compare(strasse[0], strasse[1], CultureInfo.CreateSpecificCulture("de-DE"), CompareOptions.IgnoreCase);
@@ -71,6 +72,7 @@ namespace Collation
             Console.WriteLine("Spanish result: {0}", result);
 
             // Shouldn't it be the same word in German?
+            // IN THIS CASE I GET THE SAME RESULTS USING JAVA :)
             string[] koennen = {"können", "koennen" };
             Console.WriteLine("koennen ");
             result = String.Compare(koennen[0], koennen[1], CultureInfo.CreateSpecificCulture("de-DE"), CompareOptions.IgnoreCase);
