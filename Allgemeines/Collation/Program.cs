@@ -61,6 +61,23 @@ namespace Collation
             Console.WriteLine("Words list FR: ");
             printValues (words);
 
+            // It is the same word in German, as expected.
+            string[] strasse = {"strasse", "straße" };
+            Console.WriteLine("strasse ");
+            int result = String.Compare(strasse[0], strasse[1], CultureInfo.CreateSpecificCulture("de-DE"), CompareOptions.IgnoreCase);
+            Console.WriteLine("German result: {0}", result);
+            // And also in Spanish... why in Spanish is the same word? O.o
+            result = String.Compare(strasse[0], strasse[1], CultureInfo.GetCultureInfo("es-ES"), CompareOptions.IgnoreCase);
+            Console.WriteLine("Spanish result: {0}", result);
+
+            // Shouldn't it be the same word in German?
+            string[] koennen = {"können", "koennen" };
+            Console.WriteLine("koennen ");
+            result = String.Compare(koennen[0], koennen[1], CultureInfo.CreateSpecificCulture("de-DE"), CompareOptions.IgnoreCase);
+            Console.WriteLine("German result: {0}", result);
+            // Neither in German nor in Spanish they are the same word. I do not understand collations :(
+            result = String.Compare(koennen[0], koennen[1], CultureInfo.GetCultureInfo("es-ES"), CompareOptions.IgnoreCase);
+            Console.WriteLine("Spanish result: {0}", result);
         }
 
         private static void printValues(string[] words)
