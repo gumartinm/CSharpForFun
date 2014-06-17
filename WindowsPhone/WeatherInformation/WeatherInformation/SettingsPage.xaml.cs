@@ -28,24 +28,5 @@ namespace WeatherInformation
                 App.SettingsViewModel.LoadData();
             }
         }
-
-        private void LongListSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            LongListSelector selector = sender as LongListSelector;
-            ItemViewModel item = selector.SelectedItem as ItemViewModel;
-            switch(item.LineOne)
-            {
-                case "Temperature units":
-                    NavigationService.Navigate(new Uri("/SettingsTemperatureUnitsPage.xaml", UriKind.Relative));
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        private void StackPanel_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-           
-        }
     }
 }

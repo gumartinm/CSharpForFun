@@ -6,6 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     mc:Ignorable="d"
     d:DataContext="{d:DesignData SampleData/SettingsViewModelSampleData.xaml}"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
@@ -20,40 +21,38 @@
         <phone:Pivot Title="WEATHER INFORMATION">
             <!-- Elemento Pivot uno -->
             <phone:PivotItem Header="settings">
-                <!-- de líneas dobles con ajuste de texto -->
-                <phone:LongListSelector x:Name="SettingsList" Margin="0,0,-12,0" ItemsSource="{Binding SettingsItems}" SelectionChanged="LongListSelector_SelectionChanged">
-                    <phone:LongListSelector.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,10" Tap="StackPanel_Tap">
-                                <TextBlock Text="{Binding LineOne}" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold"/>
-                                <TextBlock Text="{Binding LineTwo}" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="24"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </phone:LongListSelector.ItemTemplate>
-                </phone:LongListSelector>
+                <Grid VerticalAlignment="Top">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical">
+                        <TextBox x:Name="TemperatureUnitsText" Text="{Binding LocalizedResources.TemperatureSettingsText, Mode=OneWay, Source={StaticResource LocalizedStrings}}" HorizontalAlignment="Left" Background="Transparent" BorderBrush="Transparent" Foreground="#FFA4A2A2" />
+                        <toolkit:ListPicker x:Name="ListUnitsSelection">
+                            <toolkit:ListPickerItem x:Name="fahrenheit" Content="fahrenheit" Background="Transparent" />
+                            <toolkit:ListPickerItem x:Name="centigrade" Content="centigrade" />
+                        </toolkit:ListPicker>
+                    </StackPanel>
+                    <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical" VerticalAlignment="Center">
+                        <TextBox x:Name="LanguageTextBox" Text="{Binding LocalizedResources.LanguageSettingsText, Mode=OneWay, Source={StaticResource LocalizedStrings}}" HorizontalAlignment="Left" Background="Transparent" BorderBrush="Transparent" Foreground="#FFA4A2A2" />
+                        <toolkit:ListPicker x:Name="LanguageSelection">
+                            <toolkit:ListPickerItem x:Name="english" Content="english" Background="Transparent" />
+                            <toolkit:ListPickerItem x:Name="spanish" Content="spanish" />
+                        </toolkit:ListPicker>
+                    </StackPanel>
+                </Grid>
             </phone:PivotItem>
 
             <!-- Elemento Pivot dos -->
             <phone:PivotItem Header="notifications">
                 <Grid/>
             </phone:PivotItem>
-            
-        </phone:Pivot>
-    </Grid>
 
-    <phone:PhoneApplicationPage.Resources>
-        <DataTemplate x:Key="LongListGroupHeader">
-            <Grid Margin="12,0,0,0">
-                <Grid Width="75" Height="75" HorizontalAlignment="Left">
-                    <TextBlock Margin="12,0,1,7" TextWrapping="Wrap" d:LayoutOverrides="Width, Height" Style="{StaticResource PhoneTextLargeStyle}" Text="{Binding Title}" VerticalAlignment="Bottom"/>
-                    <Border BorderThickness="1">
-                        <Border.BorderBrush>
-                            <SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
-                        </Border.BorderBrush>
-                    </Border>
-                </Grid>
-            </Grid>
-        </DataTemplate>
-    </phone:PhoneApplicationPage.Resources>
+        </phone:Pivot>
+        <phone:LongListSelector HorizontalAlignment="Left" Height="100" Margin="825,108,-445,0" VerticalAlignment="Top" Width="100"/>
+    </Grid>
 
 </phone:PhoneApplicationPage>
