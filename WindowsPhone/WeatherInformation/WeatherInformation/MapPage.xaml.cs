@@ -44,18 +44,17 @@ namespace WeatherInformation
                 IsolatedStorageSettings.ApplicationSettings.Save();
             }
 
-            this.GetLocation();
-        }
-
-        private async void GetLocation()
-        {
-
             if ((bool)IsolatedStorageSettings.ApplicationSettings["LocationConsent"] != true)
             {
                 // The user has opted out of Location.
                 return;
             }
 
+            this.GetLocation();
+        }
+
+        private async void GetLocation()
+        {
             Geolocator geolocator = new Geolocator();
             geolocator.DesiredAccuracyInMeters = 50;
 

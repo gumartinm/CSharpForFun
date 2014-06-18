@@ -12,31 +12,12 @@ namespace WeatherInformation.ViewModels
     {
         public SettingsViewModel()
         {
-            this.SettingsItems = new ObservableCollection<ItemViewModel>();
+            this.TemperatureUnitsSelection = new List<string>();
+            this.LanguageSelection = new List<string>();
         }
 
-        private string _sampleProperty = "Sample Runtime Property Value";
-
-        public ObservableCollection<ItemViewModel> SettingsItems { get; private set; }
-        /// <summary>
-        /// Propiedad Sample ViewModel; esta propiedad se usa en la vista para mostrar su valor mediante un enlace
-        /// </summary>
-        /// <returns></returns>
-        public string SampleProperty
-        {
-            get
-            {
-                return _sampleProperty;
-            }
-            set
-            {
-                if (value != _sampleProperty)
-                {
-                    _sampleProperty = value;
-                    NotifyPropertyChanged("SampleProperty");
-                }
-            }
-        }
+        public List<string> TemperatureUnitsSelection { get; private set; }
+        public List<string> LanguageSelection { get; private set; }
 
         public bool IsDataLoaded
         {
@@ -45,22 +26,18 @@ namespace WeatherInformation.ViewModels
         }
 
         /// <summary>
-        /// Crear y agregar unos pocos objetos ItemViewModel a la colección Items.
+        /// Crear y agregar unos pocos objetos a la colección Items.
         /// </summary>
         public void LoadData()
         {
-                // TODO: How to do the same using StaticResources? :/
-                this.SettingsItems.Add(new ItemViewModel()
-                {
-                    LineOne = "Temperature units",
-                    LineTwo = "fahrenheit"
-                });
-                this.SettingsItems.Add(new ItemViewModel()
-                {
-                    LineOne = "Language",
-                    LineTwo = "spanish"
-                });
+            // TODO: How to do the same using StaticResources? :/ What the translator should do with this :(
+            // There must be some way to refernce static resources from here or something like that, otherwise
+            // the translator is going to complain A LOT!
+            TemperatureUnitsSelection.Add("fahrenheit");
+            TemperatureUnitsSelection.Add("centigrade");
 
+            LanguageSelection.Add("english");
+            LanguageSelection.Add("spanish");
 
             this.IsDataLoaded = true;
         }

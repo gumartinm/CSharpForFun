@@ -19,18 +19,18 @@ namespace WeatherInformation
             InitializeComponent();
 
             // Establecer el contexto de datos del control ListBox control en los datos de ejemplo
-            DataContext = App.ViewModel;
+            DataContext = App.MainViewModel;
 
             // Código de ejemplo para traducir ApplicationBar
             //BuildLocalizedApplicationBar();
         }
 
-        // Cargar datos para los elementos ViewModel
+        // Cargar datos para los elementos MainViewModel
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (!App.ViewModel.IsDataLoaded)
+            if (!App.MainViewModel.IsDataLoaded)
             {
-                App.ViewModel.LoadData();
+                App.MainViewModel.LoadData();
             }
         }
 

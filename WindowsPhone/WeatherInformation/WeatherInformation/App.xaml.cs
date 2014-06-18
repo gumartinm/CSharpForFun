@@ -15,13 +15,12 @@ namespace WeatherInformation
     {
         private static MainViewModel viewModel = null;
         private static SettingsViewModel _settingsViewModel = null;
-        private static TemperatureUnitsViewModel _temperatureUnitsViewModel = null;
 
         /// <summary>
-        /// ViewModel estático que usan las vistas con el que se van a enlazar.
+        /// MainViewModel estático que usan las vistas con el que se van a enlazar.
         /// </summary>
         /// <returns>Objeto MainViewModel.</returns>
-        public static MainViewModel ViewModel
+        public static MainViewModel MainViewModel
         {
             get
             {
@@ -42,19 +41,6 @@ namespace WeatherInformation
                     _settingsViewModel = new SettingsViewModel();
 
                 return _settingsViewModel;
-            }
-        }
-
-
-        public static TemperatureUnitsViewModel TemperatureUnitsViewModel
-        {
-            get
-            {
-                // Retrasar la creación del modelo de vista hasta que sea necesario
-                if (_temperatureUnitsViewModel == null)
-                    _temperatureUnitsViewModel = new TemperatureUnitsViewModel();
-
-                return _temperatureUnitsViewModel;
             }
         }
 
@@ -113,9 +99,9 @@ namespace WeatherInformation
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
             // Asegurarse de que el estado de la aplicación se restaura adecuadamente
-            if (!App.ViewModel.IsDataLoaded)
+            if (!App.MainViewModel.IsDataLoaded)
             {
-                App.ViewModel.LoadData();
+                App.MainViewModel.LoadData();
             }
         }
 

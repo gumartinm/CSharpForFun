@@ -14,6 +14,18 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="PortraitOrLandscape"  Orientation="Portrait"
     shell:SystemTray.IsVisible="True">
+	<phone:PhoneApplicationPage.Resources>
+		<DataTemplate x:Key="StringTemplate">
+			<StackPanel>
+				<TextBlock Text="{Binding Mode=OneWay}"/>
+			</StackPanel>
+		</DataTemplate>
+		<DataTemplate x:Key="StringTemplate1">
+			<StackPanel>
+				<TextBlock Text="{Binding Mode=OneWay}"/>
+			</StackPanel>
+		</DataTemplate>
+	</phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot es la cuadrícula raíz donde se coloca todo el contenido de la página-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -31,16 +43,12 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical">
                         <TextBox x:Name="TemperatureUnitsText" Text="{Binding LocalizedResources.TemperatureSettingsText, Mode=OneWay, Source={StaticResource LocalizedStrings}}" HorizontalAlignment="Left" Background="Transparent" BorderBrush="Transparent" Foreground="#FFA4A2A2" />
-                        <toolkit:ListPicker x:Name="ListUnitsSelection">
-                            <toolkit:ListPickerItem x:Name="fahrenheit" Content="fahrenheit" Background="Transparent" />
-                            <toolkit:ListPickerItem x:Name="centigrade" Content="centigrade" />
+                        <toolkit:ListPicker x:Name="TemperatureUnitsSelection" ItemsSource="{Binding TemperatureUnitsSelection}">
                         </toolkit:ListPicker>
                     </StackPanel>
                     <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical" VerticalAlignment="Center">
                         <TextBox x:Name="LanguageTextBox" Text="{Binding LocalizedResources.LanguageSettingsText, Mode=OneWay, Source={StaticResource LocalizedStrings}}" HorizontalAlignment="Left" Background="Transparent" BorderBrush="Transparent" Foreground="#FFA4A2A2" />
-                        <toolkit:ListPicker x:Name="LanguageSelection">
-                            <toolkit:ListPickerItem x:Name="english" Content="english" Background="Transparent" />
-                            <toolkit:ListPickerItem x:Name="spanish" Content="spanish" />
+                        <toolkit:ListPicker x:Name="LanguageSelection" ItemsSource="{Binding LanguageSelection}">
                         </toolkit:ListPicker>
                     </StackPanel>
                 </Grid>
