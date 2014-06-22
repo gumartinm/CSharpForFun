@@ -122,40 +122,40 @@
     <comment>Controls the FlowDirection for all elements in the RootFrame. Set to the traditional direction of this resource file's language</comment>
   </data>
   <data name="ResourceLanguage" xml:space="preserve">
-    <value>en</value>
+    <value>qps-ploc</value>
     <comment>Controls the Language and ensures that the font for all elements in the RootFrame aligns with the app's language. Set to the language code of this resource file's language.</comment>
   </data>
   <data name="ApplicationTitle" xml:space="preserve">
-    <value>MY APPLICATION</value>
+    <value>[1BD7D][!!_МĮ ÀРĽÌĆÃČÌÓŇ_!!]</value>
   </data>
   <data name="AppBarButtonText" xml:space="preserve">
-    <value>add</value>
+    <value>[C3F82][!!_àġřéģàŕ_!!]</value>
   </data>
   <data name="AppBarMenuItemText" xml:space="preserve">
-    <value>Menu item</value>
+    <value>[01F8F][!!_Êĺèmèиţô ðé мèйú_!!]</value>
   </data>
   <data name="SettingsLanguageHeader" xml:space="preserve">
-    <value>Language</value>
+    <value>[D9E46][!!_Ļàйģûáğè_!!]</value>
     <comment>Text in settings page</comment>
   </data>
   <data name="SettingsTemperatureUnitsHeader" xml:space="preserve">
-    <value>Temperature units</value>
+    <value>[27946][!!_Ţêmþêŗáτúřê ûиìтş_!!]</value>
     <comment>Text in settings page</comment>
   </data>
   <data name="SettingsLanguageSelectionEnglish" xml:space="preserve">
-    <value>english</value>
+    <value>[6390E][!!_įиģľéş_!!]</value>
     <comment>Settings page, select English language</comment>
   </data>
   <data name="SettingsLanguageSelectionSpanish" xml:space="preserve">
-    <value>spanish</value>
+    <value>[3FC2A][!!_éŝрáñóľ_!!]</value>
     <comment>Settings page, select Spanish language</comment>
   </data>
   <data name="SettingsTemperatureUnitsSelectionCentigrade" xml:space="preserve">
-    <value>celsius</value>
+    <value>[EFA86][!!_ćęηťíğŕãďõ_!!]</value>
     <comment>Settings page, select tempereature units centigrade</comment>
   </data>
   <data name="SettingsTemperatureUnitsSelectionFahrenheit" xml:space="preserve">
-    <value>fahrenheit</value>
+    <value>[9AF14][!!_ƒáĥřêηĥęîţ_!!]</value>
     <comment>Settings page, select temperature units fahrenheit</comment>
   </data>
 </root>

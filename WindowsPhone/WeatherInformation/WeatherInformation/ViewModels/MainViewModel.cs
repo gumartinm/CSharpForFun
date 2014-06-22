@@ -73,17 +73,6 @@ namespace WeatherInformation.ViewModels
             }
         }
 
-        /// <summary>
-        /// Propiedad de ejemplo que devuelve una cadena traducida
-        /// </summary>
-        public string LocalizedSampleProperty
-        {
-            get
-            {
-                return AppResources.SampleProperty;
-            }
-        }
-
         public bool IsDataLoaded
         {
             get;

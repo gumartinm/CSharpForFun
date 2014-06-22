@@ -61,7 +61,7 @@ namespace WeatherInformation.Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a agregar.
+        ///   Busca una cadena traducida similar a add.
         /// </summary>
         public static string AppBarButtonText {
             get {
@@ -70,7 +70,7 @@ namespace WeatherInformation.Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Elemento de menú.
+        ///   Busca una cadena traducida similar a Menu item.
         /// </summary>
         public static string AppBarMenuItemText {
             get {
@@ -79,20 +79,11 @@ namespace WeatherInformation.Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a MI APLICACIÓN.
+        ///   Busca una cadena traducida similar a MY APPLICATION.
         /// </summary>
         public static string ApplicationTitle {
             get {
                 return ResourceManager.GetString("ApplicationTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Busca una cadena traducida similar a Language.
-        /// </summary>
-        public static string LanguageSettingsText {
-            get {
-                return ResourceManager.GetString("LanguageSettingsText", resourceCulture);
             }
         }
         
@@ -106,7 +97,7 @@ namespace WeatherInformation.Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a es-ES.
+        ///   Busca una cadena traducida similar a en.
         /// </summary>
         public static string ResourceLanguage {
             get {
@@ -115,20 +106,56 @@ namespace WeatherInformation.Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Valor de propiedad en tiempo de ejecución de ejemplo.
+        ///   Busca una cadena traducida similar a Language.
         /// </summary>
-        public static string SampleProperty {
+        public static string SettingsLanguageHeader {
             get {
-                return ResourceManager.GetString("SampleProperty", resourceCulture);
+                return ResourceManager.GetString("SettingsLanguageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a english.
+        /// </summary>
+        public static string SettingsLanguageSelectionEnglish {
+            get {
+                return ResourceManager.GetString("SettingsLanguageSelectionEnglish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a spanish.
+        /// </summary>
+        public static string SettingsLanguageSelectionSpanish {
+            get {
+                return ResourceManager.GetString("SettingsLanguageSelectionSpanish", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Busca una cadena traducida similar a Temperature units.
         /// </summary>
-        public static string TemperatureSettingsText {
+        public static string SettingsTemperatureUnitsHeader {
             get {
-                return ResourceManager.GetString("TemperatureSettingsText", resourceCulture);
+                return ResourceManager.GetString("SettingsTemperatureUnitsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a celsius.
+        /// </summary>
+        public static string SettingsTemperatureUnitsSelectionCentigrade {
+            get {
+                return ResourceManager.GetString("SettingsTemperatureUnitsSelectionCentigrade", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a fahrenheit.
+        /// </summary>
+        public static string SettingsTemperatureUnitsSelectionFahrenheit {
+            get {
+                return ResourceManager.GetString("SettingsTemperatureUnitsSelectionFahrenheit", resourceCulture);
             }
         }
     }

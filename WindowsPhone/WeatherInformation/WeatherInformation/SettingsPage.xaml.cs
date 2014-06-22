@@ -9,6 +9,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using WeatherInformation.ViewModels;
 using System.IO.IsolatedStorage;
+using System.Collections;
 
 namespace WeatherInformation
 {
@@ -29,9 +30,14 @@ namespace WeatherInformation
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (!App.SettingsViewModel.IsDataLoaded)
+        }
+
+        private void TemperatureUnitsSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            IList units = e.AddedItems;
+            if (units.Count > 0)
             {
-                App.SettingsViewModel.LoadData();
+                var selectedUnit = units.Cast<string>().First<string>();
             }
         }
     }

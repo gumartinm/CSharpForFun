@@ -6,6 +6,8 @@ using System.Windows.Markup;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using System.Threading; 
+using System.Globalization; 
 using WeatherInformation.Resources;
 using WeatherInformation.ViewModels;
 
@@ -13,6 +15,11 @@ namespace WeatherInformation
 {
     public partial class App : Application
     {
+        // Locale to force CurrentCulture to in InitializeLanguage(). 
+        // Use "qps-PLOC" to deploy pseudolocalized strings. 
+        // Use "" to let user Phone Language selection determine locale. 
+        // public static String appForceCulture = "qps-PLOC";
+        public static String appForceCulture = "en"; 
         private static MainViewModel viewModel = null;
         private static SettingsViewModel _settingsViewModel = null;
 
@@ -222,6 +229,15 @@ namespace WeatherInformation
         {
             try
             {
+                // Force CurrentUICulture to locale defined by appForceCulture.
+                // An empty string allows the user's Phone Language setting to 
+                // determine the locale.
+                //if (Debugger.IsAttached && String.IsNullOrWhiteSpace(appForceCulture) == false)
+                //{
+                //    Thread.CurrentThread.CurrentCulture = new CultureInfo(appForceCulture);
+                //    Thread.CurrentThread.CurrentUICulture = new CultureInfo(appForceCulture);
+                //}
+
                 // Establecer la fuente para que coincida con el idioma definido por
                 // Cadena de recursos ResourceLanguage para cada idioma admitido.
                 //
