@@ -2,67 +2,136 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WeatherInformation.Resources;
 
 namespace WeatherInformation.ViewModels
 {
     public class SettingsViewModel : INotifyPropertyChanged
     {
+        // Settings
+        private IsolatedStorageSettings settings;
+
+        // The key names of settings
+        private const string _languageSelectionSettingKeyName = "LanguageSelection";
+        private const string _temperatureUnitsSelectionSettingKeyName = "TemperatureUnitsSelection";
+
+        // The default value of ListPicker settings
+        private const int _listPickerSettingDefault = 0;
+
         public SettingsViewModel()
         {
-            this.SettingsItems = new ObservableCollection<ItemViewModel>();
+            // You need to add a check to DesignerProperties.IsInDesignTool to that code since accessing
+            // IsolatedStorageSettings in Visual Studio or Expression Blend is invalid.
+            // see: http://stackoverflow.com/questions/7294461/unable-to-determine-application-identity-of-the-caller
+            if (!System.ComponentModel.DesignerProperties.IsInDesignTool)
+            {
+                // Get the settings for this application.
+                settings = IsolatedStorageSettings.ApplicationSettings;
+            }
         }
 
-        private string _sampleProperty = "Sample Runtime Property Value";
-
-        public ObservableCollection<ItemViewModel> SettingsItems { get; private set; }
         /// <summary>
-        /// Propiedad Sample ViewModel; esta propiedad se usa en la vista para mostrar su valor mediante un enlace
+        /// Property to get and set language selection Setting Key.
         /// </summary>
-        /// <returns></returns>
-        public string SampleProperty
+        public int LanguageSelectionSetting
         {
             get
             {
-                return _sampleProperty;
+                return GetValueOrDefault<int>(_languageSelectionSettingKeyName, _listPickerSettingDefault);
             }
             set
             {
-                if (value != _sampleProperty)
+                if (AddOrUpdateValue(_languageSelectionSettingKeyName, value))
                 {
-                    _sampleProperty = value;
-                    NotifyPropertyChanged("SampleProperty");
+                    Save();
                 }
             }
         }
 
-        public bool IsDataLoaded
+        /// <summary>
+        /// Property to get and set temperature units selection Setting Key.
+        /// </summary>
+        public int TemperaruteUnitsSelectionSetting
         {
-            get;
-            private set;
+            get
+            {
+                return GetValueOrDefault<int>(_temperatureUnitsSelectionSettingKeyName, _listPickerSettingDefault);
+            }
+            set
+            {
+                if (AddOrUpdateValue(_temperatureUnitsSelectionSettingKeyName, value))
+                {
+                    Save();
+                }
+            }
         }
 
         /// <summary>
-        /// Crear y agregar unos pocos objetos ItemViewModel a la colección Items.
+        /// Get the current value of the setting, or if it is not found, set the 
+        /// setting to the default value.
         /// </summary>
-        public void LoadData()
+        /// <typeparam name="T"></typeparam>
+        /// <param name="Key"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
+        private T GetValueOrDefault<T>(string Key, T defaultValue)
         {
-                // TODO: How to do the same using StaticResources? :/
-                this.SettingsItems.Add(new ItemViewModel()
-                {
-                    LineOne = "Temperature units",
-                    LineTwo = "fahrenheit"
-                });
-                this.SettingsItems.Add(new ItemViewModel()
-                {
-                    LineOne = "Language",
-                    LineTwo = "spanish"
-                });
+            T value;
 
+            // If the key exists, retrieve the value.
+            if (settings.Contains(Key))
+            {
+                value = (T)settings[Key];
+            }
+            // Otherwise, use the default value.
+            else
+            {
+                value = defaultValue;
+            }
+            return value;
+        }
 
-            this.IsDataLoaded = true;
+        /// <summary>
+        /// Update a setting value for application. If the setting does not
+        /// exist, then add the setting.
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private bool AddOrUpdateValue(string Key, Object value)
+        {
+            bool valueChanged = false;
+
+            // If the key exists
+            if (settings.Contains(Key))
+            {
+                // If the value has changed
+                if (settings[Key] != value)
+                {
+                    // Store the new value
+                    settings[Key] = value;
+                    valueChanged = true;
+                }
+            }
+            // Otherwise create the key.
+            else
+            {
+                settings.Add(Key, value);
+                valueChanged = true;
+            }
+            return valueChanged;
+        }
+
+        /// <summary>
+        /// Save the settings.
+        /// </summary>
+        private void Save()
+        {
+            settings.Save();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

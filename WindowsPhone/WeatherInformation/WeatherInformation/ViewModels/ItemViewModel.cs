@@ -14,7 +14,7 @@ namespace WeatherInformation.ViewModels
     {
         private string _lineOne;
         /// <summary>
-        /// Propiedad Sample ViewModel; esta propiedad se usa en la vista para mostrar su valor mediante un enlace.
+        /// Propiedad Sample MainViewModel; esta propiedad se usa en la vista para mostrar su valor mediante un enlace.
         /// </summary>
         /// <returns></returns>
         public string LineOne
@@ -35,7 +35,7 @@ namespace WeatherInformation.ViewModels
 
         private string _lineTwo;
         /// <summary>
-        /// Propiedad Sample ViewModel; esta propiedad se usa en la vista para mostrar su valor mediante un enlace.
+        /// Propiedad Sample MainViewModel; esta propiedad se usa en la vista para mostrar su valor mediante un enlace.
         /// </summary>
         /// <returns></returns>
         public string LineTwo
@@ -56,7 +56,7 @@ namespace WeatherInformation.ViewModels
 
         private string _lineThree;
         /// <summary>
-        /// Propiedad Sample ViewModel; esta propiedad se usa en la vista para mostrar su valor mediante un enlace.
+        /// Propiedad Sample MainViewModel; esta propiedad se usa en la vista para mostrar su valor mediante un enlace.
         /// </summary>
         /// <returns></returns>
         public string LineThree
@@ -77,7 +77,7 @@ namespace WeatherInformation.ViewModels
 
         private string _lineFour;
         /// <summary>
-        /// Propiedad Sample ViewModel; esta propiedad se usa en la vista para mostrar su valor mediante un enlace.
+        /// Propiedad Sample MainViewModel; esta propiedad se usa en la vista para mostrar su valor mediante un enlace.
         /// </summary>
         /// <returns></returns>
         public string LineFour
@@ -98,7 +98,7 @@ namespace WeatherInformation.ViewModels
 
         private string _lineFive;
         /// <summary>
-        /// Propiedad Sample ViewModel; esta propiedad se usa en la vista para mostrar su valor mediante un enlace.
+        /// Propiedad Sample MainViewModel; esta propiedad se usa en la vista para mostrar su valor mediante un enlace.
         /// </summary>
         /// <returns></returns>
         public string LineFive

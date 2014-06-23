@@ -54,7 +54,7 @@ namespace WeatherInformation.ViewModels
     + "]}";
 
         /// <summary>
-        /// Propiedad Sample ViewModel; esta propiedad se usa en la vista para mostrar su valor mediante un enlace
+        /// Propiedad Sample MainViewModel; esta propiedad se usa en la vista para mostrar su valor mediante un enlace
         /// </summary>
         /// <returns></returns>
         public string SampleProperty
@@ -70,17 +70,6 @@ namespace WeatherInformation.ViewModels
                     _sampleProperty = value;
                     NotifyPropertyChanged("SampleProperty");
                 }
-            }
-        }
-
-        /// <summary>
-        /// Propiedad de ejemplo que devuelve una cadena traducida
-        /// </summary>
-        public string LocalizedSampleProperty
-        {
-            get
-            {
-                return AppResources.SampleProperty;
             }
         }
 

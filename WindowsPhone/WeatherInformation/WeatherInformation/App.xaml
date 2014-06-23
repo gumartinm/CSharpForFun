@@ -1,12 +1,18 @@
 ﻿<Application
-    x:Class="WeatherInformation.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
-    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone">
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ViewModels="clr-namespace:WeatherInformation.ViewModels" mc:Ignorable="d"
+    x:Class="WeatherInformation.App">
 
     <!--Recursos de la aplicación-->
     <Application.Resources>
+<!-- 
+    	<SampleData:SettingsPageData x:Key="SettingsPageData" d:IsDataSource="True"/>
+        -->
         <local:LocalizedStrings xmlns:local="clr-namespace:WeatherInformation" x:Key="LocalizedStrings"/>
     </Application.Resources>
 

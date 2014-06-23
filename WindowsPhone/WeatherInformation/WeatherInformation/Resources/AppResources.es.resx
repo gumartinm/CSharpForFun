@@ -122,40 +122,16 @@
     <comment>Controls the FlowDirection for all elements in the RootFrame. Set to the traditional direction of this resource file's language</comment>
   </data>
   <data name="ResourceLanguage" xml:space="preserve">
-    <value>en</value>
+    <value>es</value>
     <comment>Controls the Language and ensures that the font for all elements in the RootFrame aligns with the app's language. Set to the language code of this resource file's language.</comment>
   </data>
-  <data name="ApplicationTitle" xml:space="preserve">
-    <value>MY APPLICATION</value>
-  </data>
-  <data name="AppBarButtonText" xml:space="preserve">
-    <value>add</value>
-  </data>
-  <data name="AppBarMenuItemText" xml:space="preserve">
-    <value>Menu item</value>
-  </data>
-  <data name="SettingsLanguageHeader" xml:space="preserve">
-    <value>Language</value>
-    <comment>Text in settings page</comment>
-  </data>
-  <data name="SettingsTemperatureUnitsHeader" xml:space="preserve">
-    <value>Temperature units</value>
-    <comment>Text in settings page</comment>
-  </data>
-  <data name="SettingsLanguageSelectionEnglish" xml:space="preserve">
-    <value>english</value>
-    <comment>Settings page, select English language</comment>
-  </data>
-  <data name="SettingsLanguageSelectionSpanish" xml:space="preserve">
-    <value>spanish</value>
-    <comment>Settings page, select Spanish language</comment>
-  </data>
-  <data name="SettingsTemperatureUnitsSelectionCentigrade" xml:space="preserve">
-    <value>celsius</value>
-    <comment>Settings page, select tempereature units centigrade</comment>
-  </data>
-  <data name="SettingsTemperatureUnitsSelectionFahrenheit" xml:space="preserve">
-    <value>fahrenheit</value>
-    <comment>Settings page, select temperature units fahrenheit</comment>
-  </data>
-</root>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+<data name="ApplicationTitle" xml:space="preserve"><value>MI APLICACIÓN</value></data><data name="AppBarButtonText" xml:space="preserve"><value>Agregar</value></data><data name="AppBarMenuItemText" xml:space="preserve"><value>Elemento de menú</value></data><data name="SettingsLanguageHeader" xml:space="preserve"><value>Idioma</value><comment>Text in settings page</comment></data><data name="SettingsTemperatureUnitsHeader" xml:space="preserve"><value>Unidades de temperatura</value><comment>Text in settings page</comment></data><data name="SettingsLanguageSelectionEnglish" xml:space="preserve"><value>inglés</value><comment>Settings page, select English language</comment></data><data name="SettingsLanguageSelectionSpanish" xml:space="preserve"><value>español</value><comment>Settings page, select Spanish language</comment></data><data name="SettingsTemperatureUnitsSelectionCentigrade" xml:space="preserve"><value>celsius</value><comment>Settings page, select tempereature units centigrade</comment></data><data name="SettingsTemperatureUnitsSelectionFahrenheit" xml:space="preserve"><value>fahrenheit</value><comment>Settings page, select temperature units fahrenheit</comment></data></root>

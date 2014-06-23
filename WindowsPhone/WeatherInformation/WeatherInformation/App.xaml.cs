@@ -6,6 +6,8 @@ using System.Windows.Markup;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using System.Threading; 
+using System.Globalization; 
 using WeatherInformation.Resources;
 using WeatherInformation.ViewModels;
 
@@ -13,15 +15,19 @@ namespace WeatherInformation
 {
     public partial class App : Application
     {
+        // Locale to force CurrentCulture to in InitializeLanguage(). 
+        // Use "qps-PLOC" to deploy pseudolocalized strings. 
+        // Use "" to let user Phone Language selection determine locale. 
+        // public static String appForceCulture = "qps-PLOC";
+        public static String appForceCulture = "en"; 
         private static MainViewModel viewModel = null;
         private static SettingsViewModel _settingsViewModel = null;
-        private static TemperatureUnitsViewModel _temperatureUnitsViewModel = null;
 
         /// <summary>
-        /// ViewModel estático que usan las vistas con el que se van a enlazar.
+        /// MainViewModel estático que usan las vistas con el que se van a enlazar.
         /// </summary>
         /// <returns>Objeto MainViewModel.</returns>
-        public static MainViewModel ViewModel
+        public static MainViewModel MainViewModel
         {
             get
             {
@@ -42,19 +48,6 @@ namespace WeatherInformation
                     _settingsViewModel = new SettingsViewModel();
 
                 return _settingsViewModel;
-            }
-        }
-
-
-        public static TemperatureUnitsViewModel TemperatureUnitsViewModel
-        {
-            get
-            {
-                // Retrasar la creación del modelo de vista hasta que sea necesario
-                if (_temperatureUnitsViewModel == null)
-                    _temperatureUnitsViewModel = new TemperatureUnitsViewModel();
-
-                return _temperatureUnitsViewModel;
             }
         }
 
@@ -113,9 +106,9 @@ namespace WeatherInformation
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
             // Asegurarse de que el estado de la aplicación se restaura adecuadamente
-            if (!App.ViewModel.IsDataLoaded)
+            if (!App.MainViewModel.IsDataLoaded)
             {
-                App.ViewModel.LoadData();
+                App.MainViewModel.LoadData();
             }
         }
 
@@ -236,6 +229,15 @@ namespace WeatherInformation
         {
             try
             {
+                // Force CurrentUICulture to locale defined by appForceCulture.
+                // An empty string allows the user's Phone Language setting to 
+                // determine the locale.
+                //if (Debugger.IsAttached && String.IsNullOrWhiteSpace(appForceCulture) == false)
+                //{
+                //    Thread.CurrentThread.CurrentCulture = new CultureInfo(appForceCulture);
+                //    Thread.CurrentThread.CurrentUICulture = new CultureInfo(appForceCulture);
+                //}
+
                 // Establecer la fuente para que coincida con el idioma definido por
                 // Cadena de recursos ResourceLanguage para cada idioma admitido.
                 //

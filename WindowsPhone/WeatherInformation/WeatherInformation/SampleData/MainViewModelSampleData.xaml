@@ -1,8 +1,7 @@
 ﻿<vm:MainViewModel
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:vm="clr-namespace:WeatherInformation.ViewModels"
-    SampleProperty="Valor de propiedad Sample Text">
+    xmlns:vm="clr-namespace:WeatherInformation.ViewModels">
 
     <vm:MainViewModel.ForecastItems>
         <vm:ItemViewModel LineOne="MON" LineTwo="1" LineThree="15ºC" LineFour="10ºC" LineFive="/Assets/Tiles/IconicTileMediumLarge.png"/>
