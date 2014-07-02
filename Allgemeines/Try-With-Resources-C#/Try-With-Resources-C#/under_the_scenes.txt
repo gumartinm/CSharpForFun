@@ -1,0 +1,84 @@
+using (ResourceFirst resourceOne = new ResourceFirst())
+using (ResourceSecond resourceTwo = new ResourceSecond())
+{
+	resourceTwo.DoSomething();
+	resourceOne.DoSomething();
+}
+
+
+using statement under the scenes:
+
+The UnhandledException event handles uncaught exceptions thrown from the main UI thread.
+The ThreadException event handles uncaught exceptions thrown from non-UI threads.
+Application.ThreadException;
+AppDomain.CurrentDomain.UnhandledException;
+
+try {
+	// AppDomain
+	Program();
+}
+catch(Exception e)
+{
+	AppDomain.CurrentDomain.UnhandledException = e;
+}
+
+if (AppDomain.CurrentDomain.UnhandledException != null)
+{
+	Console.WriteLine("[ERROR] FATAL UNHANDLED EXCEPTION: {0}", e.ToString());
+}
+
+
+
+Program()
+{
+	ResourceFirst resourceOne = new ResourceFirst()
+	try{
+		ResourceSecond resourceSecond = new ResourceSecond()	
+		resourceOne.DoSomething();
+		resourceSecond.DoSomehting();
+	}
+	// When debuggin this catch exists. Does it exist when running without debug?
+	// I guess, it will not exist but not sure.
+	catch(Exception e)
+	{
+		Console.WriteLine("Unhandled Exception:");
+		Console.WriteLine(e.ToString());
+		throw e;
+	}
+	finally
+	{
+		if (resourceSecond != null)
+		{
+			try {
+				resourceSecond.Dispose();
+			}
+			// When debuggin this catch exists. Does it exist when running without debug?
+			// I guess, it will not exist but not sure.
+			catch(Exception e)
+			{
+				Console.WriteLine("Unhandled Exception:");
+				Console.WriteLine(e.ToString());
+				throw e;
+			}
+			finally
+			{
+				resourceOne.Dispose();
+			}
+		}
+		else
+		{
+			try {
+				resourceOne.Dispose();
+			}
+			// When debuggin this catch exists. Does it exist when running without debug?
+			// I guess, it will not exist but not sure.
+			catch(Exception e)
+			{
+				Console.WriteLine("Unhandled Exception:");
+				Console.WriteLine(e.ToString());
+				throw e;
+			}
+		}
+	}
+}
+
