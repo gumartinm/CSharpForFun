@@ -82,3 +82,33 @@ Program()
 	}
 }
 
+IMHO the best way to close resources is by means of the using statement. In this way you close always the resources even
+if there are exceptions. Besides we do not have to write loads of code to achieve it.
+
+
+The old way:
+
+MyResourceOne resourceOne;
+MyResourceTwo resourceTwo;
+try
+{
+
+}
+finally
+{
+    if (resourceOne != null)
+    {
+        resourceOne.Dispose();
+    }
+
+    if (resourceTwo != null)
+    {
+        resourceTwo.Dispose();
+    }
+}
+
+The problem with this way is, if resourceOne.Dispose() throws exception I am not going to call resourceTwo.Dispose() :(
+
+BUT IF YOU WANT TO DO IT RIGHT (or at least as I think it is right) YOU MUST WRITE LOADS OF CODE, SO AT THE END IF YOU DO NOT USE
+THE using statement THIS IS THE "BEST" SOLUTION (even if it is not perfect) BUT ALL DEPENDS ON YOUR CASE. With using statement you will
+never have doubts :)  SO ALWAYS USE THE using statement (AFAIU)
