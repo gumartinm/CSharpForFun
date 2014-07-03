@@ -11,6 +11,7 @@ namespace TryWithResourcesC
         public static void Main(string[] args)
         {
             Console.WriteLine("BEGIN FIRST EXAMPLE");
+            Console.Out.Flush();
 
             using (ResourceFirst resourceOne = new ResourceFirst())
             using (ResourceSecond resourceTwo = new ResourceSecond())
@@ -20,9 +21,11 @@ namespace TryWithResourcesC
             }
 
             Console.WriteLine("END FIRST EXAMPLE");
+            Console.Out.Flush();
 
 
             Console.WriteLine("BEGIN SECOND EXAMPLE");
+            Console.Out.Flush();
 
             using (ResourceFourth resourceFourth = new ResourceFourth())
             using (ResourceFifth resourceFifth = new ResourceFifth())
@@ -32,6 +35,7 @@ namespace TryWithResourcesC
             }
 
             Console.WriteLine("END SECOND EXAMPLE");
+            Console.Out.Flush();
         }
     }
 
@@ -41,12 +45,14 @@ namespace TryWithResourcesC
         public void DoSomething()
         {
             Console.WriteLine("ResourceFirst: DoSomething");
+            Console.Out.Flush();
             throw new Exception("ResourceFirst DoSomething Exception!!!");
         }
 
         public void Dispose()
         {
             Console.WriteLine("I am the Dispose of ResourceFirst");
+            Console.Out.Flush();
             throw new Exception("ResourceFirst Dispose Exception!!!");
         }
     }
@@ -56,11 +62,13 @@ namespace TryWithResourcesC
         public void DoSomething()
         {
             Console.WriteLine("ResourceSecond: DoSomething");
+            Console.Out.Flush();
         }
 
         public void Dispose()
         {
             Console.WriteLine("I am the Dispose of ResourceSecond");
+            Console.Out.Flush();
             throw new Exception("ResourceSecond Dispose Exception!!!");
         }
     }
@@ -76,12 +84,14 @@ namespace TryWithResourcesC
         public void DoSomething()
         {
             Console.WriteLine("ResourceFourth: DoSomething");
+            Console.Out.Flush();
             throw new Exception("ResourceFourth DoSomething Exception!!!");
         }
 
         public void Dispose()
         {
             Console.WriteLine("I am the Dispose of ResourceFourth");
+            Console.Out.Flush();
             throw new Exception("ResourceFourth Dispose Exception!!!");
         }
     }
@@ -101,6 +111,7 @@ namespace TryWithResourcesC
         public void Dispose()
         {
             Console.WriteLine("I am the Dispose of ResourceFifth");
+            Console.Out.Flush();
             throw new Exception("ResourceFifth Dispose Exception!!!");
         }
     }

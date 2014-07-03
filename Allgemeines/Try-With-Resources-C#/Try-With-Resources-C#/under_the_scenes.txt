@@ -1,3 +1,39 @@
+Program.cs, output from example:
+
+BEGIN FIRST EXAMPLE
+ResourceSecond: DoSomething
+ResourceFirst: DoSomething
+
+Unhandled Exception:
+System.Exception: ResourceFirst DoSomething Exception!!!
+  at TryWithResourcesC.ResourceFirst.DoSomething () [0x0001a] in /home/gustavo/github/CSharpForFun/Allgemeines/Try-With-Resources-C#/Try-With-Resources-C#/Program.cs:49
+  at TryWithResourcesC.MainClass.Main (System.String[] args) [0x00029] in /home/gustavo/github/CSharpForFun/Allgemeines/Try-With-Resources-C#/Try-With-Resources-C#/Program.cs:20
+I am the Dispose of ResourceSecond
+
+Unhandled Exception:
+System.Exception: ResourceSecond Dispose Exception!!!
+  at TryWithResourcesC.ResourceSecond.Dispose () [0x0001a] in /home/gustavo/github/CSharpForFun/Allgemeines/Try-With-Resources-C#/Try-With-Resources-C#/Program.cs:72
+  at TryWithResourcesC.MainClass.Main (System.String[] args) [0x0003b] in /home/gustavo/github/CSharpForFun/Allgemeines/Try-With-Resources-C#/Try-With-Resources-C#/Program.cs:17
+I am the Dispose of ResourceFirst
+
+Unhandled Exception:
+System.Exception: ResourceFirst Dispose Exception!!!
+  at TryWithResourcesC.ResourceFirst.Dispose () [0x0001a] in /home/gustavo/github/CSharpForFun/Allgemeines/Try-With-Resources-C#/Try-With-Resources-C#/Program.cs:56
+  at TryWithResourcesC.MainClass.Main (System.String[] args) [0x0004d] in /home/gustavo/github/CSharpForFun/Allgemeines/Try-With-Resources-C#/Try-With-Resources-C#/Program.cs:16
+[ERROR] FATAL UNHANDLED EXCEPTION: System.Exception: ResourceFirst Dispose Exception!!!
+  at TryWithResourcesC.ResourceFirst.Dispose () [0x0001a] in /home/gustavo/github/CSharpForFun/Allgemeines/Try-With-Resources-C#/Try-With-Resources-C#/Program.cs:56
+  at TryWithResourcesC.MainClass.Main (System.String[] args) [0x0004d] in /home/gustavo/github/CSharpForFun/Allgemeines/Try-With-Resources-C#/Try-With-Resources-C#/Program.cs:16
+
+
+
+So, it is worse than Java because you can not see easily the hidden exceptions.
+As in Java it keeps running the Dispose methods even if some of them throw exception!!!
+
+SO, THE BEST WAY TO CLOSE DEVICES IN C# IS USING THE using statement!!!!!
+OTHERWISE YOU ARE GOING TO WRITE LOADS OF CODE IF YOU WANT TO DO THE SAME!!!!
+
+
+
 using (ResourceFirst resourceOne = new ResourceFirst())
 using (ResourceSecond resourceTwo = new ResourceSecond())
 {
@@ -33,7 +69,7 @@ Program()
 {
 	ResourceFirst resourceOne = new ResourceFirst()
 	try{
-		ResourceSecond resourceSecond = new ResourceSecond()	
+		ResourceSecond resourceSecond = new ResourceSecond()
 		resourceOne.DoSomething();
 		resourceSecond.DoSomehting();
 	}
