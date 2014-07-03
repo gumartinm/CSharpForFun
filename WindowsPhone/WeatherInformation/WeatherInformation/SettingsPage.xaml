@@ -11,57 +11,57 @@
     mc:Ignorable="d"
     SupportedOrientations="PortraitOrLandscape"  Orientation="Portrait"
     shell:SystemTray.IsVisible="True">
-    
-	<phone:PhoneApplicationPage.Resources>
-		<ViewModels:SettingsViewModel x:Key="SettingsViewModelDataSource" d:IsDataSource="True"/>
-	</phone:PhoneApplicationPage.Resources>
-	<phone:PhoneApplicationPage.FontFamily>
-		<StaticResource ResourceKey="PhoneFontFamilyNormal"/>
-	</phone:PhoneApplicationPage.FontFamily>
-	<phone:PhoneApplicationPage.FontSize>
-		<StaticResource ResourceKey="PhoneFontSizeNormal"/>
-	</phone:PhoneApplicationPage.FontSize>
-	<phone:PhoneApplicationPage.Foreground>
-		<StaticResource ResourceKey="PhoneForegroundBrush"/>
-	</phone:PhoneApplicationPage.Foreground>
+
+    <phone:PhoneApplicationPage.Resources>
+        <ViewModels:SettingsViewModel x:Key="SettingsViewModelDataSource" d:IsDataSource="True"/>
+    </phone:PhoneApplicationPage.Resources>
+    <phone:PhoneApplicationPage.FontFamily>
+        <StaticResource ResourceKey="PhoneFontFamilyNormal"/>
+    </phone:PhoneApplicationPage.FontFamily>
+    <phone:PhoneApplicationPage.FontSize>
+        <StaticResource ResourceKey="PhoneFontSizeNormal"/>
+    </phone:PhoneApplicationPage.FontSize>
+    <phone:PhoneApplicationPage.Foreground>
+        <StaticResource ResourceKey="PhoneForegroundBrush"/>
+    </phone:PhoneApplicationPage.Foreground>
     <!--LayoutRoot es la cuadrícula raíz donde se coloca todo el contenido de la página-->
-	<Grid x:Name="LayoutRoot" Background="Transparent" DataContext="{Binding Source={StaticResource SettingsViewModelDataSource}}">
-		<!-- Pivot -->
-		<phone:Pivot Title="WEATHER INFORMATION">
-			<!-- Elemento Pivot uno -->
-			<phone:PivotItem Header="settings">
-				<Grid VerticalAlignment="Top">
-					<Grid.RowDefinitions>
-						<RowDefinition Height="*" />
-						<RowDefinition Height="*" />
-					</Grid.RowDefinitions>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="*" />
-					</Grid.ColumnDefinitions>
-					<StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical" VerticalAlignment="Center">
-						<TextBox x:Name="TemperatureUnitsHeader" Text="{Binding LocalizedResources.SettingsTemperatureUnitsHeader, Mode=OneWay, Source={StaticResource LocalizedStrings}}" HorizontalAlignment="Left" Background="Transparent" BorderBrush="Transparent" Foreground="#FFA4A2A2"/>
-                        <toolkit:ListPicker x:Name="TemperatureUnitsSelection" SelectedIndex="{Binding TemperaruteUnitsSelectionSetting, Mode=TwoWay}">
+    <Grid x:Name="LayoutRoot" Background="Transparent" DataContext="{Binding Source={StaticResource SettingsViewModelDataSource}}">
+        <!-- Pivot -->
+        <phone:Pivot Title="WEATHER INFORMATION">
+            <!-- Elemento Pivot uno -->
+            <phone:PivotItem Header="settings">
+                <Grid VerticalAlignment="Top">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical" VerticalAlignment="Center">
+                        <TextBox x:Name="TemperatureUnitsHeader" Text="{Binding LocalizedResources.SettingsTemperatureUnitsHeader, Mode=OneWay, Source={StaticResource LocalizedStrings}}" HorizontalAlignment="Left" Background="Transparent" BorderBrush="Transparent" Foreground="#FFA4A2A2"/>
+                        <toolkit:ListPicker x:Name="TemperatureUnitsSelection" SelectedIndex="{Binding Source={StaticResource SettingsViewModelDataSource}, Path=TemperaruteUnitsSelectionSetting, Mode=TwoWay}" SelectionChanged="TemperatureUnitsSelection_SelectionChanged">
                             <toolkit:ListPickerItem Content="{Binding LocalizedResources.SettingsTemperatureUnitsSelectionFahrenheit, Mode=OneWay, Source={StaticResource LocalizedStrings}}" />
-							<toolkit:ListPickerItem Content="{Binding LocalizedResources.SettingsTemperatureUnitsSelectionCentigrade, Mode=OneWay, Source={StaticResource LocalizedStrings}}" />
-						</toolkit:ListPicker>
-					</StackPanel>
-					<StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical" VerticalAlignment="Center">
-						<TextBox x:Name="LanguageHeader" Text="{Binding LocalizedResources.SettingsLanguageHeader, Mode=OneWay, Source={StaticResource LocalizedStrings}}" HorizontalAlignment="Left" Background="Transparent" BorderBrush="Transparent" Foreground="#FFA4A2A2" />
-						<toolkit:ListPicker x:Name="LanguageSelection" SelectedIndex="{Binding LanguageSelectionSetting, Mode=TwoWay}">
-							<toolkit:ListPickerItem Content="{Binding LocalizedResources.SettingsLanguageSelectionEnglish, Mode=OneWay, Source={StaticResource LocalizedStrings}}"/>
-							<toolkit:ListPickerItem Content="{Binding LocalizedResources.SettingsLanguageSelectionSpanish, Mode=OneWay, Source={StaticResource LocalizedStrings}}"/>
-						</toolkit:ListPicker>
-					</StackPanel>
-				</Grid>
-			</phone:PivotItem>
+                            <toolkit:ListPickerItem Content="{Binding LocalizedResources.SettingsTemperatureUnitsSelectionCentigrade, Mode=OneWay, Source={StaticResource LocalizedStrings}}" />
+                        </toolkit:ListPicker>
+                    </StackPanel>
+                    <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical" VerticalAlignment="Center">
+                        <TextBox x:Name="LanguageHeader" Text="{Binding LocalizedResources.SettingsLanguageHeader, Mode=OneWay, Source={StaticResource LocalizedStrings}}" HorizontalAlignment="Left" Background="Transparent" BorderBrush="Transparent" Foreground="#FFA4A2A2" />
+                        <toolkit:ListPicker x:Name="LanguageSelection" SelectedIndex="{Binding Source={StaticResource SettingsViewModelDataSource}, Path=LanguageSelectionSetting, Mode=TwoWay}" SelectionChanged="LanguageSelection_SelectionChanged">
+                            <toolkit:ListPickerItem Content="{Binding LocalizedResources.SettingsLanguageSelectionEnglish, Mode=OneWay, Source={StaticResource LocalizedStrings}}"/>
+                            <toolkit:ListPickerItem Content="{Binding LocalizedResources.SettingsLanguageSelectionSpanish, Mode=OneWay, Source={StaticResource LocalizedStrings}}"/>
+                        </toolkit:ListPicker>
+                    </StackPanel>
+                </Grid>
+            </phone:PivotItem>
 
-			<!-- Elemento Pivot dos -->
-			<phone:PivotItem Header="notifications">
-				<Grid/>
-			</phone:PivotItem>
+            <!-- Elemento Pivot dos -->
+            <phone:PivotItem Header="notifications">
+                <Grid/>
+            </phone:PivotItem>
 
-		</phone:Pivot>
-		<phone:LongListSelector HorizontalAlignment="Left" Height="100" Margin="825,108,-445,0" VerticalAlignment="Top" Width="100"/>
-	</Grid>
+        </phone:Pivot>
+        <phone:LongListSelector HorizontalAlignment="Left" Height="100" Margin="825,108,-445,0" VerticalAlignment="Top" Width="100"/>
+    </Grid>
 
 </phone:PhoneApplicationPage>

@@ -23,9 +23,6 @@ namespace WeatherInformation.ViewModels
         /// </summary>
         public ObservableCollection<ItemViewModel> ForecastItems { get; private set; }
         public ObservableCollection<ItemViewModel> CurrentItems { get; private set; }
-        //public string ForecastHeader { get; private set; }
-
-        private string _sampleProperty = "Sample Runtime Property Value";
 
         private readonly ServiceParser _serviceParser;
 
@@ -52,26 +49,6 @@ namespace WeatherInformation.ViewModels
     + "{\"dt\":1398427200,\"temp\":{\"day\":282.11,\"min\":280.72,\"max\":282.32,\"night\":282.32,\"eve\":280.99,\"morn\":280.72},\"pressure\":1018.65,\"humidity\":0,\"weather\":[{\"id\":502,\"main\":\"Rain\",\"description\":\"heavy intensity rain\",\"icon\":\"10d\"}],\"speed\":5.26,\"deg\":158,\"clouds\":83,\"rain\":14.4},"
     + "{\"dt\":1398513600,\"temp\":{\"day\":282.75,\"min\":280.61,\"max\":282.75,\"night\":280.61,\"eve\":281.75,\"morn\":281.96},\"pressure\":1007.4,\"humidity\":0,\"weather\":[{\"id\":500,\"main\":\"Rain\",\"description\":\"light rain\",\"icon\":\"10d\"}],\"speed\":9.18,\"deg\":198,\"clouds\":35,\"rain\":0.55}"
     + "]}";
-
-        /// <summary>
-        /// Propiedad Sample MainViewModel; esta propiedad se usa en la vista para mostrar su valor mediante un enlace
-        /// </summary>
-        /// <returns></returns>
-        public string SampleProperty
-        {
-            get
-            {
-                return _sampleProperty;
-            }
-            set
-            {
-                if (value != _sampleProperty)
-                {
-                    _sampleProperty = value;
-                    NotifyPropertyChanged("SampleProperty");
-                }
-            }
-        }
 
         public bool IsDataLoaded
         {

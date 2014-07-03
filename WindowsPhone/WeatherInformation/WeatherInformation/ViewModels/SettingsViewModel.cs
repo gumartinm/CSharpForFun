@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Phone.Controls;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -6,11 +7,12 @@ using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using WeatherInformation.Resources;
 
 namespace WeatherInformation.ViewModels
 {
-    public class SettingsViewModel : INotifyPropertyChanged
+    public class SettingsViewModel
     {
         // Settings
         private IsolatedStorageSettings settings;
@@ -20,7 +22,9 @@ namespace WeatherInformation.ViewModels
         private const string _temperatureUnitsSelectionSettingKeyName = "TemperatureUnitsSelection";
 
         // The default value of ListPicker settings
-        private const int _listPickerSettingDefault = 0;
+        private const int _languageSelectionSettingDefault = 0;
+        private const int _temperatureUnitsSelectionSettinDefault = 0;
+
 
         public SettingsViewModel()
         {
@@ -41,7 +45,7 @@ namespace WeatherInformation.ViewModels
         {
             get
             {
-                return GetValueOrDefault<int>(_languageSelectionSettingKeyName, _listPickerSettingDefault);
+                return GetValueOrDefault<int>(_languageSelectionSettingKeyName, _languageSelectionSettingDefault);
             }
             set
             {
@@ -59,7 +63,7 @@ namespace WeatherInformation.ViewModels
         {
             get
             {
-                return GetValueOrDefault<int>(_temperatureUnitsSelectionSettingKeyName, _listPickerSettingDefault);
+                return GetValueOrDefault<int>(_temperatureUnitsSelectionSettingKeyName, _temperatureUnitsSelectionSettinDefault);
             }
             set
             {
@@ -81,6 +85,14 @@ namespace WeatherInformation.ViewModels
         private T GetValueOrDefault<T>(string Key, T defaultValue)
         {
             T value;
+
+            // You need to add a check to DesignerProperties.IsInDesignTool to that code since accessing
+            // IsolatedStorageSettings in Visual Studio or Expression Blend is invalid.
+            // see: http://stackoverflow.com/questions/7294461/unable-to-determine-application-identity-of-the-caller
+            if (System.ComponentModel.DesignerProperties.IsInDesignTool)
+            {
+                return defaultValue;
+            }
 
             // If the key exists, retrieve the value.
             if (settings.Contains(Key))
@@ -105,6 +117,14 @@ namespace WeatherInformation.ViewModels
         private bool AddOrUpdateValue(string Key, Object value)
         {
             bool valueChanged = false;
+
+            // You need to add a check to DesignerProperties.IsInDesignTool to that code since accessing
+            // IsolatedStorageSettings in Visual Studio or Expression Blend is invalid.
+            // see: http://stackoverflow.com/questions/7294461/unable-to-determine-application-identity-of-the-caller
+            if (System.ComponentModel.DesignerProperties.IsInDesignTool)
+            {
+                return false;
+            }
 
             // If the key exists
             if (settings.Contains(Key))
@@ -131,17 +151,15 @@ namespace WeatherInformation.ViewModels
         /// </summary>
         private void Save()
         {
-            settings.Save();
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged(String propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (null != handler)
+            // You need to add a check to DesignerProperties.IsInDesignTool to that code since accessing
+            // IsolatedStorageSettings in Visual Studio or Expression Blend is invalid.
+            // see: http://stackoverflow.com/questions/7294461/unable-to-determine-application-identity-of-the-caller
+            if (System.ComponentModel.DesignerProperties.IsInDesignTool)
             {
-                handler(this, new PropertyChangedEventArgs(propertyName));
+                return;
             }
+
+            settings.Save();
         }
     }
 }

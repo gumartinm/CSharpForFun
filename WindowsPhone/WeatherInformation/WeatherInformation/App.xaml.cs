@@ -21,7 +21,6 @@ namespace WeatherInformation
         // public static String appForceCulture = "qps-PLOC";
         public static String appForceCulture = "en"; 
         private static MainViewModel viewModel = null;
-        private static SettingsViewModel _settingsViewModel = null;
 
         /// <summary>
         /// MainViewModel estático que usan las vistas con el que se van a enlazar.
@@ -36,18 +35,6 @@ namespace WeatherInformation
                     viewModel = new MainViewModel();
 
                 return viewModel;
-            }
-        }
-
-        public static SettingsViewModel SettingsViewModel
-        {
-            get
-            {
-                // Retrasar la creación del modelo de vista hasta que sea necesario
-                if (_settingsViewModel == null)
-                    _settingsViewModel = new SettingsViewModel();
-
-                return _settingsViewModel;
             }
         }
 

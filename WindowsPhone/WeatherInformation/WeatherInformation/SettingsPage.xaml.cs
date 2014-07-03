@@ -10,35 +10,46 @@ using Microsoft.Phone.Shell;
 using WeatherInformation.ViewModels;
 using System.IO.IsolatedStorage;
 using System.Collections;
+using System.Text;
 
 namespace WeatherInformation
 {
     public partial class SettingsPage : PhoneApplicationPage
     {
-        // Our settings
-        private IsolatedStorageSettings _settings;
 
         public SettingsPage()
         {
             InitializeComponent();
-
-            _settings = IsolatedStorageSettings.ApplicationSettings;
-
-            // Establecer el contexto de datos del control ListBox control en los datos de ejemplo
-            DataContext = App.SettingsViewModel;
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-        }
-
+        /// <summary>
+        /// Update temperature units selection when change.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TemperatureUnitsSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            IList units = e.AddedItems;
-            if (units.Count > 0)
-            {
-                var selectedUnit = units.Cast<string>().First<string>();
-            }
+            ListPicker listPicker = sender as ListPicker;
+
+            // TODO: with LINQ :(
+            int index = listPicker.SelectedIndex;
+            var item = listPicker.Items[index];
+            listPicker.SelectedItem = item;
+        }
+
+        /// <summary>
+        /// Update language selection when change.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LanguageSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ListPicker listPicker = sender as ListPicker;
+
+            // TODO: with LINQ :(
+            int index = listPicker.SelectedIndex;
+            var item = listPicker.Items[index];
+            listPicker.SelectedItem = item;
         }
     }
 }
