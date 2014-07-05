@@ -34,6 +34,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -50,6 +51,14 @@
                         <toolkit:ListPicker x:Name="LanguageSelection" SelectedIndex="{Binding Source={StaticResource SettingsViewModelDataSource}, Path=LanguageSelectionSetting, Mode=TwoWay}" SelectionChanged="LanguageSelection_SelectionChanged">
                             <toolkit:ListPickerItem Content="{Binding LocalizedResources.SettingsLanguageSelectionEnglish, Mode=OneWay, Source={StaticResource LocalizedStrings}}"/>
                             <toolkit:ListPickerItem Content="{Binding LocalizedResources.SettingsLanguageSelectionSpanish, Mode=OneWay, Source={StaticResource LocalizedStrings}}"/>
+                        </toolkit:ListPicker>
+                    </StackPanel>
+                    <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Vertical" VerticalAlignment="Center">
+                        <TextBox x:Name="ForecastDayNumbersHeader" Text="{Binding LocalizedResources.SettingsForecastDayNumbersHeader, Mode=OneWay, Source={StaticResource LocalizedStrings}}" HorizontalAlignment="Left" Background="Transparent" BorderBrush="Transparent" Foreground="#FFA4A2A2" />
+                        <toolkit:ListPicker x:Name="ForecastDayNumbersSelection" SelectedIndex="{Binding Source={StaticResource SettingsViewModelDataSource}, Path=ForecastDayNumbersSelectionSetting, Mode=TwoWay}" SelectionChanged="ForecastDayNumbersSelection_SelectionChanged">
+                            <toolkit:ListPickerItem Content="{Binding LocalizedResources.SettingsForecastDayNumbersSelectionFive, Mode=OneWay, Source={StaticResource LocalizedStrings}}"/>
+                            <toolkit:ListPickerItem Content="{Binding LocalizedResources.SettingsForecastDayNumbersSelectionTen, Mode=OneWay, Source={StaticResource LocalizedStrings}}"/>
+                            <toolkit:ListPickerItem Content="{Binding LocalizedResources.SettingsForecastDayNumbersSelectionFourteen, Mode=OneWay, Source={StaticResource LocalizedStrings}}"/>
                         </toolkit:ListPicker>
                     </StackPanel>
                 </Grid>

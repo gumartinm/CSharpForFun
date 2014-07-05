@@ -61,6 +61,15 @@ namespace WeatherInformation.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a 2.5.
+        /// </summary>
+        public static string APIVersionOpenWeatherMap {
+            get {
+                return ResourceManager.GetString("APIVersionOpenWeatherMap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a add.
         /// </summary>
         public static string AppBarButtonText {
@@ -88,6 +97,42 @@ namespace WeatherInformation.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a This app accesses your phone&apos;s location. Is that ok?.
+        /// </summary>
+        public static string AskForLocationConsentMessageBox {
+            get {
+                return ResourceManager.GetString("AskForLocationConsentMessageBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Location.
+        /// </summary>
+        public static string AskForLocationConsentMessageBoxCaption {
+            get {
+                return ResourceManager.GetString("AskForLocationConsentMessageBoxCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Location autodetection seems to be disabled in your phone.
+        /// </summary>
+        public static string NoticeErrorLocationAutodetection {
+            get {
+                return ResourceManager.GetString("NoticeErrorLocationAutodetection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a There is not stored locations..
+        /// </summary>
+        public static string NoticeThereIsNotCurrentLocation {
+            get {
+                return ResourceManager.GetString("NoticeThereIsNotCurrentLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a LeftToRight.
         /// </summary>
         public static string ResourceFlowDirection {
@@ -102,6 +147,42 @@ namespace WeatherInformation.Resources {
         public static string ResourceLanguage {
             get {
                 return ResourceManager.GetString("ResourceLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Forecast day numbers.
+        /// </summary>
+        public static string SettingsForecastDayNumbersHeader {
+            get {
+                return ResourceManager.GetString("SettingsForecastDayNumbersHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a 5-Day Forecast.
+        /// </summary>
+        public static string SettingsForecastDayNumbersSelectionFive {
+            get {
+                return ResourceManager.GetString("SettingsForecastDayNumbersSelectionFive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a 14-Day Forecast.
+        /// </summary>
+        public static string SettingsForecastDayNumbersSelectionFourteen {
+            get {
+                return ResourceManager.GetString("SettingsForecastDayNumbersSelectionFourteen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a 10-Day Forecast.
+        /// </summary>
+        public static string SettingsForecastDayNumbersSelectionTen {
+            get {
+                return ResourceManager.GetString("SettingsForecastDayNumbersSelectionTen", resourceCulture);
             }
         }
         
@@ -156,6 +237,33 @@ namespace WeatherInformation.Resources {
         public static string SettingsTemperatureUnitsSelectionFahrenheit {
             get {
                 return ResourceManager.GetString("SettingsTemperatureUnitsSelectionFahrenheit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a ºC.
+        /// </summary>
+        public static string TemperatureUnitsCentigradeSymbol {
+            get {
+                return ResourceManager.GetString("TemperatureUnitsCentigradeSymbol", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a ºF.
+        /// </summary>
+        public static string TemperatureUnitsFahrenheitSymbol {
+            get {
+                return ResourceManager.GetString("TemperatureUnitsFahrenheitSymbol", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a http://api.openweathermap.org/data/{0}/forecast/daily?lat={1}&amp;lon={2}&amp;cnt={3}&amp;mode=json.
+        /// </summary>
+        public static string URIAPIOpenWeatherMapForecast {
+            get {
+                return ResourceManager.GetString("URIAPIOpenWeatherMapForecast", resourceCulture);
             }
         }
     }

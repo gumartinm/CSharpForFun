@@ -51,5 +51,15 @@ namespace WeatherInformation
             var item = listPicker.Items[index];
             listPicker.SelectedItem = item;
         }
+
+        private void ForecastDayNumbersSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ListPicker listPicker = sender as ListPicker;
+
+            // TODO: with LINQ :(
+            int index = listPicker.SelectedIndex;
+            var item = listPicker.Items[index];
+            listPicker.SelectedItem = item;
+        }
     }
 }

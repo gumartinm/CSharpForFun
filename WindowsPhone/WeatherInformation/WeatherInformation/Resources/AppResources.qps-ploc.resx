@@ -136,7 +136,7 @@
   </data>
   <data name="SettingsLanguageHeader" xml:space="preserve">
     <value>[D9E46][!!_Ļàйģûáğè_!!]</value>
-    <comment>Text in settings page</comment>
+    <comment>Text in settings page as header</comment>
   </data>
   <data name="SettingsTemperatureUnitsHeader" xml:space="preserve">
     <value>[27946][!!_Ţêmþêŗáτúřê ûиìтş_!!]</value>

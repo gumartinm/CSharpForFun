@@ -12,18 +12,22 @@ using WeatherInformation.Resources;
 
 namespace WeatherInformation.ViewModels
 {
+    // TODO: to use this class or something like that in every place of this application where the settings must be retrieved!!!
+    // (do not copy-paste code!!!)
     public class SettingsViewModel
     {
         // Settings
-        private IsolatedStorageSettings settings;
+        private readonly IsolatedStorageSettings _settings;
 
-        // The key names of settings
+        // The key names of _settings
         private const string _languageSelectionSettingKeyName = "LanguageSelection";
         private const string _temperatureUnitsSelectionSettingKeyName = "TemperatureUnitsSelection";
+        private const string _forecastDayNumbersSelectionSelectionSettingKeyName = "ForecastDayNumbersSelection";
 
-        // The default value of ListPicker settings
+        // The default value of ListPicker _settings
         private const int _languageSelectionSettingDefault = 0;
-        private const int _temperatureUnitsSelectionSettinDefault = 0;
+        private const int _temperatureUnitsSelectionSettingDefault = 0;
+        private const int _forecastDayNumbersSelectionSettingDefault = 0;
 
 
         public SettingsViewModel()
@@ -33,8 +37,8 @@ namespace WeatherInformation.ViewModels
             // see: http://stackoverflow.com/questions/7294461/unable-to-determine-application-identity-of-the-caller
             if (!System.ComponentModel.DesignerProperties.IsInDesignTool)
             {
-                // Get the settings for this application.
-                settings = IsolatedStorageSettings.ApplicationSettings;
+                // Get the _settings for this application.
+                _settings = IsolatedStorageSettings.ApplicationSettings;
             }
         }
 
@@ -63,11 +67,29 @@ namespace WeatherInformation.ViewModels
         {
             get
             {
-                return GetValueOrDefault<int>(_temperatureUnitsSelectionSettingKeyName, _temperatureUnitsSelectionSettinDefault);
+                return GetValueOrDefault<int>(_temperatureUnitsSelectionSettingKeyName, _temperatureUnitsSelectionSettingDefault);
             }
             set
             {
                 if (AddOrUpdateValue(_temperatureUnitsSelectionSettingKeyName, value))
+                {
+                    Save();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Property to get and set forecast day numbers selection Setting Key.
+        /// </summary>
+        public int ForecastDayNumbersSelectionSetting
+        {
+            get
+            {
+                return GetValueOrDefault<int>(_forecastDayNumbersSelectionSelectionSettingKeyName, _forecastDayNumbersSelectionSettingDefault);
+            }
+            set
+            {
+                if (AddOrUpdateValue(_forecastDayNumbersSelectionSelectionSettingKeyName, value))
                 {
                     Save();
                 }
@@ -95,9 +117,9 @@ namespace WeatherInformation.ViewModels
             }
 
             // If the key exists, retrieve the value.
-            if (settings.Contains(Key))
+            if (_settings.Contains(Key))
             {
-                value = (T)settings[Key];
+                value = (T)_settings[Key];
             }
             // Otherwise, use the default value.
             else
@@ -127,27 +149,27 @@ namespace WeatherInformation.ViewModels
             }
 
             // If the key exists
-            if (settings.Contains(Key))
+            if (_settings.Contains(Key))
             {
                 // If the value has changed
-                if (settings[Key] != value)
+                if (_settings[Key] != value)
                 {
                     // Store the new value
-                    settings[Key] = value;
+                    _settings[Key] = value;
                     valueChanged = true;
                 }
             }
             // Otherwise create the key.
             else
             {
-                settings.Add(Key, value);
+                _settings.Add(Key, value);
                 valueChanged = true;
             }
             return valueChanged;
         }
 
         /// <summary>
-        /// Save the settings.
+        /// Save the _settings.
         /// </summary>
         private void Save()
         {
@@ -159,7 +181,7 @@ namespace WeatherInformation.ViewModels
                 return;
             }
 
-            settings.Save();
+            _settings.Save();
         }
     }
 }

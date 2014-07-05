@@ -31,7 +31,7 @@
         <trans-unit id="Resx/SettingsLanguageHeader" translate="yes" xml:space="preserve">
           <source>Language</source>
           <target state="needs-review-translation" state-qualifier="mt-suggestion">Idioma</target>
-          <note from="MultilingualBuild" annotates="source" priority="2">Text in settings page</note>
+          <note from="MultilingualBuild" annotates="source" priority="2">Text in settings page as header</note>
           </trans-unit>
         <trans-unit id="Resx/SettingsTemperatureUnitsHeader" translate="yes" xml:space="preserve">
           <source>Temperature units</source>
@@ -58,6 +58,64 @@
           <target state="translated">fahrenheit</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Settings page, select temperature units fahrenheit</note>
           </trans-unit>
+        <trans-unit id="Resx/AskForLocationConsentMessageBoxCaption" translate="yes" xml:space="preserve">
+          <source>Location</source>
+          <target state="new">Location</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Ask for location consent in map window</note>
+        </trans-unit>
+        <trans-unit id="Resx/NoticeThereIsNotCurrentLocation" translate="yes" xml:space="preserve">
+          <source>There is not stored locations.</source>
+          <target state="new">There is not stored locations.</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Main window, notice message, no available locations</note>
+        </trans-unit>
+        <trans-unit id="Resx/NoticeErrorLocationAutodetection" translate="yes" xml:space="preserve">
+          <source>Location autodetection seems to be disabled in your phone</source>
+          <target state="new">Location autodetection seems to be disabled in your phone</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Map window, notice message, error while location autodetection</note>
+        </trans-unit>
+        <trans-unit id="Resx/SettingsForecastDayNumbersHeader" translate="yes" xml:space="preserve">
+          <source>Forecast day numbers</source>
+          <target state="new">Forecast day numbers</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Text in settings page as header</note>
+        </trans-unit>
+        <trans-unit id="Resx/SettingsForecastDayNumbersSelectionTen" translate="yes" xml:space="preserve">
+          <source>10-Day Forecast</source>
+          <target state="new">10-Day Forecast</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Settings page, select forecast day numbers</note>
+        </trans-unit>
+        <trans-unit id="Resx/SettingsForecastDayNumbersSelectionFourteen" translate="yes" xml:space="preserve">
+          <source>14-Day Forecast</source>
+          <target state="new">14-Day Forecast</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Settings page, select forecast day numbers</note>
+        </trans-unit>
+        <trans-unit id="Resx/SettingsForecastDayNumbersSelectionFive" translate="yes" xml:space="preserve">
+          <source>5-Day Forecast</source>
+          <target state="new">5-Day Forecast</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Settings page, select forecast day numbers</note>
+        </trans-unit>
+        <trans-unit id="Resx/TemperatureUnitsFahrenheitSymbol" translate="yes" xml:space="preserve">
+          <source>ºF</source>
+          <target state="new">ºF</target>
+        </trans-unit>
+        <trans-unit id="Resx/TemperatureUnitsCentigradeSymbol" translate="yes" xml:space="preserve">
+          <source>ºC</source>
+          <target state="new">ºC</target>
+        </trans-unit>
+        <trans-unit id="Resx/AskForLocationConsentMessageBox" translate="yes" xml:space="preserve">
+          <source>This app accesses your phone's location. Is that ok?</source>
+          <target state="new">This app accesses your phone's location. Is that ok?</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Ask for location consent in map window</note>
+        </trans-unit>
+        <trans-unit id="Resx/APIVersionOpenWeatherMap" translate="yes" xml:space="preserve">
+          <source>2.5</source>
+          <target state="new">2.5</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Not to be translated.</note>
+        </trans-unit>
+        <trans-unit id="Resx/URIAPIOpenWeatherMapForecast" translate="yes" xml:space="preserve">
+          <source>http://api.openweathermap.org/data/{0}/forecast/daily?lat={1}%%amp;lon={2}%%amp;cnt={3}%%amp;mode=json</source>
+          <target state="new">http://api.openweathermap.org/data/{0}/forecast/daily?lat={1}%%amp;lon={2}%%amp;cnt={3}%%amp;mode=json</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Not to be translated.</note>
+        </trans-unit>
       </group>
     </body>
   </file>

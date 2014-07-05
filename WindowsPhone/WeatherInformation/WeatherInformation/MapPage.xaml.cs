@@ -13,38 +13,45 @@ using System.Device.Location;
 using System.Windows.Shapes;
 using System.Windows.Media;
 using Microsoft.Phone.Maps.Controls;
+using WeatherInformation.Resources;
 
 namespace WeatherInformation
 {
     public partial class MapPage : PhoneApplicationPage
     {
+        // Settings
+        private readonly IsolatedStorageSettings _settings;
+
         public MapPage()
         {
             InitializeComponent();
+
+            // Get the _settings for this application.
+            _settings = IsolatedStorageSettings.ApplicationSettings;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (!IsolatedStorageSettings.ApplicationSettings.Contains("LocationConsent"))
+            if (!_settings.Contains("LocationConsent"))
             {
-                MessageBoxResult result =
-                    MessageBox.Show("This app accesses your phone's location. Is that ok?",
-                    "Location",
+                MessageBoxResult result = MessageBox.Show(
+                    AppResources.AskForLocationConsentMessageBox,
+                    AppResources.AskForLocationConsentMessageBoxCaption,
                     MessageBoxButton.OKCancel);
 
                 if (result == MessageBoxResult.OK)
                 {
-                    IsolatedStorageSettings.ApplicationSettings["LocationConsent"] = true;
+                    _settings["LocationConsent"] = true;
                 }
                 else
                 {
-                    IsolatedStorageSettings.ApplicationSettings["LocationConsent"] = false;
+                    _settings["LocationConsent"] = false;
                 }
 
-                IsolatedStorageSettings.ApplicationSettings.Save();
+                _settings.Save();
             }
 
-            if ((bool)IsolatedStorageSettings.ApplicationSettings["LocationConsent"] != true)
+            if ((bool)_settings["LocationConsent"] != true)
             {
                 // The user has opted out of Location.
                 return;
@@ -89,21 +96,27 @@ namespace WeatherInformation
                 // Add the MapLayer to the Map.
                 this.mapWeatherInformation.Layers.Add(myLocationLayer);
 
-                
-
-                //LatitudeTextBlock.Text = geoposition.Coordinate.Latitude.ToString("0.00");
-                //LongitudeTextBlock.Text = geoposition.Coordinate.Longitude.ToString("0.00");
+                _settings["CurrentLatitude"] = myGeoCoordinate.Latitude;
+                _settings["CurrentLongitude"] = myGeoCoordinate.Longitude;
             }
             catch (Exception ex)
             {
                 if ((uint)ex.HResult == 0x80004004)
                 {
+
                     // the application does not have the right capability or the location master switch is off
-                    //StatusTextBlock.Text = "location  is disabled in phone settings.";
+                    MessageBox.Show(
+                        AppResources.NoticeErrorLocationAutodetection,
+                        AppResources.AskForLocationConsentMessageBoxCaption,
+                        MessageBoxButton.OK);
                 }
-                //else
+                else
                 {
                     // something else happened acquring the location
+                    MessageBox.Show(
+                        AppResources.NoticeErrorLocationAutodetection,
+                        AppResources.AskForLocationConsentMessageBoxCaption,
+                        MessageBoxButton.OK);
                 }
             }
         }

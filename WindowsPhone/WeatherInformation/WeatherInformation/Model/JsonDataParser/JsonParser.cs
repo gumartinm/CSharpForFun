@@ -8,7 +8,7 @@ namespace WeatherInformation.Model.JsonDataParser
     class JsonParser
     {
         /// <summary>
-        /// The _json settings.
+        /// The _json _settings.
         /// </summary>
         private static readonly JsonSerializerSettings _jsonSettings =
             new JsonSerializerSettings

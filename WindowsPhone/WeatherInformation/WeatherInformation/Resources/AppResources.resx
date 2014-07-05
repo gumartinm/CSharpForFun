@@ -136,7 +136,7 @@
   </data>
   <data name="SettingsLanguageHeader" xml:space="preserve">
     <value>Language</value>
-    <comment>Text in settings page</comment>
+    <comment>Text in settings page as header</comment>
   </data>
   <data name="SettingsTemperatureUnitsHeader" xml:space="preserve">
     <value>Temperature units</value>
@@ -157,5 +157,51 @@
   <data name="SettingsTemperatureUnitsSelectionFahrenheit" xml:space="preserve">
     <value>fahrenheit</value>
     <comment>Settings page, select temperature units fahrenheit</comment>
+  </data>
+  <data name="URIAPIOpenWeatherMapForecast" xml:space="preserve">
+    <value>http://api.openweathermap.org/data/{0}/forecast/daily?lat={1}&amp;lon={2}&amp;cnt={3}&amp;mode=json</value>
+    <comment>Not to be translated.</comment>
+  </data>
+  <data name="APIVersionOpenWeatherMap" xml:space="preserve">
+    <value>2.5</value>
+    <comment>Not to be translated.</comment>
+  </data>
+  <data name="AskForLocationConsentMessageBox" xml:space="preserve">
+    <value>This app accesses your phone's location. Is that ok?</value>
+    <comment>Ask for location consent in map window</comment>
+  </data>
+  <data name="AskForLocationConsentMessageBoxCaption" xml:space="preserve">
+    <value>Location</value>
+    <comment>Ask for location consent in map window</comment>
+  </data>
+  <data name="NoticeThereIsNotCurrentLocation" xml:space="preserve">
+    <value>There is not stored locations.</value>
+    <comment>Main window, notice message, no available locations</comment>
+  </data>
+  <data name="NoticeErrorLocationAutodetection" xml:space="preserve">
+    <value>Location autodetection seems to be disabled in your phone</value>
+    <comment>Map window, notice message, error while location autodetection</comment>
+  </data>
+  <data name="SettingsForecastDayNumbersHeader" xml:space="preserve">
+    <value>Forecast day numbers</value>
+    <comment>Text in settings page as header</comment>
+  </data>
+  <data name="SettingsForecastDayNumbersSelectionFive" xml:space="preserve">
+    <value>5-Day Forecast</value>
+    <comment>Settings page, select forecast day numbers</comment>
+  </data>
+  <data name="SettingsForecastDayNumbersSelectionFourteen" xml:space="preserve">
+    <value>14-Day Forecast</value>
+    <comment>Settings page, select forecast day numbers</comment>
+  </data>
+  <data name="SettingsForecastDayNumbersSelectionTen" xml:space="preserve">
+    <value>10-Day Forecast</value>
+    <comment>Settings page, select forecast day numbers</comment>
+  </data>
+  <data name="TemperatureUnitsCentigradeSymbol" xml:space="preserve">
+    <value>ºC</value>
+  </data>
+  <data name="TemperatureUnitsFahrenheitSymbol" xml:space="preserve">
+    <value>ºF</value>
   </data>
 </root>
