@@ -204,4 +204,24 @@
   <data name="TemperatureUnitsFahrenheitSymbol" xml:space="preserve">
     <value>ºF</value>
   </data>
+  <data name="LocationPageSubTitle" xml:space="preserve">
+    <value>City, country</value>
+    <comment>Subtitle in location page</comment>
+  </data>
+  <data name="LocationPageTitle" xml:space="preserve">
+    <value>Pick your location</value>
+    <comment>Title in location page</comment>
+  </data>
+  <data name="MainPageCurrentHeader" xml:space="preserve">
+    <value>current</value>
+    <comment>Current header in main page</comment>
+  </data>
+  <data name="MainPageForecastHeader" xml:space="preserve">
+    <value>forecast</value>
+    <comment>Forecast header in main page</comment>
+  </data>
+  <data name="SettingsPageHeaderSettings" xml:space="preserve">
+    <value>settings</value>
+    <comment>Header settings in settings page</comment>
+  </data>
 </root>

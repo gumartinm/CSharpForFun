@@ -14,6 +14,8 @@ using System.Windows.Shapes;
 using System.Windows.Media;
 using Microsoft.Phone.Maps.Controls;
 using WeatherInformation.Resources;
+using System.Globalization;
+using Microsoft.Phone.Maps.Services;
 
 namespace WeatherInformation
 {
@@ -73,6 +75,11 @@ namespace WeatherInformation
                     );
                 GeoCoordinate myGeoCoordinate = CoordinateConverter.ConvertGeocoordinate(geoposition.Coordinate);
 
+                ReverseGeocodeQuery myReverseGeocodeQuery = new ReverseGeocodeQuery();
+                myReverseGeocodeQuery.GeoCoordinate = myGeoCoordinate;
+                myReverseGeocodeQuery.QueryCompleted += QueryCompletedCallback;
+                myReverseGeocodeQuery.QueryAsync();
+
                 // Create a small circle to mark the current location.
                 Ellipse myCircle = new Ellipse();
                 myCircle.Fill = new SolidColorBrush(Colors.Blue);
@@ -97,7 +104,7 @@ namespace WeatherInformation
                 this.mapWeatherInformation.Layers.Add(myLocationLayer);
 
                 _settings["CurrentLatitude"] = myGeoCoordinate.Latitude;
-                _settings["CurrentLongitude"] = myGeoCoordinate.Longitude;
+                _settings["CurrentLongitude"] = myGeoCoordinate.Longitude;  
             }
             catch (Exception ex)
             {
@@ -120,6 +127,28 @@ namespace WeatherInformation
                 }
             }
         }
+
+
+        private void QueryCompletedCallback(object sender, QueryCompletedEventArgs<IList<MapLocation>> eventData)
+        {
+            if (eventData.Cancelled)
+            {
+                // Be careful!!! If you throw exception from this point your program will finish with "Unhandled Exception".
+                return;
+            }
+
+            Exception errorException = eventData.Error;
+            if (errorException == null)
+            {
+                if (eventData.Result.Count > 0)
+                {
+                    MapAddress address = eventData.Result[0].Information.Address;
+                    string cityCountry = String.Format(CultureInfo.InvariantCulture, "{0}, {1}", address.City, address.Country);
+                    this.LocationTextCityCountry.Text = cityCountry;
+                }
+            }
+        }
+
 
         public static class CoordinateConverter
         {

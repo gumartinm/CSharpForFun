@@ -18,13 +18,13 @@
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
 
         <!--TitlePanel contiene el nombre de la aplicación y el título de la página-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="Pick your location" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="City, country" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock Text="{Binding LocalizedResources.LocationPageTitle, Mode=OneWay, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="LocationTextCityCountry" Text="{Binding LocalizedResources.LocationPageSubTitle, Mode=OneWay, Source={StaticResource LocalizedStrings}}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
         </StackPanel>
 
         <!--ContentPanel. Colocar aquí el contenido adicional-->

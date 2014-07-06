@@ -10,9 +10,6 @@
 
     <!--Recursos de la aplicación-->
     <Application.Resources>
-<!-- 
-    	<SampleData:SettingsPageData x:Key="SettingsPageData" d:IsDataSource="True"/>
-        -->
         <local:LocalizedStrings xmlns:local="clr-namespace:WeatherInformation" x:Key="LocalizedStrings"/>
     </Application.Resources>
 

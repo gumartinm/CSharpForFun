@@ -115,6 +115,42 @@ namespace WeatherInformation.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a City, country.
+        /// </summary>
+        public static string LocationPageSubTitle {
+            get {
+                return ResourceManager.GetString("LocationPageSubTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Pick your location.
+        /// </summary>
+        public static string LocationPageTitle {
+            get {
+                return ResourceManager.GetString("LocationPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a current.
+        /// </summary>
+        public static string MainPageCurrentHeader {
+            get {
+                return ResourceManager.GetString("MainPageCurrentHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a forecast.
+        /// </summary>
+        public static string MainPageForecastHeader {
+            get {
+                return ResourceManager.GetString("MainPageForecastHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Location autodetection seems to be disabled in your phone.
         /// </summary>
         public static string NoticeErrorLocationAutodetection {
@@ -210,6 +246,15 @@ namespace WeatherInformation.Resources {
         public static string SettingsLanguageSelectionSpanish {
             get {
                 return ResourceManager.GetString("SettingsLanguageSelectionSpanish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a settings.
+        /// </summary>
+        public static string SettingsPageHeaderSettings {
+            get {
+                return ResourceManager.GetString("SettingsPageHeaderSettings", resourceCulture);
             }
         }
         

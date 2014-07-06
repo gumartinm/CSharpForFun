@@ -29,48 +29,62 @@
         <!-- Pivot -->
         <phone:Pivot Title="WEATHER INFORMATION">
             <!-- Elemento Pivot uno -->
-            <phone:PivotItem Header="settings">
-                <Grid VerticalAlignment="Top">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical" VerticalAlignment="Center">
-                        <TextBox x:Name="TemperatureUnitsHeader" Text="{Binding LocalizedResources.SettingsTemperatureUnitsHeader, Mode=OneWay, Source={StaticResource LocalizedStrings}}" HorizontalAlignment="Left" Background="Transparent" BorderBrush="Transparent" Foreground="#FFA4A2A2"/>
-                        <toolkit:ListPicker x:Name="TemperatureUnitsSelection" SelectedIndex="{Binding Source={StaticResource SettingsViewModelDataSource}, Path=TemperaruteUnitsSelectionSetting, Mode=TwoWay}" SelectionChanged="TemperatureUnitsSelection_SelectionChanged">
-                            <toolkit:ListPickerItem Content="{Binding LocalizedResources.SettingsTemperatureUnitsSelectionFahrenheit, Mode=OneWay, Source={StaticResource LocalizedStrings}}" />
-                            <toolkit:ListPickerItem Content="{Binding LocalizedResources.SettingsTemperatureUnitsSelectionCentigrade, Mode=OneWay, Source={StaticResource LocalizedStrings}}" />
-                        </toolkit:ListPicker>
-                    </StackPanel>
-                    <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical" VerticalAlignment="Center">
-                        <TextBox x:Name="LanguageHeader" Text="{Binding LocalizedResources.SettingsLanguageHeader, Mode=OneWay, Source={StaticResource LocalizedStrings}}" HorizontalAlignment="Left" Background="Transparent" BorderBrush="Transparent" Foreground="#FFA4A2A2" />
-                        <toolkit:ListPicker x:Name="LanguageSelection" SelectedIndex="{Binding Source={StaticResource SettingsViewModelDataSource}, Path=LanguageSelectionSetting, Mode=TwoWay}" SelectionChanged="LanguageSelection_SelectionChanged">
-                            <toolkit:ListPickerItem Content="{Binding LocalizedResources.SettingsLanguageSelectionEnglish, Mode=OneWay, Source={StaticResource LocalizedStrings}}"/>
-                            <toolkit:ListPickerItem Content="{Binding LocalizedResources.SettingsLanguageSelectionSpanish, Mode=OneWay, Source={StaticResource LocalizedStrings}}"/>
-                        </toolkit:ListPicker>
-                    </StackPanel>
-                    <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Vertical" VerticalAlignment="Center">
-                        <TextBox x:Name="ForecastDayNumbersHeader" Text="{Binding LocalizedResources.SettingsForecastDayNumbersHeader, Mode=OneWay, Source={StaticResource LocalizedStrings}}" HorizontalAlignment="Left" Background="Transparent" BorderBrush="Transparent" Foreground="#FFA4A2A2" />
-                        <toolkit:ListPicker x:Name="ForecastDayNumbersSelection" SelectedIndex="{Binding Source={StaticResource SettingsViewModelDataSource}, Path=ForecastDayNumbersSelectionSetting, Mode=TwoWay}" SelectionChanged="ForecastDayNumbersSelection_SelectionChanged">
-                            <toolkit:ListPickerItem Content="{Binding LocalizedResources.SettingsForecastDayNumbersSelectionFive, Mode=OneWay, Source={StaticResource LocalizedStrings}}"/>
-                            <toolkit:ListPickerItem Content="{Binding LocalizedResources.SettingsForecastDayNumbersSelectionTen, Mode=OneWay, Source={StaticResource LocalizedStrings}}"/>
-                            <toolkit:ListPickerItem Content="{Binding LocalizedResources.SettingsForecastDayNumbersSelectionFourteen, Mode=OneWay, Source={StaticResource LocalizedStrings}}"/>
-                        </toolkit:ListPicker>
-                    </StackPanel>
-                </Grid>
+            <phone:PivotItem Header="{Binding LocalizedResources.SettingsPageHeaderSettings, Mode=OneWay, Source={StaticResource LocalizedStrings}}">
+                <!--
+                <phone:LongListSelector Margin="0,0,-12,0">
+                    <phone:LongListSelector.ItemTemplate>
+                        <DataTemplate>
+                -->
+                            <Grid VerticalAlignment="Top">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Center">
+                                    <TextBlock x:Name="TemperatureUnitsHeader" Text="{Binding LocalizedResources.SettingsTemperatureUnitsHeader, Mode=OneWay, Source={StaticResource LocalizedStrings}}" HorizontalAlignment="Left" Foreground="#FFA4A2A2" Style="{StaticResource PhoneTextTitle2Style}"/>
+                                    <toolkit:ListPicker x:Name="TemperatureUnitsSelection" SelectedIndex="{Binding Source={StaticResource SettingsViewModelDataSource}, Path=TemperaruteUnitsSelectionSetting, Mode=TwoWay}" SelectionChanged="TemperatureUnitsSelection_SelectionChanged">
+                                        <toolkit:ListPickerItem Content="{Binding LocalizedResources.SettingsTemperatureUnitsSelectionFahrenheit, Mode=OneWay, Source={StaticResource LocalizedStrings}}" />
+                                        <toolkit:ListPickerItem Content="{Binding LocalizedResources.SettingsTemperatureUnitsSelectionCentigrade, Mode=OneWay, Source={StaticResource LocalizedStrings}}" />
+                                    </toolkit:ListPicker>
+                                </StackPanel>
+                                <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock x:Name="LanguageHeader" Text="{Binding LocalizedResources.SettingsLanguageHeader, Mode=OneWay, Source={StaticResource LocalizedStrings}}" HorizontalAlignment="Left" Foreground="#FFA4A2A2" Style="{StaticResource PhoneTextTitle2Style}"/>
+                                    <toolkit:ListPicker x:Name="LanguageSelection" SelectedIndex="{Binding Source={StaticResource SettingsViewModelDataSource}, Path=LanguageSelectionSetting, Mode=TwoWay}" SelectionChanged="LanguageSelection_SelectionChanged">
+                                        <toolkit:ListPickerItem Content="{Binding LocalizedResources.SettingsLanguageSelectionEnglish, Mode=OneWay, Source={StaticResource LocalizedStrings}}"/>
+                                        <toolkit:ListPickerItem Content="{Binding LocalizedResources.SettingsLanguageSelectionSpanish, Mode=OneWay, Source={StaticResource LocalizedStrings}}"/>
+                                    </toolkit:ListPicker>
+                                </StackPanel>
+                                <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock x:Name="ForecastDayNumbersHeader" Text="{Binding LocalizedResources.SettingsForecastDayNumbersHeader, Mode=OneWay, Source={StaticResource LocalizedStrings}}" HorizontalAlignment="Left" Foreground="#FFA4A2A2" Style="{StaticResource PhoneTextTitle2Style}"/>
+                                    <toolkit:ListPicker x:Name="ForecastDayNumbersSelection" SelectedIndex="{Binding Source={StaticResource SettingsViewModelDataSource}, Path=ForecastDayNumbersSelectionSetting, Mode=TwoWay}" SelectionChanged="ForecastDayNumbersSelection_SelectionChanged">
+                                        <toolkit:ListPickerItem Content="{Binding LocalizedResources.SettingsForecastDayNumbersSelectionFive, Mode=OneWay, Source={StaticResource LocalizedStrings}}"/>
+                                        <toolkit:ListPickerItem Content="{Binding LocalizedResources.SettingsForecastDayNumbersSelectionTen, Mode=OneWay, Source={StaticResource LocalizedStrings}}"/>
+                                        <toolkit:ListPickerItem Content="{Binding LocalizedResources.SettingsForecastDayNumbersSelectionFourteen, Mode=OneWay, Source={StaticResource LocalizedStrings}}"/>
+                                    </toolkit:ListPicker>
+                                </StackPanel>
+                            </Grid>
+                <!--
+                        </DataTemplate>
+                    </phone:LongListSelector.ItemTemplate>
+                </phone:LongListSelector>
+                -->   
             </phone:PivotItem>
 
-            <!-- Elemento Pivot dos -->
+            <!--Elemento Pivot dos-->
             <phone:PivotItem Header="notifications">
-                <Grid/>
+                <phone:LongListSelector Margin="0,0,-12,0">
+                    <phone:LongListSelector.ItemTemplate>
+                        <DataTemplate>
+                        </DataTemplate>
+                    </phone:LongListSelector.ItemTemplate>
+                </phone:LongListSelector>
             </phone:PivotItem>
 
         </phone:Pivot>
-        <phone:LongListSelector HorizontalAlignment="Left" Height="100" Margin="825,108,-445,0" VerticalAlignment="Top" Width="100"/>
     </Grid>
 
 </phone:PhoneApplicationPage>

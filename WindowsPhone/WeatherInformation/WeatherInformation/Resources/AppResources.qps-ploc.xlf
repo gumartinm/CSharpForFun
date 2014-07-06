@@ -82,6 +82,31 @@
           <source>ºF</source>
           <target state="new">ºF</target>
         </trans-unit>
+        <trans-unit id="Resx/LocationPageSubTitle" translate="yes" xml:space="preserve">
+          <source>City, country</source>
+          <target state="new">City, country</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Subtitle in location page</note>
+        </trans-unit>
+        <trans-unit id="Resx/LocationPageTitle" translate="yes" xml:space="preserve">
+          <source>Pick your location</source>
+          <target state="new">Pick your location</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Title in location page</note>
+        </trans-unit>
+        <trans-unit id="Resx/MainPageForecastHeader" translate="yes" xml:space="preserve">
+          <source>forecast</source>
+          <target state="new">forecast</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Forecast header in main page</note>
+        </trans-unit>
+        <trans-unit id="Resx/SettingsPageHeaderSettings" translate="yes" xml:space="preserve">
+          <source>settings</source>
+          <target state="new">settings</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Header settings in settings page</note>
+        </trans-unit>
+        <trans-unit id="Resx/MainPageCurrentHeader" translate="yes" xml:space="preserve">
+          <source>current</source>
+          <target state="new">current</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Current header in main page</note>
+        </trans-unit>
         <trans-unit id="Resx/TemperatureUnitsCentigradeSymbol" translate="yes" xml:space="preserve">
           <source>ºC</source>
           <target state="new">ºC</target>
