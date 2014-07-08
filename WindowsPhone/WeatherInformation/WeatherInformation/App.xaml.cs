@@ -10,6 +10,8 @@ using System.Threading;
 using System.Globalization; 
 using WeatherInformation.Resources;
 using WeatherInformation.ViewModels;
+using System.IO.IsolatedStorage;
+using System.IO;
 
 namespace WeatherInformation
 {
@@ -19,8 +21,18 @@ namespace WeatherInformation
         // Use "qps-PLOC" to deploy pseudolocalized strings. 
         // Use "" to let user Phone Language selection determine locale. 
         // public static String appForceCulture = "qps-PLOC";
-        public static String appForceCulture = "en"; 
+        private const String appForceCulture = "en"; 
         private static MainViewModel viewModel = null;
+
+        // Declare a private variable to store application state.
+        private string _applicationDataObject;
+
+        // Declare an event for when the application data changes.
+        public event EventHandler ApplicationDataObjectChanged;
+
+        // Declare a public property to store the status of the application data.
+        // Pages should register this event (if they want to receive
+        public string ApplicationDataStatus { get; set; }
 
         /// <summary>
         /// MainViewModel estático que usan las vistas con el que se van a enlazar.
@@ -35,6 +47,30 @@ namespace WeatherInformation
                     viewModel = new MainViewModel();
 
                 return viewModel;
+            }
+        }
+
+        // Declare a public property to access the application data variable.
+        public string ApplicationDataObject
+        {
+            get { return _applicationDataObject; }
+            set
+            {
+                if (value != _applicationDataObject)
+                {
+                    _applicationDataObject = value;
+                    OnApplicationDataObjectChanged(EventArgs.Empty);
+                }
+            }
+        }
+
+        // Create a method to raise the ApplicationDataObjectChanged event.
+        protected void OnApplicationDataObjectChanged(EventArgs e)
+        {
+            EventHandler handler = ApplicationDataObjectChanged;
+            if (handler != null)
+            {
+                handler(this, e);
             }
         }
 
@@ -82,6 +118,87 @@ namespace WeatherInformation
             }
         }
 
+        public void GetDataAsync()
+        {
+            // Call the GetData method on a new thread.
+            Thread t = new Thread(new ThreadStart(GetData));
+            t.Start();
+        }
+
+        private void GetData()
+        {
+            // Check the time elapsed since data was last saved to isolated storage.
+            TimeSpan TimeSinceLastSave = TimeSpan.FromSeconds(0);
+            if (IsolatedStorageSettings.ApplicationSettings.Contains("DataLastSavedTime"))
+            {
+                DateTime dataLastSaveTime = (DateTime)IsolatedStorageSettings.ApplicationSettings["DataLastSavedTime"];
+                TimeSinceLastSave = DateTime.Now - dataLastSaveTime;
+            }
+
+            // Check to see if data exists in isolated storage and see if the data is fresh.
+            // This example uses 30 seconds as the valid time window to make it easy to test. 
+            // Real apps will use a larger window.
+            IsolatedStorageFile isoStore = IsolatedStorageFile.GetUserStoreForApplication();
+            if (isoStore.FileExists("myDataFile.txt") && TimeSinceLastSave.TotalSeconds < 30)
+            {
+                // This method loads the data from isolated storage, if it is available.
+                StreamReader sr = new StreamReader(isoStore.OpenFile("myDataFile.txt", FileMode.Open));
+                string data = sr.ReadToEnd();
+                sr.Close();
+
+                ApplicationDataStatus = "data from isolated storage";
+                ApplicationDataObject = data;
+            }
+            else
+            {
+                // SHOULD I CHECK HERE IF THERE ARE COORDINATES AND IN THAT CASE CALL OPENWEATHERMAP? :/ I THINK SO!!!
+                // MOVE THE MainViewModel.LoadData METHOD TO THIS PLACE!!!!
+
+                // Otherwise, it gets the data from the web. 
+                //HttpWebRequest request = (HttpWebRequest)WebRequest.Create(new Uri("http://windowsteamblog.com/windows_phone/b/windowsphone/rss.aspx"));
+                //request.BeginGetResponse(HandleWebResponse, request);
+            }
+        }
+
+        private void HandleWebResponse(IAsyncResult result)
+        {
+            // Put this in a try block in case the web request was unsuccessful.
+            try
+            {
+                // Get the request from the IAsyncResult.
+                // HttpWebRequest request = (HttpWebRequest)(result.AsyncState);
+
+                // Read the response stream from the response.
+                //StreamReader sr = new StreamReader(request.EndGetResponse(result).GetResponseStream());
+                //string data = sr.ReadToEnd();
+
+                // Use the Dispatcher to call SetData on the UI thread, passing the retrieved data.
+                //Dispatcher.BeginInvoke(() => { SetData(data, "web"); });
+                ApplicationDataStatus = "data from web.";
+                //ApplicationDataObject = data;
+            }
+            catch
+            {
+                // If the data request fails, alert the user.
+                ApplicationDataStatus = "Unable to get data from Web.";
+                ApplicationDataObject = "";
+            }
+        }
+
+        // TODO: temporary file :/
+        private void SaveDataToIsolatedStorage(string isoFileName, string value)
+        {
+            using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetUserStoreForApplication())
+            using (IsolatedStorageFileStream fileStream = isoStore.OpenFile(isoFileName, FileMode.OpenOrCreate))
+            using (StreamWriter sw = new StreamWriter(isoStore.OpenFile(isoFileName, FileMode.OpenOrCreate)))
+            {
+                fileStream.Flush(true);
+                sw.Write(value);
+            }
+            
+            IsolatedStorageSettings.ApplicationSettings["DataLastSaveTime"] = DateTime.Now;
+        }
+
         // Código para ejecutar cuando la aplicación se inicia (p.ej. a partir de Inicio)
         // Este código no se ejecutará cuando la aplicación se reactive
         private void Application_Launching(object sender, LaunchingEventArgs e)
@@ -90,12 +207,29 @@ namespace WeatherInformation
 
         // Código para ejecutar cuando la aplicación se activa (se trae a primer plano)
         // Este código no se ejecutará cuando la aplicación se inicie por primera vez
+        // Coming from TOMBSTONED or DORMANT
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
             // Asegurarse de que el estado de la aplicación se restaura adecuadamente
-            if (!App.MainViewModel.IsDataLoaded)
+            // It seems as if here I should store global data to the whole application because this event
+            // is just called here (never from classes implementing PhoneApplicationPage)
+            //if (!App.MainViewModel.IsDataLoaded)
+            //{
+            //    App.MainViewModel.LoadData();
+            //}
+
+            if (e.IsApplicationInstancePreserved)
             {
-                App.MainViewModel.LoadData();
+                ApplicationDataStatus = "application instance preserved.";
+                return;
+            }
+
+            // Check to see if the key for the application state data is in the State dictionary.
+            if (PhoneApplicationService.Current.State.ContainsKey("ApplicationDataObject"))
+            {
+                // If it exists, assign the data to the application member variable.
+                ApplicationDataStatus = "data from preserved state.";
+                ApplicationDataObject = PhoneApplicationService.Current.State["ApplicationDataObject"] as string;
             }
         }
 
@@ -103,6 +237,15 @@ namespace WeatherInformation
         // Este código no se ejecutará cuando la aplicación se cierre
         private void Application_Deactivated(object sender, DeactivatedEventArgs e)
         {
+            // If there is data in the application member variable...
+            if (!string.IsNullOrEmpty(ApplicationDataObject))
+            {
+                // Store it in the State dictionary.
+                PhoneApplicationService.Current.State["ApplicationDataObject"] = ApplicationDataObject;
+
+                // Also store it in isolated storage, in case the application is never reactivated.
+                SaveDataToIsolatedStorage("myDataFile.txt", ApplicationDataObject);
+            }
         }
 
         // Código para ejecutar cuando la aplicación se cierra (p.ej., al hacer clic en Atrás)
@@ -110,6 +253,11 @@ namespace WeatherInformation
         private void Application_Closing(object sender, ClosingEventArgs e)
         {
             // Asegurarse de que el estado de la aplicación requerida persiste aquí.
+            // The application will not be tombstoned, so save only to isolated storage.
+            if (!string.IsNullOrEmpty(ApplicationDataObject))
+            {
+                SaveDataToIsolatedStorage("myDataFile.txt", ApplicationDataObject);
+            }
         }
 
         // Código para ejecutar si hay un error de navegación

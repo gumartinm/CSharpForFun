@@ -14,7 +14,8 @@ namespace WeatherInformation.ViewModels
 {
     // TODO: to use this class or something like that in every place of this application where the settings must be retrieved!!!
     // (do not copy-paste code!!!)
-    public class SettingsViewModel
+    // TODO: IMHO INotifyPropertyChanged does not do anything useful in this class... NotifyPropertyChanged has no effect :(
+    public class SettingsViewModel : INotifyPropertyChanged
     {
         // Settings
         private readonly IsolatedStorageSettings _settings;
@@ -57,6 +58,7 @@ namespace WeatherInformation.ViewModels
                 {
                     Save();
                 }
+                NotifyPropertyChanged(_languageSelectionSettingKeyName);
             }
         }
 
@@ -75,6 +77,7 @@ namespace WeatherInformation.ViewModels
                 {
                     Save();
                 }
+                NotifyPropertyChanged(_temperatureUnitsSelectionSettingKeyName);
             }
         }
 
@@ -93,6 +96,7 @@ namespace WeatherInformation.ViewModels
                 {
                     Save();
                 }
+                NotifyPropertyChanged(_forecastDayNumbersSelectionSelectionSettingKeyName);
             }
         }
 
@@ -182,6 +186,16 @@ namespace WeatherInformation.ViewModels
             }
 
             _settings.Save();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyPropertyChanged(string propertyName)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (null != handler)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 }
