@@ -22,7 +22,7 @@
         </trans-unit>
         <trans-unit id="Resx/AppBarButtonText" translate="yes" xml:space="preserve">
           <source>add</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Agregar</target>
+          <target state="translated">agregar</target>
         </trans-unit>
         <trans-unit id="Resx/AppBarMenuItemText" translate="yes" xml:space="preserve">
           <source>Menu item</source>
@@ -60,87 +60,87 @@
           </trans-unit>
         <trans-unit id="Resx/AskForLocationConsentMessageBoxCaption" translate="yes" xml:space="preserve">
           <source>Location</source>
-          <target state="new">Location</target>
+          <target state="translated">Localización</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Ask for location consent in map window</note>
-        </trans-unit>
+          </trans-unit>
         <trans-unit id="Resx/NoticeThereIsNotCurrentLocation" translate="yes" xml:space="preserve">
           <source>There is not stored locations.</source>
-          <target state="new">There is not stored locations.</target>
+          <target state="translated">No hay localizaciones almacenadas.</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Main window, notice message, no available locations</note>
-        </trans-unit>
+          </trans-unit>
         <trans-unit id="Resx/NoticeErrorLocationAutodetection" translate="yes" xml:space="preserve">
           <source>Location autodetection seems to be disabled in your phone</source>
-          <target state="new">Location autodetection seems to be disabled in your phone</target>
+          <target state="needs-review-translation" state-qualifier="mt-suggestion">Detección automática de la ubicación parece ser desactivado en el teléfono</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Map window, notice message, error while location autodetection</note>
-        </trans-unit>
+          </trans-unit>
         <trans-unit id="Resx/SettingsForecastDayNumbersHeader" translate="yes" xml:space="preserve">
           <source>Forecast day numbers</source>
-          <target state="new">Forecast day numbers</target>
+          <target state="translated">Prevision, numero días</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Text in settings page as header</note>
-        </trans-unit>
+          </trans-unit>
         <trans-unit id="Resx/SettingsForecastDayNumbersSelectionTen" translate="yes" xml:space="preserve">
           <source>10-Day Forecast</source>
-          <target state="new">10-Day Forecast</target>
+          <target state="translated">Previsión 10 días</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Settings page, select forecast day numbers</note>
-        </trans-unit>
+          </trans-unit>
         <trans-unit id="Resx/SettingsForecastDayNumbersSelectionFourteen" translate="yes" xml:space="preserve">
           <source>14-Day Forecast</source>
-          <target state="new">14-Day Forecast</target>
+          <target state="translated">Previsión 14 días</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Settings page, select forecast day numbers</note>
-        </trans-unit>
+          </trans-unit>
         <trans-unit id="Resx/SettingsForecastDayNumbersSelectionFive" translate="yes" xml:space="preserve">
           <source>5-Day Forecast</source>
-          <target state="new">5-Day Forecast</target>
+          <target state="translated">Previsión 5 días</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Settings page, select forecast day numbers</note>
-        </trans-unit>
+          </trans-unit>
         <trans-unit id="Resx/TemperatureUnitsFahrenheitSymbol" translate="yes" xml:space="preserve">
           <source>ºF</source>
-          <target state="new">ºF</target>
+          <target state="needs-review-translation" state-qualifier="mt-suggestion">º F</target>
         </trans-unit>
         <trans-unit id="Resx/LocationPageSubTitle" translate="yes" xml:space="preserve">
           <source>City, country</source>
-          <target state="new">City, country</target>
+          <target state="needs-review-translation" state-qualifier="mt-suggestion">Ciudad, país</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Subtitle in location page</note>
-        </trans-unit>
+          </trans-unit>
         <trans-unit id="Resx/LocationPageTitle" translate="yes" xml:space="preserve">
           <source>Pick your location</source>
-          <target state="new">Pick your location</target>
+          <target state="translated">Selecciona tu localización</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Title in location page</note>
-        </trans-unit>
+          </trans-unit>
         <trans-unit id="Resx/MainPageForecastHeader" translate="yes" xml:space="preserve">
           <source>forecast</source>
-          <target state="new">forecast</target>
+          <target state="needs-review-translation" state-qualifier="mt-suggestion">previsión</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Forecast header in main page</note>
-        </trans-unit>
+          </trans-unit>
         <trans-unit id="Resx/SettingsPageHeaderSettings" translate="yes" xml:space="preserve">
           <source>settings</source>
-          <target state="new">settings</target>
+          <target state="needs-review-translation" state-qualifier="mt-suggestion">configuración de</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Header settings in settings page</note>
-        </trans-unit>
+          </trans-unit>
         <trans-unit id="Resx/MainPageCurrentHeader" translate="yes" xml:space="preserve">
           <source>current</source>
-          <target state="new">current</target>
+          <target state="needs-review-translation" state-qualifier="mt-suggestion">actual</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Current header in main page</note>
-        </trans-unit>
+          </trans-unit>
         <trans-unit id="Resx/TemperatureUnitsCentigradeSymbol" translate="yes" xml:space="preserve">
           <source>ºC</source>
-          <target state="new">ºC</target>
+          <target state="needs-review-translation" state-qualifier="mt-suggestion">º C</target>
         </trans-unit>
         <trans-unit id="Resx/AskForLocationConsentMessageBox" translate="yes" xml:space="preserve">
           <source>This app accesses your phone's location. Is that ok?</source>
-          <target state="new">This app accesses your phone's location. Is that ok?</target>
+          <target state="translated">Esta aplicación accede a los datos de tu localización. ¿Estás de acuerdo?</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Ask for location consent in map window</note>
-        </trans-unit>
-        <trans-unit id="Resx/APIVersionOpenWeatherMap" translate="yes" xml:space="preserve">
+          </trans-unit>
+        <trans-unit id="Resx/APIVersionOpenWeatherMap" translate="no" xml:space="preserve">
           <source>2.5</source>
-          <target state="new">2.5</target>
+          <target state="needs-review-translation" state-qualifier="mt-suggestion">2.5</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Not to be translated.</note>
-        </trans-unit>
-        <trans-unit id="Resx/URIAPIOpenWeatherMapForecast" translate="yes" xml:space="preserve">
+          </trans-unit>
+        <trans-unit id="Resx/URIAPIOpenWeatherMapForecast" translate="no" xml:space="preserve">
           <source>http://api.openweathermap.org/data/{0}/forecast/daily?lat={1}%%amp;lon={2}%%amp;cnt={3}%%amp;mode=json</source>
-          <target state="new">http://api.openweathermap.org/data/{0}/forecast/daily?lat={1}%%amp;lon={2}%%amp;cnt={3}%%amp;mode=json</target>
+          <target state="needs-review-translation" state-qualifier="mt-suggestion">http://API.openweathermap.org/Data/ {0} / previsión/diario? lat = {1}%%amp;lon = {2}%%amp;cnt = {3}%%amp;mode = json</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Not to be translated.</note>
-        </trans-unit>
+          </trans-unit>
       </group>
     </body>
   </file>
