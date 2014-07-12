@@ -73,38 +73,12 @@ namespace WeatherInformation
                     maximumAge: TimeSpan.FromMinutes(5),
                     timeout: TimeSpan.FromSeconds(10)
                     );
-                GeoCoordinate myGeoCoordinate = CoordinateConverter.ConvertGeocoordinate(geoposition.Coordinate);
+                GeoCoordinate currentGeoCoordinate = CoordinateConverter.ConvertGeocoordinate(geoposition.Coordinate);
 
-                ReverseGeocodeQuery myReverseGeocodeQuery = new ReverseGeocodeQuery();
-                myReverseGeocodeQuery.GeoCoordinate = myGeoCoordinate;
-                myReverseGeocodeQuery.QueryCompleted += QueryCompletedCallback;
-                myReverseGeocodeQuery.QueryAsync();
-
-                // Create a small circle to mark the current location.
-                Ellipse myCircle = new Ellipse();
-                myCircle.Fill = new SolidColorBrush(Colors.Blue);
-                myCircle.Height = 20;
-                myCircle.Width = 20;
-                myCircle.Opacity = 50;
-
-                // Create a MapOverlay to contain the circle.
-                MapOverlay myLocationOverlay = new MapOverlay();
-                myLocationOverlay.Content = myCircle;
-                myLocationOverlay.PositionOrigin = new Point(0.5, 0.5);
-                myLocationOverlay.GeoCoordinate = myGeoCoordinate;
-
-                // Create a MapLayer to contain the MapOverlay.
-                MapLayer myLocationLayer = new MapLayer();
-                myLocationLayer.Add(myLocationOverlay);
-
-                this.mapWeatherInformation.Center = myGeoCoordinate;
-                this.mapWeatherInformation.ZoomLevel = 13;
-
-                // Add the MapLayer to the Map.
-                this.mapWeatherInformation.Layers.Add(myLocationLayer);
-
-                _settings["CurrentLatitude"] = myGeoCoordinate.Latitude;
-                _settings["CurrentLongitude"] = myGeoCoordinate.Longitude;  
+                ReverseGeocodeQuery currentReverseGeocodeQuery = new ReverseGeocodeQuery();
+                currentReverseGeocodeQuery.GeoCoordinate = currentGeoCoordinate;
+                currentReverseGeocodeQuery.QueryCompleted += QueryCompletedCallback;
+                currentReverseGeocodeQuery.QueryAsync();  
             }
             catch (Exception ex)
             {
@@ -138,13 +112,52 @@ namespace WeatherInformation
             }
 
             Exception errorException = eventData.Error;
-            if (errorException == null)
+            if (errorException != null)
+            {
+                // TODO: Show some log. I need to use remote logging :(
+                return;
+            }
+            else
             {
                 if (eventData.Result.Count > 0)
                 {
                     MapAddress address = eventData.Result[0].Information.Address;
+                    GeoCoordinate currentGeoCoordinate = eventData.Result[0].GeoCoordinate;
+
                     string cityCountry = String.Format(CultureInfo.InvariantCulture, "{0}, {1}", address.City, address.Country);
                     this.LocationTextCityCountry.Text = cityCountry;
+
+                    // TODO: If I want to store more than one place I should use a database :(
+                    _settings["CurrentLatitude"] = currentGeoCoordinate.Latitude;
+                    _settings["CurrentLongitude"] = currentGeoCoordinate.Longitude;
+                    // TODO: If I want to store more thant one place I should use a database :(
+                    _settings["City"] = address.City;
+                    _settings["Country"] = address.Country;
+
+                    (Application.Current as WeatherInformation.App).IsNewLocation = true;
+
+                    // Create a small circle to mark the current location.
+                    Ellipse myCircle = new Ellipse();
+                    myCircle.Fill = new SolidColorBrush(Colors.Blue);
+                    myCircle.Height = 20;
+                    myCircle.Width = 20;
+                    myCircle.Opacity = 50;
+
+                    // Create a MapOverlay to contain the circle.
+                    MapOverlay myLocationOverlay = new MapOverlay();
+                    myLocationOverlay.Content = myCircle;
+                    myLocationOverlay.PositionOrigin = new Point(0.5, 0.5);
+                    myLocationOverlay.GeoCoordinate = currentGeoCoordinate;
+
+                    // Create a MapLayer to contain the MapOverlay.
+                    MapLayer myLocationLayer = new MapLayer();
+                    myLocationLayer.Add(myLocationOverlay);
+
+                    this.mapWeatherInformation.Center = currentGeoCoordinate;
+                    this.mapWeatherInformation.ZoomLevel = 13;
+
+                    // Add the MapLayer to the Map.
+                    this.mapWeatherInformation.Layers.Add(myLocationLayer);  
                 }
             }
         }

@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO.IsolatedStorage;
 using System.Threading.Tasks;
 using System.Windows;
+using WeatherInformation.Model;
 using WeatherInformation.Model.ForecastWeatherParser;
 using WeatherInformation.Model.JsonDataParser;
 using WeatherInformation.Model.Services;
@@ -41,43 +42,15 @@ namespace WeatherInformation.ViewModels
         /// <summary>
         /// Colección para objetos ItemViewModel.
         /// </summary>
-        public ObservableCollection<ItemViewModel> ForecastItems { get; private set; }
+        public ObservableCollection<ItemViewModel> ForecastItems{ get; private set; }
         public ObservableCollection<ItemViewModel> CurrentItems { get; private set; }
 
-        
-
-        public bool IsDataLoaded
-        {
-            get;
-            private set;
-        }
 
         /// <summary>
         /// Crear y agregar unos pocos objetos ItemViewModel a la colección Items.
         /// </summary>
-        async public Task LoadData()
+        public void LoadData(WeatherData weatherData)
         {
-            if (!_settings.Contains("CurrentLatitude") || !_settings.Contains("CurrentLongitude"))
-            {
-                 MessageBox.Show(
-                     AppResources.NoticeThereIsNotCurrentLocation,
-                     AppResources.AskForLocationConsentMessageBoxCaption,
-                     MessageBoxButton.OK);
-                return;
-            }
-
-            CustomHTTPClient httpClient = new CustomHTTPClient();
-
-            int resultsNumber = 14;
-            string formattedForecastURL = String.Format(
-                CultureInfo.InvariantCulture, AppResources.URIAPIOpenWeatherMapForecast,
-                AppResources.APIVersionOpenWeatherMap, (double)_settings["CurrentLatitude"],
-                (double)_settings["CurrentLongitude"], resultsNumber);
-            string jsonData = await httpClient.getWeatherData(formattedForecastURL);
-
-            ForecastWeather weather = this._serviceParser.GetForecastWeather(jsonData);
-
-
             // TODO: there must be a better way than using the index value :(
             int forecastDayNumbers =
                     GetValueOrDefault<int>(_forecastDayNumbersSelectionSelectionSettingKeyName, _forecastDayNumbersSelectionSettingDefault);
@@ -98,19 +71,20 @@ namespace WeatherInformation.ViewModels
                     break;
             }
 
-            foreach (WeatherInformation.Model.ForecastWeatherParser.List item in weather.list)
+            // TODO: there must be a better way than using the index value :(
+            bool isFahrenheit = true;
+            int temperatureUnitsSelection =
+                GetValueOrDefault<int>(_temperatureUnitsSelectionSettingKeyName, _temperatureUnitsSelectionSettingDefault);
+            if (temperatureUnitsSelection != 0)
             {
-                // TODO: there must be a better way than using the index value :(
-                bool isFahrenheit = true;
-                int temperatureUnitsSelection =
-                    GetValueOrDefault<int>(_temperatureUnitsSelectionSettingKeyName, _temperatureUnitsSelectionSettingDefault);
-                if (temperatureUnitsSelection != 0)
-                {
-                    isFahrenheit = false;
-                }
-                double tempUnits = isFahrenheit ? 0 : 273.15;
-                string symbol = isFahrenheit ? AppResources.TemperatureUnitsFahrenheitSymbol : AppResources.TemperatureUnitsCentigradeSymbol;
+                isFahrenheit = false;
+            }
+            double tempUnits = isFahrenheit ? 0 : 273.15;
+            string symbol = isFahrenheit ? AppResources.TemperatureUnitsFahrenheitSymbol : AppResources.TemperatureUnitsCentigradeSymbol;
+            var remoteForecastWeatherData = weatherData.RemoteForecastWeatherData;
 
+            foreach (WeatherInformation.Model.ForecastWeatherParser.List item in remoteForecastWeatherData.list)
+            {
                 DateTime unixTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
                 DateTime date = unixTime.AddSeconds(item.dt).ToLocalTime();
 
@@ -139,8 +113,16 @@ namespace WeatherInformation.ViewModels
                     break;
                 }
             }
+        }
 
-            this.IsDataLoaded = true;
+        public bool IsThereCurrentLocation()
+        {
+            if (_settings.Contains("CurrentLatitude") && _settings.Contains("CurrentLongitude"))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>

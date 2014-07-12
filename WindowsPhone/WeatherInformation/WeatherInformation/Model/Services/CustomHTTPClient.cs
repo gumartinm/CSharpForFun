@@ -9,7 +9,7 @@ namespace WeatherInformation.Model.Services
 {
     class CustomHTTPClient
     {
-        async public Task<string> getWeatherData(string url)
+        async public Task<string> GetWeatherDataAsync(string url)
         {
             using (HttpClient client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) })
             {

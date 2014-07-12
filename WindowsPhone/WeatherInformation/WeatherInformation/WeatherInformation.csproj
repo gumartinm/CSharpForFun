@@ -118,6 +118,7 @@
     <Compile Include="Model\ForecastWeatherParser\Temp.cs" />
     <Compile Include="Model\ForecastWeatherParser\Weather.cs" />
     <Compile Include="Model\JsonDataParser\JsonParser.cs" />
+    <Compile Include="Model\WeatherData.cs" />
     <Compile Include="Model\Services\CustomHTTPClient.cs" />
     <Compile Include="Model\Services\ServiceParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

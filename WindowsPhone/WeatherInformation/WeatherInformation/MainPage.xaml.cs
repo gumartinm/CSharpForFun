@@ -1,23 +1,15 @@
 ﻿using Microsoft.Phone.Controls;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.IO.IsolatedStorage;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using WeatherInformation.Model;
 using WeatherInformation.Resources;
-using WeatherInformation.ViewModels;
 
 namespace WeatherInformation
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        private MainViewModel _mainViewModel;
         private bool _isNewPageInstance = false;
 
         // Constructor
@@ -33,6 +25,10 @@ namespace WeatherInformation
             _isNewPageInstance = true;
 
             // Set the event handler for when the application data object changes.
+            // TODO: doing this, when is the GC going to release this object? I do not think it is going to be able... This is weird...
+            // Shouldn't I release this even handler when the MainPage is not used anymore. In my case is not a big problem because
+            // the MainPage should be always active (it is the "mainpage") but if this was not the mainpage... Would the GC be able
+            // to release this object when the page is not active... I DO NOT THINK SO...
             (Application.Current as WeatherInformation.App).ApplicationDataObjectChanged +=
                           new EventHandler(MainPage_ApplicationDataObjectChanged);
 
@@ -45,27 +41,58 @@ namespace WeatherInformation
         // Cargar datos para los elementos MainViewModel
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (!App.MainViewModel.IsDataLoaded)
-            {
-                App.MainViewModel.LoadData();
-            }
-
-
             // If _isNewPageInstance is true, the page constructor has been called, so
             // state may need to be restored.
             if (_isNewPageInstance)
             {
-                // If the application member variable is not empty,
-                // set the page's data object from the application member variable.
-                if ((Application.Current as WeatherInformation.App).ApplicationDataObject != null)
+                if (!App.MainViewModel.IsThereCurrentLocation())
                 {
-                    UpdateApplicationDataUI();
+                    MessageBox.Show(
+                        AppResources.NoticeThereIsNotCurrentLocation,
+                        AppResources.AskForLocationConsentMessageBoxCaption,
+                        MessageBoxButton.OK);
                 }
                 else
                 {
-                    // Otherwise, call the method that loads data.
-                    //statusTextBlock.Text = "getting data...";
-                    (Application.Current as WeatherInformation.App).GetDataAsync();
+                    // If the application member variable is not empty,
+                    // set the page's data object from the application member variable.
+                    // TODO: I am setting and getting ApplicationDataObject from different threads!!!! What if I do not see its last value? Do I need synchronization? :/
+                    WeatherData weatherData = (Application.Current as WeatherInformation.App).ApplicationDataObject;
+                    if (weatherData != null && !(Application.Current as WeatherInformation.App).IsNewLocation)
+                    {
+                        UpdateApplicationDataUI();
+                    }
+                    else
+                    {
+                        // Otherwise, call the method that loads data.
+                        (Application.Current as WeatherInformation.App).GetDataAsync();
+                    }
+                }
+            }
+            else
+            {
+                if (!App.MainViewModel.IsThereCurrentLocation())
+                {
+                    MessageBox.Show(
+                        AppResources.NoticeThereIsNotCurrentLocation,
+                        AppResources.AskForLocationConsentMessageBoxCaption,
+                        MessageBoxButton.OK);
+                }
+                else
+                {
+                    // If the application member variable is not empty,
+                    // set the page's data object from the application member variable.
+                    // TODO: I am setting and getting ApplicationDataObject from different threads!!!! What if I do not see the its last state? Do I need synchronization? :/
+                    WeatherData weatherData = (Application.Current as WeatherInformation.App).ApplicationDataObject;
+                    if (weatherData != null && !(Application.Current as WeatherInformation.App).IsNewLocation)
+                    {
+                        UpdateApplicationDataUI();  
+                    }
+                    else
+                    {
+                        // Otherwise, call the method that loads data.
+                        (Application.Current as WeatherInformation.App).GetDataAsync();
+                    }
                 }
             }
 
@@ -80,12 +107,23 @@ namespace WeatherInformation
             // Call UpdateApplicationData on the UI thread.
             Dispatcher.BeginInvoke(() => UpdateApplicationDataUI());
         }
+
         void UpdateApplicationDataUI()
         {
             // Set the ApplicationData and ApplicationDataStatus members of the ViewModel
-            // class to update the UI.
-            // dataTextBlock.Text = (Application.Current as ExecutionModelApplication.App).ApplicationDataObject;
-            // statusTextBlock.Text = (Application.Current as ExecutionModelApplication.App).ApplicationDataStatus;
+            WeatherData weatherData = (Application.Current as WeatherInformation.App).ApplicationDataObject;
+
+            if (weatherData.WasThereRemoteError)
+            {
+                MessageBox.Show(
+                     AppResources.NoticeThereIsNotCurrentLocation,
+                     AppResources.AskForLocationConsentMessageBoxCaption,
+                     MessageBoxButton.OK);
+                return;
+            }
+
+            (Application.Current as WeatherInformation.App).IsNewLocation = false;
+            App.MainViewModel.LoadData(weatherData);
         }
 
         private void LongListSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
