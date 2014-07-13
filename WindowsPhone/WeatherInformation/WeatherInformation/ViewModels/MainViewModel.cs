@@ -13,7 +13,7 @@ using WeatherInformation.Resources;
 
 namespace WeatherInformation.ViewModels
 {
-    public class MainViewModel : INotifyPropertyChanged
+    public class MainViewModel
     {
         // The key names of _settings
         // TODO: reuse settings object instead of using the same code here again...
@@ -83,6 +83,7 @@ namespace WeatherInformation.ViewModels
             string symbol = isFahrenheit ? AppResources.TemperatureUnitsFahrenheitSymbol : AppResources.TemperatureUnitsCentigradeSymbol;
             var remoteForecastWeatherData = weatherData.RemoteForecastWeatherData;
 
+            this.ForecastItems.Clear();
             foreach (WeatherInformation.Model.ForecastWeatherParser.List item in remoteForecastWeatherData.list)
             {
                 DateTime unixTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
@@ -156,16 +157,6 @@ namespace WeatherInformation.ViewModels
                 value = defaultValue;
             }
             return value;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged(String propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (null != handler)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
         }
     }
 }

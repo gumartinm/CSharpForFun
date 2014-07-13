@@ -18,7 +18,7 @@
           </trans-unit>
         <trans-unit id="Resx/ApplicationTitle" translate="yes" xml:space="preserve">
           <source>MY APPLICATION</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">MI APLICACIÓN</target>
+          <target state="translated" state-qualifier="mt-suggestion">MI APLICACIÓN</target>
         </trans-unit>
         <trans-unit id="Resx/AppBarButtonText" translate="yes" xml:space="preserve">
           <source>add</source>
@@ -26,21 +26,21 @@
         </trans-unit>
         <trans-unit id="Resx/AppBarMenuItemText" translate="yes" xml:space="preserve">
           <source>Menu item</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Elemento de menú</target>
+          <target state="translated" state-qualifier="mt-suggestion">Elemento de menú</target>
         </trans-unit>
         <trans-unit id="Resx/SettingsLanguageHeader" translate="yes" xml:space="preserve">
           <source>Language</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Idioma</target>
+          <target state="translated" state-qualifier="mt-suggestion">Idioma</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Text in settings page as header</note>
           </trans-unit>
         <trans-unit id="Resx/SettingsTemperatureUnitsHeader" translate="yes" xml:space="preserve">
           <source>Temperature units</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Unidades de temperatura</target>
+          <target state="translated" state-qualifier="mt-suggestion">Unidades de temperatura</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Text in settings page</note>
           </trans-unit>
         <trans-unit id="Resx/SettingsLanguageSelectionEnglish" translate="yes" xml:space="preserve">
           <source>english</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">inglés</target>
+          <target state="translated" state-qualifier="mt-suggestion">inglés</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Settings page, select English language</note>
           </trans-unit>
         <trans-unit id="Resx/SettingsLanguageSelectionSpanish" translate="yes" xml:space="preserve">
@@ -95,11 +95,11 @@
           </trans-unit>
         <trans-unit id="Resx/TemperatureUnitsFahrenheitSymbol" translate="yes" xml:space="preserve">
           <source>ºF</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">º F</target>
+          <target state="translated" state-qualifier="mt-suggestion">º F</target>
         </trans-unit>
         <trans-unit id="Resx/LocationPageSubTitle" translate="yes" xml:space="preserve">
           <source>City, country</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Ciudad, país</target>
+          <target state="translated" state-qualifier="mt-suggestion">Ciudad, país</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Subtitle in location page</note>
           </trans-unit>
         <trans-unit id="Resx/LocationPageTitle" translate="yes" xml:space="preserve">
@@ -109,7 +109,7 @@
           </trans-unit>
         <trans-unit id="Resx/MainPageForecastHeader" translate="yes" xml:space="preserve">
           <source>forecast</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">previsión</target>
+          <target state="translated" state-qualifier="mt-suggestion">previsión</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Forecast header in main page</note>
           </trans-unit>
         <trans-unit id="Resx/SettingsPageHeaderSettings" translate="yes" xml:space="preserve">
@@ -117,9 +117,14 @@
           <target state="needs-review-translation" state-qualifier="mt-suggestion">configuración de</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Header settings in settings page</note>
           </trans-unit>
+        <trans-unit id="Resx/MainPageTitle" translate="yes" xml:space="preserve">
+          <source>City, country</source>
+          <target state="translated">Ciudad, país</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Title in main page</note>
+          </trans-unit>
         <trans-unit id="Resx/MainPageCurrentHeader" translate="yes" xml:space="preserve">
           <source>current</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">actual</target>
+          <target state="translated" state-qualifier="mt-suggestion">actual</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Current header in main page</note>
           </trans-unit>
         <trans-unit id="Resx/TemperatureUnitsCentigradeSymbol" translate="yes" xml:space="preserve">

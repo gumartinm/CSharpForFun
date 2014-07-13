@@ -102,6 +102,11 @@
           <target state="new">settings</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Header settings in settings page</note>
         </trans-unit>
+        <trans-unit id="Resx/MainPageTitle" translate="yes" xml:space="preserve">
+          <source>City, country</source>
+          <target state="new">City, country</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Title in main page</note>
+        </trans-unit>
         <trans-unit id="Resx/MainPageCurrentHeader" translate="yes" xml:space="preserve">
           <source>current</source>
           <target state="new">current</target>

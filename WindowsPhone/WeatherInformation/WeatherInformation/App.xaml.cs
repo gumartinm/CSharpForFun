@@ -141,58 +141,58 @@ namespace WeatherInformation
                 TimeSinceLastSave = DateTime.Now - dataLastSaveTime;
             }
 
-            // Check to see if data exists in isolated storage and see if the data is fresh.
-            // This example uses 30 seconds as the valid time window to make it easy to test. 
-            // Real apps will use a larger window.
-            using(IsolatedStorageFile isoStore = IsolatedStorageFile.GetUserStoreForApplication())
+            if (!IsNewLocation)
             {
-                if (isoStore.FileExists("JSONDataFile.txt") && TimeSinceLastSave.TotalSeconds < 30)
+                // Check to see if data exists in isolated storage and see if the data is fresh.
+                // This example uses 30 seconds as the valid time window to make it easy to test. 
+                // Real apps will use a larger window.
+                using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetUserStoreForApplication())
                 {
-                    using (StreamReader sr = new StreamReader(isoStore.OpenFile("JSONDataFile.txt", FileMode.Open)))
-                    { 
-                        // This method loads the data from isolated storage, if it is available.
-                        string JSONRemoteForecastWeatherData = sr.ReadLine();
-                        // string remoteCurrentWeatherData = sr.ReadLine();
-                        var weatherData = WeatherParser(JSONRemoteForecastWeatherData, null);
-                        weatherData.JSONRemoteForecastWeatherData = JSONRemoteForecastWeatherData;
-                        weatherData.JSONRemoteCurrentWeatherData = null;
-                        weatherData.WasThereRemoteError = false;
-                        ApplicationDataObject = weatherData;
-                    }
-                }
-                else
-                {
-                    // Otherwise, it gets the data from the web.
-                    var task = LoadDataAsync();
-                    try
+                    if (isoStore.FileExists("JSONDataFile.txt") && TimeSinceLastSave.TotalSeconds < 30)
                     {
-                        // TODO: I guess, I may do this because this code is running in a new thread :/ Better alternative just using async? WIP :(
-                        task.Wait();
-                    }
-                    catch (AggregateException ae)
-                    {
-                        ae.Handle(e =>
+                        using (StreamReader sr = new StreamReader(isoStore.OpenFile("JSONDataFile.txt", FileMode.Open)))
                         {
-                            // If the data request fails, alert the user.
-                            ApplicationDataObject = new WeatherData
-                            {
-                                RemoteForecastWeatherData = null,
-                                RemoteCurrentWeatherData = null,
-                                JSONRemoteForecastWeatherData = null,
-                                JSONRemoteCurrentWeatherData = null,
-                                WasThereRemoteError = true
-                            };
+                            // This method loads the data from isolated storage, if it is available.
+                            string JSONRemoteForecastWeatherData = sr.ReadLine();
+                            // string remoteCurrentWeatherData = sr.ReadLine();
+                            var weatherData = WeatherParser(JSONRemoteForecastWeatherData, null);
+                            weatherData.JSONRemoteForecastWeatherData = JSONRemoteForecastWeatherData;
+                            weatherData.JSONRemoteCurrentWeatherData = null;
+                            weatherData.WasThereRemoteError = false;
+                            ApplicationDataObject = weatherData;
+                        }
 
-                            return true;
-                        });
+                        // TODO: write more methods or something else to avoid nested returns like this... no time right now... :(
+                        return;
                     }
                 }
             }
             
+
+            // Otherwise, it gets the data from the web.
+            var task = LoadDataAsync();
+            try
+            {
+                // TODO: I guess, I may do this because this code is running in a new thread :/ Better alternative just using async? WIP :(
+                // Using Task.WhenAll to avoid deadlock :)
+                Task.WhenAll(task);
+            }
+            catch (Exception ex)
+            {
+                // If the data request fails, alert the user.
+                ApplicationDataObject = new WeatherData
+                {
+                    RemoteForecastWeatherData = null,
+                    RemoteCurrentWeatherData = null,
+                    JSONRemoteForecastWeatherData = null,
+                    JSONRemoteCurrentWeatherData = null,
+                    WasThereRemoteError = true
+                };
+            }  
         }
 
         /// <summary>
-        /// Crear y agregar unos pocos objetos ItemViewModel a la colección Items.
+        /// Retrieve remote weather data.
         /// </summary>
         async public Task LoadDataAsync()
         {
@@ -238,8 +238,8 @@ namespace WeatherInformation
                 sw.Write(value.JSONRemoteForecastWeatherData);
                 fileStream.Flush(true);
             }
-            
-            IsolatedStorageSettings.ApplicationSettings["DataLastSaveTime"] = DateTime.Now;
+
+            IsolatedStorageSettings.ApplicationSettings["DataLastSavedTime"] = DateTime.Now;
         }
 
 
@@ -274,6 +274,10 @@ namespace WeatherInformation
                 weatherData.WasThereRemoteError = false;
                 ApplicationDataObject = weatherData;
             }
+            if (PhoneApplicationService.Current.State.ContainsKey("IsNewLocation"))
+            {
+                IsNewLocation = (bool)IsolatedStorageSettings.ApplicationSettings["IsNewLocation"];
+            }
         }
 
         // Código para ejecutar cuando la aplicación se desactiva (se envía a segundo plano)
@@ -281,14 +285,15 @@ namespace WeatherInformation
         private void Application_Deactivated(object sender, DeactivatedEventArgs e)
         {
             // If there is data in the application member variable...
-            if (ApplicationDataObject != null)
+            var weatherData = ApplicationDataObject;
+            if (weatherData != null)
             {
-                var weatherData = ApplicationDataObject;
                 if (!string.IsNullOrEmpty(weatherData.JSONRemoteForecastWeatherData))
                 {
                     // Store it in the State dictionary.
                     PhoneApplicationService.Current.State["JSONRemoteForecastWeatherData"] = weatherData.JSONRemoteForecastWeatherData;
                 }
+                PhoneApplicationService.Current.State["IsNewLocation"] = IsNewLocation;
 
                 // Also store it in isolated storage, in case the application is never reactivated.
                 SaveDataToIsolatedStorage("JSONDataFile.txt", weatherData);
@@ -301,9 +306,10 @@ namespace WeatherInformation
         {
             // Asegurarse de que el estado de la aplicación requerida persiste aquí.
             // The application will not be tombstoned, so save only to isolated storage.
-            if (ApplicationDataObject != null)
+            var weatherData = ApplicationDataObject;
+            if (weatherData != null)
             {
-                SaveDataToIsolatedStorage("JSONDataFile.txt", ApplicationDataObject);
+                SaveDataToIsolatedStorage("JSONDataFile.txt", weatherData);
             }
         }     
 
