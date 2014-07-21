@@ -228,4 +228,56 @@
     <value>City, country</value>
     <comment>Title in main page</comment>
   </data>
+  <data name="MainPageCurrentClouds" xml:space="preserve">
+    <value>CLOUDS</value>
+  </data>
+  <data name="MainPageCurrentFeelsLike" xml:space="preserve">
+    <value>FEELS LIKE</value>
+  </data>
+  <data name="MainPageCurrentHumidity" xml:space="preserve">
+    <value>HUMIDITY</value>
+  </data>
+  <data name="MainPageCurrentPressure" xml:space="preserve">
+    <value>PRESSURE</value>
+  </data>
+  <data name="MainPageCurrentRain" xml:space="preserve">
+    <value>RAIN</value>
+  </data>
+  <data name="MainPageCurrentSnow" xml:space="preserve">
+    <value>SNOW</value>
+  </data>
+  <data name="MainPageCurrentSunRise" xml:space="preserve">
+    <value>SUN RISE</value>
+  </data>
+  <data name="MainPageCurrentSunSet" xml:space="preserve">
+    <value>SUN SET</value>
+  </data>
+  <data name="MainPageCurrentWind" xml:space="preserve">
+    <value>WIND</value>
+  </data>
+  <data name="URIAPIOpenWeatherMapCurrent" xml:space="preserve">
+    <value>http://api.openweathermap.org/data/{0}/weather?lat={1}&amp;lon={2}&amp;cnt=1</value>
+    <comment>Not to be translated</comment>
+  </data>
+  <data name="MainPageCurrentCloudsUnits" xml:space="preserve">
+    <value>%</value>
+    <comment>Not to be translated.</comment>
+  </data>
+  <data name="MainPageCurrentHumidityUnits" xml:space="preserve">
+    <value>%</value>
+    <comment>Not to be translated.</comment>
+  </data>
+  <data name="MainPageCurrentRainUnits" xml:space="preserve">
+    <value>mm 3h</value>
+  </data>
+  <data name="MainPageCurrentSnowUnits" xml:space="preserve">
+    <value>mm 3h</value>
+  </data>
+  <data name="MainPageCurrentWindUnits" xml:space="preserve">
+    <value>m/s</value>
+  </data>
+  <data name="MainPageCurrentPressureUnits" xml:space="preserve">
+    <value>hpa</value>
+    <comment>Not to be translated.</comment>
+  </data>
 </root>

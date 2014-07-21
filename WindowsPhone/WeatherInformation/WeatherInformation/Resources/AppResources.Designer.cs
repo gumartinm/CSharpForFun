@@ -133,11 +133,146 @@ namespace WeatherInformation.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a CLOUDS.
+        /// </summary>
+        public static string MainPageCurrentClouds {
+            get {
+                return ResourceManager.GetString("MainPageCurrentClouds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a %.
+        /// </summary>
+        public static string MainPageCurrentCloudsUnits {
+            get {
+                return ResourceManager.GetString("MainPageCurrentCloudsUnits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a FEELS LIKE.
+        /// </summary>
+        public static string MainPageCurrentFeelsLike {
+            get {
+                return ResourceManager.GetString("MainPageCurrentFeelsLike", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a current.
         /// </summary>
         public static string MainPageCurrentHeader {
             get {
                 return ResourceManager.GetString("MainPageCurrentHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a HUMIDITY.
+        /// </summary>
+        public static string MainPageCurrentHumidity {
+            get {
+                return ResourceManager.GetString("MainPageCurrentHumidity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a %.
+        /// </summary>
+        public static string MainPageCurrentHumidityUnits {
+            get {
+                return ResourceManager.GetString("MainPageCurrentHumidityUnits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a PRESSURE.
+        /// </summary>
+        public static string MainPageCurrentPressure {
+            get {
+                return ResourceManager.GetString("MainPageCurrentPressure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a hpa.
+        /// </summary>
+        public static string MainPageCurrentPressureUnits {
+            get {
+                return ResourceManager.GetString("MainPageCurrentPressureUnits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a RAIN.
+        /// </summary>
+        public static string MainPageCurrentRain {
+            get {
+                return ResourceManager.GetString("MainPageCurrentRain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a mm 3h.
+        /// </summary>
+        public static string MainPageCurrentRainUnits {
+            get {
+                return ResourceManager.GetString("MainPageCurrentRainUnits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SNOW.
+        /// </summary>
+        public static string MainPageCurrentSnow {
+            get {
+                return ResourceManager.GetString("MainPageCurrentSnow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a mm 3h.
+        /// </summary>
+        public static string MainPageCurrentSnowUnits {
+            get {
+                return ResourceManager.GetString("MainPageCurrentSnowUnits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SUN RISE.
+        /// </summary>
+        public static string MainPageCurrentSunRise {
+            get {
+                return ResourceManager.GetString("MainPageCurrentSunRise", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a SUN SET.
+        /// </summary>
+        public static string MainPageCurrentSunSet {
+            get {
+                return ResourceManager.GetString("MainPageCurrentSunSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a WIND.
+        /// </summary>
+        public static string MainPageCurrentWind {
+            get {
+                return ResourceManager.GetString("MainPageCurrentWind", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a m/s.
+        /// </summary>
+        public static string MainPageCurrentWindUnits {
+            get {
+                return ResourceManager.GetString("MainPageCurrentWindUnits", resourceCulture);
             }
         }
         
@@ -309,6 +444,15 @@ namespace WeatherInformation.Resources {
         public static string TemperatureUnitsFahrenheitSymbol {
             get {
                 return ResourceManager.GetString("TemperatureUnitsFahrenheitSymbol", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a http://api.openweathermap.org/data/{0}/weather?lat={1}&amp;lon={2}&amp;cnt=1.
+        /// </summary>
+        public static string URIAPIOpenWeatherMapCurrent {
+            get {
+                return ResourceManager.GetString("URIAPIOpenWeatherMapCurrent", resourceCulture);
             }
         }
         

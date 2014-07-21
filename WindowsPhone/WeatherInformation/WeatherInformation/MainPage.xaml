@@ -82,6 +82,88 @@
             <!--Elemento Pivot dos-->
             <phone:PivotItem Header="{Binding LocalizedResources.MainPageCurrentHeader, Mode=OneWay, Source={StaticResource LocalizedStrings}}">
                 <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Image Source="/Assets/Tiles/IconicTileMediumLarge.png" Width="100" Height="100" Margin="12,-6,12,0" />
+                            <StackPanel  Orientation="Vertical" VerticalAlignment="Center">
+                                <StackPanel  Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding CurrentMaxTemp}" TextWrapping="Wrap" Style="{StaticResource PhoneTextLargeStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
+                                    <TextBlock Text="{Binding CurrentMaxTempUnits}" TextWrapping="Wrap" Style="{StaticResource PhoneTextLargeStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
+                                </StackPanel>
+                                <StackPanel  Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding CurrentMinTemp}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
+                                    <TextBlock Text="{Binding CurrentMinTempUnits}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock Text="{Binding CurrentConditions}" TextWrapping="Wrap" Style="{StaticResource PhoneTextLargeStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
+                        </StackPanel>
+                        <Grid Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding LocalizedResources.MainPageCurrentFeelsLike, Mode=OneWay, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
+                                    <TextBlock Text="{Binding CurrentFeelsLikeTemp}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,2,0"/>
+                                    <TextBlock Text="{Binding CurrentFeelsLikeTempUnits}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding LocalizedResources.MainPageCurrentHumidity, Mode=OneWay, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
+                                    <TextBlock Text="{Binding CurrentHumidity}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,2,0"/>
+                                    <TextBlock Text="{Binding CurrentHumidityUnits}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding LocalizedResources.MainPageCurrentRain, Mode=OneWay, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
+                                    <TextBlock Text="{Binding CurrentRain}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,2,0"/>
+                                    <TextBlock Text="{Binding CurrentRainUnits}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding LocalizedResources.MainPageCurrentSnow, Mode=OneWay, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0,12,0"/>
+                                    <TextBlock Text="{Binding CurrentSnow}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,2,0"/>
+                                    <TextBlock Text="{Binding CurrentSnowUnits}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding LocalizedResources.MainPageCurrentWind, Mode=OneWay, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
+                                    <TextBlock Text="{Binding CurrentWind}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,2,0"/>
+                                    <TextBlock Text="{Binding CurrentWindUnits}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding LocalizedResources.MainPageCurrentClouds, Mode=OneWay, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
+                                    <TextBlock Text="{Binding CurrentClouds}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,2,0"/>
+                                    <TextBlock Text="{Binding CurrentSnowUnits}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                        <StackPanel Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding LocalizedResources.MainPageCurrentPressure, Mode=OneWay, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
+                                <TextBlock Text="{Binding CurrentPressure}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,2,0"/>
+                                <TextBlock Text="{Binding CurrentPressureUnits}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding LocalizedResources.MainPageCurrentSunRise, Mode=OneWay, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
+                                <TextBlock Text="{Binding CurrentSunRise}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding LocalizedResources.MainPageCurrentSunSet, Mode=OneWay, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
+                                <TextBlock Text="{Binding CurrentSunSet}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
                 </ScrollViewer>
             </phone:PivotItem>
         </phone:Pivot>

@@ -2,7 +2,7 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="es" original="AppResources.resx" tool-id="MultilingualAppToolkit" product-name="WeatherInformation" product-version="1.0.0.0" build-num="0">
     <header>
-      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="3.0.1200.0" tool-company="Microsoft" />
+      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="3.1.1085.0" tool-company="Microsoft" />
     </header>
     <body>
       <group id="Resx">
@@ -70,7 +70,7 @@
           </trans-unit>
         <trans-unit id="Resx/NoticeErrorLocationAutodetection" translate="yes" xml:space="preserve">
           <source>Location autodetection seems to be disabled in your phone</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Detección automática de la ubicación parece ser desactivado en el teléfono</target>
+          <target state="translated">Detección automática de la ubicación parece estar desactivada en el teléfono</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Map window, notice message, error while location autodetection</note>
           </trans-unit>
         <trans-unit id="Resx/SettingsForecastDayNumbersHeader" translate="yes" xml:space="preserve">
@@ -93,9 +93,9 @@
           <target state="translated">Previsión 5 días</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Settings page, select forecast day numbers</note>
           </trans-unit>
-        <trans-unit id="Resx/TemperatureUnitsFahrenheitSymbol" translate="yes" xml:space="preserve">
+        <trans-unit id="Resx/TemperatureUnitsFahrenheitSymbol" translate="no" xml:space="preserve">
           <source>ºF</source>
-          <target state="translated" state-qualifier="mt-suggestion">º F</target>
+          <target state="needs-review-translation" state-qualifier="mt-suggestion">º F</target>
         </trans-unit>
         <trans-unit id="Resx/LocationPageSubTitle" translate="yes" xml:space="preserve">
           <source>City, country</source>
@@ -122,12 +122,80 @@
           <target state="translated">Ciudad, país</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Title in main page</note>
           </trans-unit>
+        <trans-unit id="Resx/MainPageCurrentWind" translate="yes" xml:space="preserve">
+          <source>WIND</source>
+          <target state="translated">VIENTO</target>
+        </trans-unit>
+        <trans-unit id="Resx/URIAPIOpenWeatherMapCurrent" translate="no" xml:space="preserve">
+          <source>http://api.openweathermap.org/data/{0}/weather?lat={1}%%amp;lon={2}%%amp;cnt=1</source>
+          <target state="new">http://api.openweathermap.org/data/{0}/weather?lat={1}%%amp;lon={2}%%amp;cnt=1</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Not to be translated</note>
+          </trans-unit>
+        <trans-unit id="Resx/MainPageCurrentWindUnits" translate="yes" xml:space="preserve">
+          <source>m/s</source>
+          <target state="new">m/s</target>
+        </trans-unit>
+        <trans-unit id="Resx/MainPageCurrentPressureUnits" translate="yes" xml:space="preserve">
+          <source>hpa</source>
+          <target state="new">hpa</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Not to be translated.</note>
+        </trans-unit>
+        <trans-unit id="Resx/MainPageCurrentSnowUnits" translate="yes" xml:space="preserve">
+          <source>mm 3h</source>
+          <target state="new">mm 3h</target>
+        </trans-unit>
+        <trans-unit id="Resx/MainPageCurrentRainUnits" translate="yes" xml:space="preserve">
+          <source>mm 3h</source>
+          <target state="new">mm 3h</target>
+        </trans-unit>
+        <trans-unit id="Resx/MainPageCurrentHumidityUnits" translate="yes" xml:space="preserve">
+          <source>%</source>
+          <target state="new">%</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Not to be translated.</note>
+        </trans-unit>
+        <trans-unit id="Resx/MainPageCurrentCloudsUnits" translate="yes" xml:space="preserve">
+          <source>%</source>
+          <target state="new">%</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Not to be translated.</note>
+        </trans-unit>
+        <trans-unit id="Resx/MainPageCurrentSunSet" translate="yes" xml:space="preserve">
+          <source>SUN SET</source>
+          <target state="translated">SOL SE PONE</target>
+        </trans-unit>
+        <trans-unit id="Resx/MainPageCurrentSunRise" translate="yes" xml:space="preserve">
+          <source>SUN RISE</source>
+          <target state="translated">SOL SALE</target>
+        </trans-unit>
+        <trans-unit id="Resx/MainPageCurrentSnow" translate="yes" xml:space="preserve">
+          <source>SNOW</source>
+          <target state="translated">NIEVE</target>
+        </trans-unit>
+        <trans-unit id="Resx/MainPageCurrentRain" translate="yes" xml:space="preserve">
+          <source>RAIN</source>
+          <target state="translated">LLUVIA</target>
+        </trans-unit>
+        <trans-unit id="Resx/MainPageCurrentPressure" translate="yes" xml:space="preserve">
+          <source>PRESSURE</source>
+          <target state="translated">PRESIÓN</target>
+        </trans-unit>
+        <trans-unit id="Resx/MainPageCurrentHumidity" translate="yes" xml:space="preserve">
+          <source>HUMIDITY</source>
+          <target state="translated">HUMEDAD</target>
+        </trans-unit>
+        <trans-unit id="Resx/MainPageCurrentFeelsLike" translate="yes" xml:space="preserve">
+          <source>FEELS LIKE</source>
+          <target state="translated">SIENTE COMO</target>
+        </trans-unit>
+        <trans-unit id="Resx/MainPageCurrentClouds" translate="yes" xml:space="preserve">
+          <source>CLOUDS</source>
+          <target state="translated">NUBES</target>
+        </trans-unit>
         <trans-unit id="Resx/MainPageCurrentHeader" translate="yes" xml:space="preserve">
           <source>current</source>
           <target state="translated" state-qualifier="mt-suggestion">actual</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Current header in main page</note>
           </trans-unit>
-        <trans-unit id="Resx/TemperatureUnitsCentigradeSymbol" translate="yes" xml:space="preserve">
+        <trans-unit id="Resx/TemperatureUnitsCentigradeSymbol" translate="no" xml:space="preserve">
           <source>ºC</source>
           <target state="needs-review-translation" state-qualifier="mt-suggestion">º C</target>
         </trans-unit>

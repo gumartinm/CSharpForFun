@@ -13,7 +13,7 @@ using WeatherInformation.Resources;
 
 namespace WeatherInformation.ViewModels
 {
-    public class MainViewModel
+    public class MainViewModel : INotifyPropertyChanged
     {
         // The key names of _settings
         // TODO: reuse settings object instead of using the same code here again...
@@ -44,7 +44,27 @@ namespace WeatherInformation.ViewModels
         /// </summary>
         public ObservableCollection<ItemViewModel> ForecastItems{ get; private set; }
         public ObservableCollection<ItemViewModel> CurrentItems { get; private set; }
-
+        public String CurrentMaxTemp { get; set; }
+        public String CurrentMaxTempUnits { get; set; }
+        public String CurrentMinTemp { get; private set; }
+        public String CurrentMinTempUnits { get; set; }
+        public String CurrentConditions { get; private set; }
+        public String CurrentFeelsLikeTemp { get; private set; }
+        public String CurrentFeelsLikeTempUnits { get; set; }
+        public String CurrentHumidity { get; private set; }
+        public String CurrentHumidityUnits { get; private set; }
+        public String CurrentRain { get; private set; }
+        public String CurrentRainUnits { get; private set; }
+        public String CurrentSnow { get; private set; }
+        public String CurrentSnowUnits { get; private set; }
+        public String CurrentWind { get; private set; }
+        public String CurrentWindUnits { get; private set; }
+        public String CurrentClouds { get; private set; }
+        public String CurrentCloudsUnits { get; private set; }
+        public String CurrentPressure { get; private set; }
+        public String CurrentPressureUnits { get; private set; }
+        public String CurrentSunRise { get; private set; }
+        public String CurrentSunSet { get; private set; }
 
         /// <summary>
         /// Crear y agregar unos pocos objetos ItemViewModel a la colección Items.
@@ -84,9 +104,9 @@ namespace WeatherInformation.ViewModels
             var remoteForecastWeatherData = weatherData.RemoteForecastWeatherData;
 
             this.ForecastItems.Clear();
+            DateTime unixTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             foreach (WeatherInformation.Model.ForecastWeatherParser.List item in remoteForecastWeatherData.list)
             {
-                DateTime unixTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
                 DateTime date = unixTime.AddSeconds(item.dt).ToLocalTime();
 
                 // TODO: if I do not receive max temp or min temp... Am I going to receive item.temp.max=0 or item.temp.min=0 (I guess because
@@ -114,6 +134,122 @@ namespace WeatherInformation.ViewModels
                     break;
                 }
             }
+
+            // TODO: nullables?
+
+            var remoteCurrentWeatherData = weatherData.RemoteCurrentWeatherData;
+
+            var currentMaxTemp = "";
+            if (remoteCurrentWeatherData.main != null)
+            {
+                var conversion = remoteCurrentWeatherData.main.temp_max;
+                conversion -= tempUnits;
+                currentMaxTemp = String.Format(CultureInfo.InvariantCulture, "{0:0.##}", conversion);
+            }
+            this.CurrentMaxTemp = currentMaxTemp;
+            this.CurrentMaxTempUnits = symbol;
+            NotifyPropertyChanged("CurrentMaxTemp");
+            NotifyPropertyChanged("CurrentMaxTempUnits");
+
+            var currentMinTemp = "";
+            if (remoteCurrentWeatherData.main != null)
+            {
+                var conversion = remoteCurrentWeatherData.main.temp_min;
+                conversion -= tempUnits;
+                currentMinTemp = String.Format(CultureInfo.InvariantCulture, "{0:0.##}", conversion);
+            }
+            this.CurrentMinTemp = currentMinTemp;
+            this.CurrentMinTempUnits = symbol;
+            NotifyPropertyChanged("CurrentMinTemp");
+            NotifyPropertyChanged("CurrentMinTempUnits");
+
+            var currentConditions = "no description available";
+            if (remoteCurrentWeatherData.weather.Count > 0)
+            {
+                currentConditions = remoteCurrentWeatherData.weather[0].description;
+            }
+            this.CurrentConditions = currentConditions;
+            NotifyPropertyChanged("CurrentConditions");
+
+            var currentFeelsLikeTemp = "";
+            if (remoteCurrentWeatherData.main != null)
+            {
+                var conversion = remoteCurrentWeatherData.main.temp;
+                conversion -= tempUnits;
+                currentFeelsLikeTemp = String.Format(CultureInfo.InvariantCulture, "{0:0.##}", conversion);
+            }
+            this.CurrentFeelsLikeTemp = currentFeelsLikeTemp;
+            this.CurrentFeelsLikeTempUnits = symbol;
+            NotifyPropertyChanged("CurrentFeelsLikeTemp");
+            NotifyPropertyChanged("CurrentFeelsLikeTempUnits");
+
+            var currentHumidity = "";
+            if (remoteCurrentWeatherData.main != null)
+            {
+                currentHumidity = remoteCurrentWeatherData.main.humidity.ToString(CultureInfo.InvariantCulture);
+            }
+            this.CurrentHumidity = currentHumidity;
+            this.CurrentHumidityUnits = AppResources.MainPageCurrentHumidityUnits;
+            NotifyPropertyChanged("CurrentHumidity");
+            NotifyPropertyChanged("CurrentHumidityUnits");
+
+            var currentRain = "";
+            if (remoteCurrentWeatherData.rain != null)
+            {
+                currentRain = remoteCurrentWeatherData.rain.get3h().ToString(CultureInfo.InvariantCulture);
+            }
+            this.CurrentRain = currentRain;
+            this.CurrentRainUnits = AppResources.MainPageCurrentRainUnits;
+            NotifyPropertyChanged("CurrentRain");
+            NotifyPropertyChanged("CurrentRainUnits");
+
+            var currentSnow = "";
+            if (remoteCurrentWeatherData.snow != null)
+            {
+                currentSnow = remoteCurrentWeatherData.snow.get3h().ToString(CultureInfo.InvariantCulture);
+            }
+            this.CurrentSnow = currentSnow;
+            this.CurrentSnowUnits = AppResources.MainPageCurrentSnowUnits;
+            NotifyPropertyChanged("CurrentSnow");
+            NotifyPropertyChanged("CurrentSnowUnits");
+
+            var currentWind = "";
+            if (remoteCurrentWeatherData.wind != null)
+            {
+                currentWind = remoteCurrentWeatherData.wind.speed.ToString(CultureInfo.InvariantCulture);
+            }
+            this.CurrentWind = currentWind;
+            this.CurrentWindUnits = AppResources.MainPageCurrentWindUnits;
+            NotifyPropertyChanged("CurrentWind");
+            NotifyPropertyChanged("CurrentWindUnits");
+
+            var currentClouds = "";
+            if (remoteCurrentWeatherData.clouds != null)
+            {
+                currentClouds = remoteCurrentWeatherData.clouds.all.ToString(CultureInfo.InvariantCulture);
+            }
+            this.CurrentClouds = currentClouds;
+            this.CurrentCloudsUnits = AppResources.MainPageCurrentCloudsUnits;
+            NotifyPropertyChanged("CurrentClouds");
+            NotifyPropertyChanged("CurrentCloudsUnits");
+
+            var currentPressure = "";
+            if (remoteCurrentWeatherData.main != null)
+            {
+                currentPressure = remoteCurrentWeatherData.main.pressure.ToString(CultureInfo.InvariantCulture);
+            }
+            this.CurrentPressure = currentPressure;
+            this.CurrentPressureUnits = AppResources.MainPageCurrentPressureUnits;
+            NotifyPropertyChanged("CurrentPressure");
+            NotifyPropertyChanged("CurrentPressureUnits");
+
+            var sunRiseTime = unixTime.AddSeconds(remoteCurrentWeatherData.sys.sunrise).ToLocalTime();
+            this.CurrentSunRise = sunRiseTime.ToString("MM/dd/yy H:mm:ss", CultureInfo.InvariantCulture);
+            NotifyPropertyChanged("CurrentSunRise");
+
+            var sunSetTime = unixTime.AddSeconds(remoteCurrentWeatherData.sys.sunset).ToLocalTime();
+            this.CurrentSunSet = sunSetTime.ToString("MM/dd/yy H:mm:ss", CultureInfo.InvariantCulture);
+            NotifyPropertyChanged("CurrentSunSet");
         }
 
         public bool IsThereCurrentLocation()
@@ -157,6 +293,16 @@ namespace WeatherInformation.ViewModels
                 value = defaultValue;
             }
             return value;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyPropertyChanged(String propertyName)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (null != handler)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 }

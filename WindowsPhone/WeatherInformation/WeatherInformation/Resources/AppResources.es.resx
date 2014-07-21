@@ -125,13 +125,120 @@
     <value>es</value>
     <comment>Controls the Language and ensures that the font for all elements in the RootFrame aligns with the app's language. Set to the language code of this resource file's language.</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-<data name="ApplicationTitle" xml:space="preserve"><value>MI APLICACIÓN</value></data><data name="AppBarButtonText" xml:space="preserve"><value>agregar</value></data><data name="AppBarMenuItemText" xml:space="preserve"><value>Elemento de menú</value></data><data name="SettingsLanguageHeader" xml:space="preserve"><value>Idioma</value><comment>Text in settings page as header</comment></data><data name="SettingsTemperatureUnitsHeader" xml:space="preserve"><value>Unidades de temperatura</value><comment>Text in settings page</comment></data><data name="SettingsLanguageSelectionEnglish" xml:space="preserve"><value>inglés</value><comment>Settings page, select English language</comment></data><data name="SettingsLanguageSelectionSpanish" xml:space="preserve"><value>español</value><comment>Settings page, select Spanish language</comment></data><data name="SettingsTemperatureUnitsSelectionCentigrade" xml:space="preserve"><value>celsius</value><comment>Settings page, select tempereature units centigrade</comment></data><data name="SettingsTemperatureUnitsSelectionFahrenheit" xml:space="preserve"><value>fahrenheit</value><comment>Settings page, select temperature units fahrenheit</comment></data><data name="AskForLocationConsentMessageBoxCaption" xml:space="preserve"><value>Localización</value><comment>Ask for location consent in map window</comment></data><data name="NoticeThereIsNotCurrentLocation" xml:space="preserve"><value>No hay localizaciones almacenadas.</value><comment>Main window, notice message, no available locations</comment></data><data name="NoticeErrorLocationAutodetection" xml:space="preserve"><value>Detección automática de la ubicación parece ser desactivado en el teléfono</value><comment>Map window, notice message, error while location autodetection</comment></data><data name="SettingsForecastDayNumbersHeader" xml:space="preserve"><value>Prevision, numero días</value><comment>Text in settings page as header</comment></data><data name="SettingsForecastDayNumbersSelectionTen" xml:space="preserve"><value>Previsión 10 días</value><comment>Settings page, select forecast day numbers</comment></data><data name="SettingsForecastDayNumbersSelectionFourteen" xml:space="preserve"><value>Previsión 14 días</value><comment>Settings page, select forecast day numbers</comment></data><data name="SettingsForecastDayNumbersSelectionFive" xml:space="preserve"><value>Previsión 5 días</value><comment>Settings page, select forecast day numbers</comment></data><data name="TemperatureUnitsFahrenheitSymbol" xml:space="preserve"><value>º F</value></data><data name="LocationPageSubTitle" xml:space="preserve"><value>Ciudad, país</value><comment>Subtitle in location page</comment></data><data name="LocationPageTitle" xml:space="preserve"><value>Selecciona tu localización</value><comment>Title in location page</comment></data><data name="MainPageForecastHeader" xml:space="preserve"><value>previsión</value><comment>Forecast header in main page</comment></data><data name="SettingsPageHeaderSettings" xml:space="preserve"><value>configuración de</value><comment>Header settings in settings page</comment></data><data name="MainPageCurrentHeader" xml:space="preserve"><value>actual</value><comment>Current header in main page</comment></data><data name="TemperatureUnitsCentigradeSymbol" xml:space="preserve"><value>º C</value></data><data name="AskForLocationConsentMessageBox" xml:space="preserve"><value>Esta aplicación accede a los datos de tu localización. ¿Estás de acuerdo?</value><comment>Ask for location consent in map window</comment></data><data name="MainPageTitle" xml:space="preserve"><value>Ciudad, país</value><comment>Title in main page</comment></data></root>
+  <data name="ApplicationTitle" xml:space="preserve">
+    <value>MI APLICACIÓN</value>
+  </data>
+  <data name="AppBarButtonText" xml:space="preserve">
+    <value>agregar</value>
+  </data>
+  <data name="AppBarMenuItemText" xml:space="preserve">
+    <value>Elemento de menú</value>
+  </data>
+  <data name="SettingsLanguageHeader" xml:space="preserve">
+    <value>Idioma</value>
+    <comment>Text in settings page as header</comment>
+  </data>
+  <data name="SettingsTemperatureUnitsHeader" xml:space="preserve">
+    <value>Unidades de temperatura</value>
+    <comment>Text in settings page</comment>
+  </data>
+  <data name="SettingsLanguageSelectionEnglish" xml:space="preserve">
+    <value>inglés</value>
+    <comment>Settings page, select English language</comment>
+  </data>
+  <data name="SettingsLanguageSelectionSpanish" xml:space="preserve">
+    <value>español</value>
+    <comment>Settings page, select Spanish language</comment>
+  </data>
+  <data name="SettingsTemperatureUnitsSelectionCentigrade" xml:space="preserve">
+    <value>celsius</value>
+    <comment>Settings page, select tempereature units centigrade</comment>
+  </data>
+  <data name="SettingsTemperatureUnitsSelectionFahrenheit" xml:space="preserve">
+    <value>fahrenheit</value>
+    <comment>Settings page, select temperature units fahrenheit</comment>
+  </data>
+  <data name="AskForLocationConsentMessageBoxCaption" xml:space="preserve">
+    <value>Localización</value>
+    <comment>Ask for location consent in map window</comment>
+  </data>
+  <data name="NoticeThereIsNotCurrentLocation" xml:space="preserve">
+    <value>No hay localizaciones almacenadas.</value>
+    <comment>Main window, notice message, no available locations</comment>
+  </data>
+  <data name="NoticeErrorLocationAutodetection" xml:space="preserve">
+    <value>Detección automática de la ubicación parece estar desactivada en el teléfono</value>
+    <comment>Map window, notice message, error while location autodetection</comment>
+  </data>
+  <data name="SettingsForecastDayNumbersHeader" xml:space="preserve">
+    <value>Prevision, numero días</value>
+    <comment>Text in settings page as header</comment>
+  </data>
+  <data name="SettingsForecastDayNumbersSelectionTen" xml:space="preserve">
+    <value>Previsión 10 días</value>
+    <comment>Settings page, select forecast day numbers</comment>
+  </data>
+  <data name="SettingsForecastDayNumbersSelectionFourteen" xml:space="preserve">
+    <value>Previsión 14 días</value>
+    <comment>Settings page, select forecast day numbers</comment>
+  </data>
+  <data name="SettingsForecastDayNumbersSelectionFive" xml:space="preserve">
+    <value>Previsión 5 días</value>
+    <comment>Settings page, select forecast day numbers</comment>
+  </data>
+  <data name="LocationPageSubTitle" xml:space="preserve">
+    <value>Ciudad, país</value>
+    <comment>Subtitle in location page</comment>
+  </data>
+  <data name="LocationPageTitle" xml:space="preserve">
+    <value>Selecciona tu localización</value>
+    <comment>Title in location page</comment>
+  </data>
+  <data name="MainPageForecastHeader" xml:space="preserve">
+    <value>previsión</value>
+    <comment>Forecast header in main page</comment>
+  </data>
+  <data name="SettingsPageHeaderSettings" xml:space="preserve">
+    <value>configuración de</value>
+    <comment>Header settings in settings page</comment>
+  </data>
+  <data name="MainPageCurrentHeader" xml:space="preserve">
+    <value>actual</value>
+    <comment>Current header in main page</comment>
+  </data>
+  <data name="AskForLocationConsentMessageBox" xml:space="preserve">
+    <value>Esta aplicación accede a los datos de tu localización. ¿Estás de acuerdo?</value>
+    <comment>Ask for location consent in map window</comment>
+  </data>
+  <data name="MainPageTitle" xml:space="preserve">
+    <value>Ciudad, país</value>
+    <comment>Title in main page</comment>
+  </data>
+  <data name="MainPageCurrentWind" xml:space="preserve">
+    <value>VIENTO</value>
+  </data>
+  <data name="MainPageCurrentSunSet" xml:space="preserve">
+    <value>SOL SE PONE</value>
+  </data>
+  <data name="MainPageCurrentSunRise" xml:space="preserve">
+    <value>SOL SALE</value>
+  </data>
+  <data name="MainPageCurrentSnow" xml:space="preserve">
+    <value>NIEVE</value>
+  </data>
+  <data name="MainPageCurrentRain" xml:space="preserve">
+    <value>LLUVIA</value>
+  </data>
+  <data name="MainPageCurrentPressure" xml:space="preserve">
+    <value>PRESIÓN</value>
+  </data>
+  <data name="MainPageCurrentHumidity" xml:space="preserve">
+    <value>HUMEDAD</value>
+  </data>
+  <data name="MainPageCurrentClouds" xml:space="preserve">
+    <value>NUBES</value>
+  </data>
+  <data name="MainPageCurrentFeelsLike" xml:space="preserve">
+    <value>SIENTE COMO</value>
+  </data>
+</root>

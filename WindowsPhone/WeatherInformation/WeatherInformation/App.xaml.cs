@@ -16,6 +16,7 @@ using WeatherInformation.Model.Services;
 using System.Threading.Tasks;
 using WeatherInformation.Model.ForecastWeatherParser;
 using WeatherInformation.Model.JsonDataParser;
+using WeatherInformation.Model.CurrentWeatherParser;
 
 namespace WeatherInformation
 {
@@ -154,10 +155,10 @@ namespace WeatherInformation
                         {
                             // This method loads the data from isolated storage, if it is available.
                             string JSONRemoteForecastWeatherData = sr.ReadLine();
-                            // string remoteCurrentWeatherData = sr.ReadLine();
-                            var weatherData = WeatherParser(JSONRemoteForecastWeatherData, null);
+                            string JSONRemoteCurrentWeatherData = sr.ReadLine();
+                            var weatherData = WeatherParser(JSONRemoteForecastWeatherData, JSONRemoteCurrentWeatherData);
                             weatherData.JSONRemoteForecastWeatherData = JSONRemoteForecastWeatherData;
-                            weatherData.JSONRemoteCurrentWeatherData = null;
+                            weatherData.JSONRemoteCurrentWeatherData = JSONRemoteCurrentWeatherData;
                             weatherData.WasThereRemoteError = false;
                             ApplicationDataObject = weatherData;
                         }
@@ -205,21 +206,29 @@ namespace WeatherInformation
                 (double)IsolatedStorageSettings.ApplicationSettings["CurrentLongitude"], resultsNumber);
             string JSONRemoteForecastWeatherData = await httpClient.GetWeatherDataAsync(formattedForecastURL);
 
-            var weatherData = WeatherParser(JSONRemoteForecastWeatherData, null);
+            string formattedCurrentURL = String.Format(
+                CultureInfo.InvariantCulture, AppResources.URIAPIOpenWeatherMapCurrent,
+                AppResources.APIVersionOpenWeatherMap, (double)IsolatedStorageSettings.ApplicationSettings["CurrentLatitude"],
+                (double)IsolatedStorageSettings.ApplicationSettings["CurrentLongitude"], resultsNumber);
+            string JSONRemoteCurrentWeatherData = await httpClient.GetWeatherDataAsync(formattedCurrentURL);
+
+            var weatherData = WeatherParser(JSONRemoteForecastWeatherData, JSONRemoteCurrentWeatherData);
             weatherData.WasThereRemoteError = false;
             weatherData.JSONRemoteForecastWeatherData = JSONRemoteForecastWeatherData;
-            weatherData.JSONRemoteCurrentWeatherData = null;
+            weatherData.JSONRemoteCurrentWeatherData = JSONRemoteCurrentWeatherData;
             ApplicationDataObject = weatherData;
         }
 
 
         private WeatherData WeatherParser(string remoteForecastWeatherData, string remoteCurrentWeatherData)
         {
-            ForecastWeather weather = new ServiceParser(new JsonParser()).GetForecastWeather(remoteForecastWeatherData);
+            ServiceParser parser = new ServiceParser(new JsonParser());
+            ForecastWeather remoteForecastWeather = parser.GetForecastWeather(remoteForecastWeatherData);
+            CurrentWeather remoteCurrentWeather = parser.GetCurrentWeather(remoteCurrentWeatherData);
             return new WeatherData
             {
-                RemoteForecastWeatherData = weather,
-                RemoteCurrentWeatherData = null
+                RemoteForecastWeatherData = remoteForecastWeather,
+                RemoteCurrentWeatherData = remoteCurrentWeather
             };
         }
 
@@ -236,6 +245,7 @@ namespace WeatherInformation
             using (StreamWriter sw = new StreamWriter(fileStream))
             {
                 sw.Write(value.JSONRemoteForecastWeatherData);
+                sw.Write(value.JSONRemoteCurrentWeatherData);
                 fileStream.Flush(true);
             }
 
@@ -422,8 +432,8 @@ namespace WeatherInformation
                 // determine the locale.
                 //if (Debugger.IsAttached && String.IsNullOrWhiteSpace(appForceCulture) == false)
                 //{
-                //    Thread.CurrentThread.CurrentCulture = new CultureInfo(appForceCulture);
-                //    Thread.CurrentThread.CurrentUICulture = new CultureInfo(appForceCulture);
+                Thread.CurrentThread.CurrentCulture = new CultureInfo(appForceCulture);
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(appForceCulture);
                 //}
 
                 // Establecer la fuente para que coincida con el idioma definido por

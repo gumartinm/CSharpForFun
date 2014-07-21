@@ -107,6 +107,7 @@
     <Compile Include="Model\CurrentWeatherParser\Coord.cs" />
     <Compile Include="Model\CurrentWeatherParser\CurrentWeather.cs" />
     <Compile Include="Model\CurrentWeatherParser\Main.cs" />
+    <Compile Include="Model\CurrentWeatherParser\Snow.cs" />
     <Compile Include="Model\CurrentWeatherParser\Rain.cs" />
     <Compile Include="Model\CurrentWeatherParser\Sys.cs" />
     <Compile Include="Model\CurrentWeatherParser\Weather.cs" />
