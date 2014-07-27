@@ -44,26 +44,35 @@ namespace WeatherInformation.ViewModels
         /// </summary>
         public ObservableCollection<ItemViewModel> ForecastItems{ get; private set; }
         public ObservableCollection<ItemViewModel> CurrentItems { get; private set; }
-        public String CurrentMaxTemp { get; set; }
-        public String CurrentMaxTempUnits { get; set; }
+        public String CurrentMaxTemp { get; private set; }
+        public String CurrentMaxTempUnits { get; private set; }
         public String CurrentMinTemp { get; private set; }
-        public String CurrentMinTempUnits { get; set; }
+        public String CurrentMinTempUnits { get; private set; }
         public String CurrentConditions { get; private set; }
+        public String CurrentFeelsLikeText { get; private set; }
         public String CurrentFeelsLikeTemp { get; private set; }
-        public String CurrentFeelsLikeTempUnits { get; set; }
+        public String CurrentFeelsLikeTempUnits { get; private set; }
+        public String CurrentHumidityText { get; private set; }
         public String CurrentHumidity { get; private set; }
         public String CurrentHumidityUnits { get; private set; }
+        public String CurrentRainText { get; private set; }
         public String CurrentRain { get; private set; }
         public String CurrentRainUnits { get; private set; }
+        public String CurrentSnowText { get; private set; }
         public String CurrentSnow { get; private set; }
         public String CurrentSnowUnits { get; private set; }
+        public String CurrentWindText { get; private set; }
         public String CurrentWind { get; private set; }
         public String CurrentWindUnits { get; private set; }
+        public String CurrentCloudsText { get; private set; }
         public String CurrentClouds { get; private set; }
         public String CurrentCloudsUnits { get; private set; }
+        public String CurrentPressureText { get; private set; }
         public String CurrentPressure { get; private set; }
         public String CurrentPressureUnits { get; private set; }
+        public String CurrentSunRiseText { get; private set; }
         public String CurrentSunRise { get; private set; }
+        public String CurrentSunSetText { get; private set; }
         public String CurrentSunSet { get; private set; }
 
         /// <summary>
@@ -171,6 +180,7 @@ namespace WeatherInformation.ViewModels
             this.CurrentConditions = currentConditions;
             NotifyPropertyChanged("CurrentConditions");
 
+            this.CurrentFeelsLikeText = AppResources.MainPageCurrentFeelsLike;       
             var currentFeelsLikeTemp = "";
             if (remoteCurrentWeatherData.main != null)
             {
@@ -182,7 +192,9 @@ namespace WeatherInformation.ViewModels
             this.CurrentFeelsLikeTempUnits = symbol;
             NotifyPropertyChanged("CurrentFeelsLikeTemp");
             NotifyPropertyChanged("CurrentFeelsLikeTempUnits");
+            NotifyPropertyChanged("CurrentFeelsLikeText");
 
+            this.CurrentHumidityText = AppResources.MainPageCurrentHumidity;
             var currentHumidity = "";
             if (remoteCurrentWeatherData.main != null)
             {
@@ -192,7 +204,9 @@ namespace WeatherInformation.ViewModels
             this.CurrentHumidityUnits = AppResources.MainPageCurrentHumidityUnits;
             NotifyPropertyChanged("CurrentHumidity");
             NotifyPropertyChanged("CurrentHumidityUnits");
+            NotifyPropertyChanged("CurrentHumidityText");
 
+            this.CurrentRainText = AppResources.MainPageCurrentRain;
             var currentRain = "";
             if (remoteCurrentWeatherData.rain != null)
             {
@@ -202,7 +216,9 @@ namespace WeatherInformation.ViewModels
             this.CurrentRainUnits = AppResources.MainPageCurrentRainUnits;
             NotifyPropertyChanged("CurrentRain");
             NotifyPropertyChanged("CurrentRainUnits");
+            NotifyPropertyChanged("CurrentRainText");
 
+            this.CurrentSnowText = AppResources.MainPageCurrentSnow;
             var currentSnow = "";
             if (remoteCurrentWeatherData.snow != null)
             {
@@ -212,7 +228,9 @@ namespace WeatherInformation.ViewModels
             this.CurrentSnowUnits = AppResources.MainPageCurrentSnowUnits;
             NotifyPropertyChanged("CurrentSnow");
             NotifyPropertyChanged("CurrentSnowUnits");
+            NotifyPropertyChanged("CurrentSnowText");
 
+            this.CurrentWindText = AppResources.MainPageCurrentWind;
             var currentWind = "";
             if (remoteCurrentWeatherData.wind != null)
             {
@@ -222,7 +240,9 @@ namespace WeatherInformation.ViewModels
             this.CurrentWindUnits = AppResources.MainPageCurrentWindUnits;
             NotifyPropertyChanged("CurrentWind");
             NotifyPropertyChanged("CurrentWindUnits");
+            NotifyPropertyChanged("CurrentWindText");
 
+            this.CurrentCloudsText = AppResources.MainPageCurrentClouds;
             var currentClouds = "";
             if (remoteCurrentWeatherData.clouds != null)
             {
@@ -232,7 +252,9 @@ namespace WeatherInformation.ViewModels
             this.CurrentCloudsUnits = AppResources.MainPageCurrentCloudsUnits;
             NotifyPropertyChanged("CurrentClouds");
             NotifyPropertyChanged("CurrentCloudsUnits");
+            NotifyPropertyChanged("CurrentCloudsText");
 
+            this.CurrentPressureText = AppResources.MainPageCurrentPressure;
             var currentPressure = "";
             if (remoteCurrentWeatherData.main != null)
             {
@@ -242,14 +264,19 @@ namespace WeatherInformation.ViewModels
             this.CurrentPressureUnits = AppResources.MainPageCurrentPressureUnits;
             NotifyPropertyChanged("CurrentPressure");
             NotifyPropertyChanged("CurrentPressureUnits");
+            NotifyPropertyChanged("CurrentPressureText");
 
+            this.CurrentSunRiseText = AppResources.MainPageCurrentSunRise;
             var sunRiseTime = unixTime.AddSeconds(remoteCurrentWeatherData.sys.sunrise).ToLocalTime();
             this.CurrentSunRise = sunRiseTime.ToString("MM/dd/yy H:mm:ss", CultureInfo.InvariantCulture);
             NotifyPropertyChanged("CurrentSunRise");
+            NotifyPropertyChanged("CurrentSunRiseText");
 
+            this.CurrentSunSetText = AppResources.MainPageCurrentSunSet;
             var sunSetTime = unixTime.AddSeconds(remoteCurrentWeatherData.sys.sunset).ToLocalTime();
             this.CurrentSunSet = sunSetTime.ToString("MM/dd/yy H:mm:ss", CultureInfo.InvariantCulture);
             NotifyPropertyChanged("CurrentSunSet");
+            NotifyPropertyChanged("CurrentSunSetText");
         }
 
         public bool IsThereCurrentLocation()
