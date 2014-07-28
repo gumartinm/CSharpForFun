@@ -241,4 +241,16 @@
   <data name="MainPageCurrentFeelsLike" xml:space="preserve">
     <value>SIENTE COMO</value>
   </data>
+  <data name="SelectedDatePageNight" xml:space="preserve">
+    <value>NOCHE</value>
+  </data>
+  <data name="SelectedDatePageMorning" xml:space="preserve">
+    <value>MAÑANA</value>
+  </data>
+  <data name="SelectedDatePageEvening" xml:space="preserve">
+    <value>TARDE</value>
+  </data>
+  <data name="SelectedDatePageDay" xml:space="preserve">
+    <value>DÍA</value>
+  </data>
 </root>

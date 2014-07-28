@@ -142,55 +142,70 @@ namespace WeatherInformation
                 TimeSinceLastSave = DateTime.Now - dataLastSaveTime;
             }
 
-            if (!IsNewLocation)
+            if (TimeSinceLastSave.TotalSeconds < 30 && !IsNewLocation)
             {
-                // Check to see if data exists in isolated storage and see if the data is fresh.
-                // This example uses 30 seconds as the valid time window to make it easy to test. 
-                // Real apps will use a larger window.
-                using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetUserStoreForApplication())
+                GetStoredData();
+            }
+            else
+            {
+                // Otherwise, it gets the data from the web.
+                var task = LoadDataAsync();
+                try
                 {
-                    if (isoStore.FileExists("JSONDataFile.txt") && TimeSinceLastSave.TotalSeconds < 30)
+                    // TODO: I guess, I may do this because this code is running in a new thread :/ Better alternative just using async? WIP :(
+                    // Using Task.WhenAll to avoid deadlock :)
+                    Task.WhenAll(task);
+                }
+                catch (Exception ex)
+                {
+                    // If the data request fails, alert the user.
+                    ApplicationDataObject = new WeatherData
                     {
-                        using (StreamReader sr = new StreamReader(isoStore.OpenFile("JSONDataFile.txt", FileMode.Open)))
-                        {
-                            // This method loads the data from isolated storage, if it is available.
-                            // TODO: qué pasa si JSONRemoteForecastWeatherData o JSONRemoteCurrentWeatherData son null?
-                            string JSONRemoteForecastWeatherData = sr.ReadLine();
-                            string JSONRemoteCurrentWeatherData = sr.ReadLine();
-                            var weatherData = WeatherParser(JSONRemoteForecastWeatherData, JSONRemoteCurrentWeatherData);
-                            weatherData.JSONRemoteForecastWeatherData = JSONRemoteForecastWeatherData;
-                            weatherData.JSONRemoteCurrentWeatherData = JSONRemoteCurrentWeatherData;
-                            weatherData.WasThereRemoteError = false;
-                            ApplicationDataObject = weatherData;
-                        }
+                        RemoteForecastWeatherData = null,
+                        RemoteCurrentWeatherData = null,
+                        JSONRemoteForecastWeatherData = null,
+                        JSONRemoteCurrentWeatherData = null,
+                        WasThereRemoteError = true
+                    };
+                }  
+            }
+        }
 
-                        // TODO: write more methods or something else to avoid nested returns like this... no time right now... :(
-                        return;
+        private void GetStoredData()
+        {
+            // Check to see if data exists in isolated storage and see if the data is fresh.
+            // This example uses 30 seconds as the valid time window to make it easy to test. 
+            // Real apps will use a larger window.
+
+            string JSONRemoteCurrentWeather = null;
+            string JSONRemoteForecastWeather = null;
+
+            using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                if (isoStore.FileExists("JSONRemoteCurrentWeatherDataFile.txt"))
+                {
+                    using (StreamReader sr = new StreamReader(isoStore.OpenFile("JSONRemoteCurrentWeatherDataFile.txt", FileMode.Open)))
+                    {
+                        // This method loads the data from isolated storage, if it is available.
+                        JSONRemoteCurrentWeather = sr.ReadLine();
+                    }
+                }
+
+
+                if (isoStore.FileExists("JSONRemoteForecastWeatherDataFile.txt"))
+                {
+                    using (StreamReader sr = new StreamReader(isoStore.OpenFile("JSONRemoteForecastWeatherDataFile.txt", FileMode.Open)))
+                    {
+                        // This method loads the data from isolated storage, if it is available.
+                        JSONRemoteForecastWeather = sr.ReadLine();
                     }
                 }
             }
-            
 
-            // Otherwise, it gets the data from the web.
-            var task = LoadDataAsync();
-            try
+            if (!string.IsNullOrEmpty(JSONRemoteCurrentWeather) && !string.IsNullOrEmpty(JSONRemoteForecastWeather))
             {
-                // TODO: I guess, I may do this because this code is running in a new thread :/ Better alternative just using async? WIP :(
-                // Using Task.WhenAll to avoid deadlock :)
-                Task.WhenAll(task);
+                ApplicationDataObject = WeatherDataParser(JSONRemoteForecastWeather, JSONRemoteCurrentWeather);
             }
-            catch (Exception ex)
-            {
-                // If the data request fails, alert the user.
-                ApplicationDataObject = new WeatherData
-                {
-                    RemoteForecastWeatherData = null,
-                    RemoteCurrentWeatherData = null,
-                    JSONRemoteForecastWeatherData = null,
-                    JSONRemoteCurrentWeatherData = null,
-                    WasThereRemoteError = true
-                };
-            }  
         }
 
         /// <summary>
@@ -205,49 +220,61 @@ namespace WeatherInformation
                 CultureInfo.InvariantCulture, AppResources.URIAPIOpenWeatherMapForecast,
                 AppResources.APIVersionOpenWeatherMap, (double)IsolatedStorageSettings.ApplicationSettings["CurrentLatitude"],
                 (double)IsolatedStorageSettings.ApplicationSettings["CurrentLongitude"], resultsNumber);
-            string JSONRemoteForecastWeatherData = await httpClient.GetWeatherDataAsync(formattedForecastURL);
+            string JSONRemoteForecastWeather = await httpClient.GetWeatherDataAsync(formattedForecastURL);
 
             string formattedCurrentURL = String.Format(
                 CultureInfo.InvariantCulture, AppResources.URIAPIOpenWeatherMapCurrent,
                 AppResources.APIVersionOpenWeatherMap, (double)IsolatedStorageSettings.ApplicationSettings["CurrentLatitude"],
                 (double)IsolatedStorageSettings.ApplicationSettings["CurrentLongitude"], resultsNumber);
-            string JSONRemoteCurrentWeatherData = await httpClient.GetWeatherDataAsync(formattedCurrentURL);
+            string JSONRemoteCurrentWeather = await httpClient.GetWeatherDataAsync(formattedCurrentURL);
 
-            var weatherData = WeatherParser(JSONRemoteForecastWeatherData, JSONRemoteCurrentWeatherData);
-            weatherData.WasThereRemoteError = false;
-            weatherData.JSONRemoteForecastWeatherData = JSONRemoteForecastWeatherData;
-            weatherData.JSONRemoteCurrentWeatherData = JSONRemoteCurrentWeatherData;
-            ApplicationDataObject = weatherData;
+            ApplicationDataObject = WeatherDataParser(JSONRemoteForecastWeather, JSONRemoteCurrentWeather);
         }
 
-
-        private WeatherData WeatherParser(string remoteForecastWeatherData, string remoteCurrentWeatherData)
+        private ForecastWeather ForecastWeatherParser(string remoteForecastWeatherData)
         {
             ServiceParser parser = new ServiceParser(new JsonParser());
-            ForecastWeather remoteForecastWeather = parser.GetForecastWeather(remoteForecastWeatherData);
-            CurrentWeather remoteCurrentWeather = parser.GetCurrentWeather(remoteCurrentWeatherData);
+            return parser.GetForecastWeather(remoteForecastWeatherData);
+        }
+
+        private CurrentWeather CurrentWeatherParser(string remoteCurrentWeatherData)
+        {
+            ServiceParser parser = new ServiceParser(new JsonParser());
+            return parser.GetCurrentWeather(remoteCurrentWeatherData);
+        }
+
+        private WeatherData WeatherDataParser(string JSONRemoteForecastWeather, string JSONRemoteCurrentWeather)
+        {
+            ForecastWeather forecastWeather = null;
+            if (!string.IsNullOrEmpty(JSONRemoteForecastWeather))
+            {
+                forecastWeather = ForecastWeatherParser(JSONRemoteForecastWeather);
+            }
+
+            CurrentWeather currentWeather = null;
+            if (!string.IsNullOrEmpty(JSONRemoteCurrentWeather))
+            {
+                currentWeather = CurrentWeatherParser(JSONRemoteCurrentWeather);
+            }
+
             return new WeatherData
             {
-                RemoteForecastWeatherData = remoteForecastWeather,
-                RemoteCurrentWeatherData = remoteCurrentWeather
+                JSONRemoteCurrentWeatherData = JSONRemoteCurrentWeather,
+                JSONRemoteForecastWeatherData = JSONRemoteForecastWeather,
+                RemoteCurrentWeatherData = currentWeather,
+                RemoteForecastWeatherData = forecastWeather,
+                WasThereRemoteError = false
             };
         }
 
         // TODO: temporary file :/
-        private void SaveDataToIsolatedStorage(string isoFileName, WeatherData value)
+        private void SaveDataToIsolatedStorage(string isoFileName, string value)
         {
-            if (string.IsNullOrEmpty(value.JSONRemoteForecastWeatherData))
-            {
-                return;
-            }
-
             using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetUserStoreForApplication())
             using (IsolatedStorageFileStream fileStream = isoStore.OpenFile(isoFileName, FileMode.OpenOrCreate))
             using (StreamWriter sw = new StreamWriter(fileStream))
             {
-                // TODO: qué pasa si JSONRemoteForecastWeatherData o JSONRemoteCurrentWeatherData son null?
-                sw.Write(value.JSONRemoteForecastWeatherData);
-                sw.Write(value.JSONRemoteCurrentWeatherData);
+                sw.Write(value);
                 fileStream.Flush(true);
             }
 
@@ -275,24 +302,20 @@ namespace WeatherInformation
 
             // Coming from TOMBSTONED
             // Check to see if the key for the application state data is in the State dictionary.
-            string JSONRemoteForecastWeatherData = null;
+            string JSONRemoteForecastWeather = null;
             if (PhoneApplicationService.Current.State.ContainsKey("JSONRemoteForecastWeatherData"))
             {
                 // If it exists, assign the data to the application member variable.
-                JSONRemoteForecastWeatherData = PhoneApplicationService.Current.State["JSONRemoteForecastWeatherData"] as string;
+                JSONRemoteForecastWeather = PhoneApplicationService.Current.State["JSONRemoteForecastWeatherData"] as string;
             }
-            string JSONRemoteCurrentWeatherData = null;
+            string JSONRemoteCurrentWeather = null;
             if (PhoneApplicationService.Current.State.ContainsKey("JSONRemoteCurrentWeatherData"))
             {
                 // If it exists, assign the data to the application member variable.
-                JSONRemoteCurrentWeatherData = PhoneApplicationService.Current.State["JSONRemoteCurrentWeatherData"] as string;
+                JSONRemoteCurrentWeather = PhoneApplicationService.Current.State["JSONRemoteCurrentWeatherData"] as string;
             }
-            // TODO: qué pasa si JSONRemoteForecastWeatherData o JSONRemoteCurrentWeatherData son null?
-            var weatherData = WeatherParser(JSONRemoteForecastWeatherData, JSONRemoteCurrentWeatherData);
-            weatherData.JSONRemoteForecastWeatherData = JSONRemoteForecastWeatherData;
-            weatherData.JSONRemoteCurrentWeatherData = JSONRemoteCurrentWeatherData;
-            weatherData.WasThereRemoteError = false;
-            ApplicationDataObject = weatherData;
+
+            ApplicationDataObject = WeatherDataParser(JSONRemoteForecastWeather, JSONRemoteCurrentWeather);
             
             if (PhoneApplicationService.Current.State.ContainsKey("IsNewLocation"))
             {
@@ -311,17 +334,21 @@ namespace WeatherInformation
                 if (!string.IsNullOrEmpty(weatherData.JSONRemoteForecastWeatherData))
                 {
                     // Store it in the State dictionary.
-                    PhoneApplicationService.Current.State["JSONRemoteForecastWeatherData"] = weatherData.JSONRemoteForecastWeatherData; 
+                    PhoneApplicationService.Current.State["JSONRemoteForecastWeatherData"] = weatherData.JSONRemoteForecastWeatherData;
+                    
+                    // Also store it in isolated storage, in case the application is never reactivated.
+                    SaveDataToIsolatedStorage("JSONRemoteForecastWeatherDataFile.txt", weatherData.JSONRemoteForecastWeatherData);
                 }
                 if (!string.IsNullOrEmpty(weatherData.JSONRemoteCurrentWeatherData))
                 {
                     // Store it in the State dictionary.
                     PhoneApplicationService.Current.State["JSONRemoteCurrentWeatherData"] = weatherData.JSONRemoteCurrentWeatherData;
-                }
-                PhoneApplicationService.Current.State["IsNewLocation"] = IsNewLocation;
 
-                // Also store it in isolated storage, in case the application is never reactivated.
-                SaveDataToIsolatedStorage("JSONDataFile.txt", weatherData);
+                    // Also store it in isolated storage, in case the application is never reactivated.
+                    SaveDataToIsolatedStorage("JSONRemoteCurrentWeatherDataFile.txt", weatherData.JSONRemoteCurrentWeatherData);
+                }
+
+                PhoneApplicationService.Current.State["IsNewLocation"] = IsNewLocation;
             }
         }
 
@@ -334,7 +361,16 @@ namespace WeatherInformation
             var weatherData = ApplicationDataObject;
             if (weatherData != null)
             {
-                SaveDataToIsolatedStorage("JSONDataFile.txt", weatherData);
+                if (!string.IsNullOrEmpty(weatherData.JSONRemoteForecastWeatherData))
+                {
+                    // Also store it in isolated storage, in case the application is never reactivated.
+                    SaveDataToIsolatedStorage("JSONRemoteForecastWeatherDataFile.txt", weatherData.JSONRemoteForecastWeatherData);
+                }
+                if (!string.IsNullOrEmpty(weatherData.JSONRemoteCurrentWeatherData))
+                {
+                    // Also store it in isolated storage, in case the application is never reactivated.
+                    SaveDataToIsolatedStorage("JSONRemoteCurrentWeatherDataFile.txt", weatherData.JSONRemoteCurrentWeatherData);
+                }
             }
         }     
 

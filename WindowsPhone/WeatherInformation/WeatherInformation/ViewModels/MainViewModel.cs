@@ -110,37 +110,42 @@ namespace WeatherInformation.ViewModels
             }
             double tempUnits = isFahrenheit ? 0 : 273.15;
             string symbol = isFahrenheit ? AppResources.TemperatureUnitsFahrenheitSymbol : AppResources.TemperatureUnitsCentigradeSymbol;
-            var remoteForecastWeatherData = weatherData.RemoteForecastWeatherData;
 
-            this.ForecastItems.Clear();
             DateTime unixTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-            foreach (WeatherInformation.Model.ForecastWeatherParser.List item in remoteForecastWeatherData.list)
+
+            var remoteForecastWeatherData = weatherData.RemoteForecastWeatherData;
+            if (remoteForecastWeatherData != null)
             {
-                DateTime date = unixTime.AddSeconds(item.dt).ToLocalTime();
-
-                // TODO: if I do not receive max temp or min temp... Am I going to receive item.temp.max=0 or item.temp.min=0 (I guess because
-                // double has no null value)
-                // I need something that is not 0 value in order to find out if OpenWeatherMap sent me values or not :/
-                // I guess; I am going to need nullable but I will have to modify my Json Parser :(
-                double maxTemp = item.temp.max;
-                maxTemp = maxTemp - tempUnits;
-
-                double minTemp = item.temp.min;
-                minTemp = minTemp - tempUnits;
-
-                this.ForecastItems.Add(new ItemViewModel()
+                this.ForecastItems.Clear();
+                
+                foreach (WeatherInformation.Model.ForecastWeatherParser.List item in remoteForecastWeatherData.list)
                 {
-                    LineOne = date.ToString("ddd", CultureInfo.InvariantCulture),
-                    LineTwo = date.ToString("dd", CultureInfo.InvariantCulture),
-                    LineThree = String.Format(CultureInfo.InvariantCulture, "{0:0.##}", maxTemp) + symbol,
-                    LineFour = String.Format(CultureInfo.InvariantCulture, "{0:0.##}", minTemp) + symbol,
-                    LineFive = "/Assets/Tiles/IconicTileMediumLarge.png"
-                });
+                    DateTime date = unixTime.AddSeconds(item.dt).ToLocalTime();
 
-                count--;
-                if (count == 0)
-                {
-                    break;
+                    // TODO: if I do not receive max temp or min temp... Am I going to receive item.temp.max=0 or item.temp.min=0 (I guess because
+                    // double has no null value)
+                    // I need something that is not 0 value in order to find out if OpenWeatherMap sent me values or not :/
+                    // I guess; I am going to need nullable but I will have to modify my Json Parser :(
+                    double maxTemp = item.temp.max;
+                    maxTemp = maxTemp - tempUnits;
+
+                    double minTemp = item.temp.min;
+                    minTemp = minTemp - tempUnits;
+
+                    this.ForecastItems.Add(new ItemViewModel()
+                    {
+                        LineOne = date.ToString("ddd", CultureInfo.InvariantCulture),
+                        LineTwo = date.ToString("dd", CultureInfo.InvariantCulture),
+                        LineThree = String.Format(CultureInfo.InvariantCulture, "{0:0.##}", maxTemp) + symbol,
+                        LineFour = String.Format(CultureInfo.InvariantCulture, "{0:0.##}", minTemp) + symbol,
+                        LineFive = "/Assets/Tiles/IconicTileMediumLarge.png"
+                    });
+
+                    count--;
+                    if (count == 0)
+                    {
+                        break;
+                    }
                 }
             }
 
@@ -148,137 +153,140 @@ namespace WeatherInformation.ViewModels
             // TODO: nullables para distinguir cuando hay datos o no. Ahora me llega 0 si no datos (supongo) cuando double/integer
 
             var remoteCurrentWeatherData = weatherData.RemoteCurrentWeatherData;
-
-            var currentMaxTemp = "";
-            if (remoteCurrentWeatherData.main != null)
+            if (remoteCurrentWeatherData != null)
             {
-                var conversion = remoteCurrentWeatherData.main.temp_max;
-                conversion -= tempUnits;
-                currentMaxTemp = String.Format(CultureInfo.InvariantCulture, "{0:0.##}", conversion);
+                var currentMaxTemp = "";
+                if (remoteCurrentWeatherData.main != null)
+                {
+                    var conversion = remoteCurrentWeatherData.main.temp_max;
+                    conversion -= tempUnits;
+                    currentMaxTemp = String.Format(CultureInfo.InvariantCulture, "{0:0.##}", conversion);
+                }
+                this.CurrentMaxTemp = currentMaxTemp;
+                this.CurrentMaxTempUnits = symbol;
+                NotifyPropertyChanged("CurrentMaxTemp");
+                NotifyPropertyChanged("CurrentMaxTempUnits");
+
+                var currentMinTemp = "";
+                if (remoteCurrentWeatherData.main != null)
+                {
+                    var conversion = remoteCurrentWeatherData.main.temp_min;
+                    conversion -= tempUnits;
+                    currentMinTemp = String.Format(CultureInfo.InvariantCulture, "{0:0.##}", conversion);
+                }
+                this.CurrentMinTemp = currentMinTemp;
+                this.CurrentMinTempUnits = symbol;
+                NotifyPropertyChanged("CurrentMinTemp");
+                NotifyPropertyChanged("CurrentMinTempUnits");
+
+                // TODO: static resource :(
+                var currentConditions = "no description available";
+                if (remoteCurrentWeatherData.weather.Count > 0)
+                {
+                    currentConditions = remoteCurrentWeatherData.weather[0].description;
+                }
+                this.CurrentConditions = currentConditions;
+                NotifyPropertyChanged("CurrentConditions");
+
+                this.CurrentFeelsLikeText = AppResources.MainPageCurrentFeelsLike;
+                var currentFeelsLikeTemp = "";
+                if (remoteCurrentWeatherData.main != null)
+                {
+                    var conversion = remoteCurrentWeatherData.main.temp;
+                    conversion -= tempUnits;
+                    currentFeelsLikeTemp = String.Format(CultureInfo.InvariantCulture, "{0:0.##}", conversion);
+                }
+                this.CurrentFeelsLikeTemp = currentFeelsLikeTemp;
+                this.CurrentFeelsLikeTempUnits = symbol;
+                NotifyPropertyChanged("CurrentFeelsLikeTemp");
+                NotifyPropertyChanged("CurrentFeelsLikeTempUnits");
+                NotifyPropertyChanged("CurrentFeelsLikeText");
+
+                this.CurrentHumidityText = AppResources.MainPageCurrentHumidity;
+                var currentHumidity = "";
+                if (remoteCurrentWeatherData.main != null)
+                {
+                    currentHumidity = remoteCurrentWeatherData.main.humidity.ToString(CultureInfo.InvariantCulture);
+                }
+                this.CurrentHumidity = currentHumidity;
+                this.CurrentHumidityUnits = AppResources.MainPageCurrentHumidityUnits;
+                NotifyPropertyChanged("CurrentHumidity");
+                NotifyPropertyChanged("CurrentHumidityUnits");
+                NotifyPropertyChanged("CurrentHumidityText");
+
+                this.CurrentRainText = AppResources.MainPageCurrentRain;
+                var currentRain = "";
+                if (remoteCurrentWeatherData.rain != null)
+                {
+                    currentRain = remoteCurrentWeatherData.rain.get3h().ToString(CultureInfo.InvariantCulture);
+                }
+                this.CurrentRain = currentRain;
+                this.CurrentRainUnits = AppResources.MainPageCurrentRainUnits;
+                NotifyPropertyChanged("CurrentRain");
+                NotifyPropertyChanged("CurrentRainUnits");
+                NotifyPropertyChanged("CurrentRainText");
+
+                this.CurrentSnowText = AppResources.MainPageCurrentSnow;
+                var currentSnow = "";
+                if (remoteCurrentWeatherData.snow != null)
+                {
+                    currentSnow = remoteCurrentWeatherData.snow.get3h().ToString(CultureInfo.InvariantCulture);
+                }
+                this.CurrentSnow = currentSnow;
+                this.CurrentSnowUnits = AppResources.MainPageCurrentSnowUnits;
+                NotifyPropertyChanged("CurrentSnow");
+                NotifyPropertyChanged("CurrentSnowUnits");
+                NotifyPropertyChanged("CurrentSnowText");
+
+                this.CurrentWindText = AppResources.MainPageCurrentWind;
+                var currentWind = "";
+                if (remoteCurrentWeatherData.wind != null)
+                {
+                    currentWind = remoteCurrentWeatherData.wind.speed.ToString(CultureInfo.InvariantCulture);
+                }
+                this.CurrentWind = currentWind;
+                this.CurrentWindUnits = AppResources.MainPageCurrentWindUnits;
+                NotifyPropertyChanged("CurrentWind");
+                NotifyPropertyChanged("CurrentWindUnits");
+                NotifyPropertyChanged("CurrentWindText");
+
+                this.CurrentCloudsText = AppResources.MainPageCurrentClouds;
+                var currentClouds = "";
+                if (remoteCurrentWeatherData.clouds != null)
+                {
+                    currentClouds = remoteCurrentWeatherData.clouds.all.ToString(CultureInfo.InvariantCulture);
+                }
+                this.CurrentClouds = currentClouds;
+                this.CurrentCloudsUnits = AppResources.MainPageCurrentCloudsUnits;
+                NotifyPropertyChanged("CurrentClouds");
+                NotifyPropertyChanged("CurrentCloudsUnits");
+                NotifyPropertyChanged("CurrentCloudsText");
+
+                this.CurrentPressureText = AppResources.MainPageCurrentPressure;
+                var currentPressure = "";
+                if (remoteCurrentWeatherData.main != null)
+                {
+                    currentPressure = remoteCurrentWeatherData.main.pressure.ToString(CultureInfo.InvariantCulture);
+                }
+                this.CurrentPressure = currentPressure;
+                this.CurrentPressureUnits = AppResources.MainPageCurrentPressureUnits;
+                NotifyPropertyChanged("CurrentPressure");
+                NotifyPropertyChanged("CurrentPressureUnits");
+                NotifyPropertyChanged("CurrentPressureText");
+
+                this.CurrentSunRiseText = AppResources.MainPageCurrentSunRise;
+                var sunRiseTime = unixTime.AddSeconds(remoteCurrentWeatherData.sys.sunrise).ToLocalTime();
+                this.CurrentSunRise = sunRiseTime.ToString("MM/dd/yy H:mm:ss", CultureInfo.InvariantCulture);
+                NotifyPropertyChanged("CurrentSunRise");
+                NotifyPropertyChanged("CurrentSunRiseText");
+
+                this.CurrentSunSetText = AppResources.MainPageCurrentSunSet;
+                var sunSetTime = unixTime.AddSeconds(remoteCurrentWeatherData.sys.sunset).ToLocalTime();
+                this.CurrentSunSet = sunSetTime.ToString("MM/dd/yy H:mm:ss", CultureInfo.InvariantCulture);
+                NotifyPropertyChanged("CurrentSunSet");
+                NotifyPropertyChanged("CurrentSunSetText");
             }
-            this.CurrentMaxTemp = currentMaxTemp;
-            this.CurrentMaxTempUnits = symbol;
-            NotifyPropertyChanged("CurrentMaxTemp");
-            NotifyPropertyChanged("CurrentMaxTempUnits");
 
-            var currentMinTemp = "";
-            if (remoteCurrentWeatherData.main != null)
-            {
-                var conversion = remoteCurrentWeatherData.main.temp_min;
-                conversion -= tempUnits;
-                currentMinTemp = String.Format(CultureInfo.InvariantCulture, "{0:0.##}", conversion);
-            }
-            this.CurrentMinTemp = currentMinTemp;
-            this.CurrentMinTempUnits = symbol;
-            NotifyPropertyChanged("CurrentMinTemp");
-            NotifyPropertyChanged("CurrentMinTempUnits");
-
-            // TODO: static resource :(
-            var currentConditions = "no description available";
-            if (remoteCurrentWeatherData.weather.Count > 0)
-            {
-                currentConditions = remoteCurrentWeatherData.weather[0].description;
-            }
-            this.CurrentConditions = currentConditions;
-            NotifyPropertyChanged("CurrentConditions");
-
-            this.CurrentFeelsLikeText = AppResources.MainPageCurrentFeelsLike;       
-            var currentFeelsLikeTemp = "";
-            if (remoteCurrentWeatherData.main != null)
-            {
-                var conversion = remoteCurrentWeatherData.main.temp;
-                conversion -= tempUnits;
-                currentFeelsLikeTemp = String.Format(CultureInfo.InvariantCulture, "{0:0.##}", conversion);
-            }
-            this.CurrentFeelsLikeTemp = currentFeelsLikeTemp;
-            this.CurrentFeelsLikeTempUnits = symbol;
-            NotifyPropertyChanged("CurrentFeelsLikeTemp");
-            NotifyPropertyChanged("CurrentFeelsLikeTempUnits");
-            NotifyPropertyChanged("CurrentFeelsLikeText");
-
-            this.CurrentHumidityText = AppResources.MainPageCurrentHumidity;
-            var currentHumidity = "";
-            if (remoteCurrentWeatherData.main != null)
-            {
-                currentHumidity = remoteCurrentWeatherData.main.humidity.ToString(CultureInfo.InvariantCulture);
-            }
-            this.CurrentHumidity = currentHumidity;
-            this.CurrentHumidityUnits = AppResources.MainPageCurrentHumidityUnits;
-            NotifyPropertyChanged("CurrentHumidity");
-            NotifyPropertyChanged("CurrentHumidityUnits");
-            NotifyPropertyChanged("CurrentHumidityText");
-
-            this.CurrentRainText = AppResources.MainPageCurrentRain;
-            var currentRain = "";
-            if (remoteCurrentWeatherData.rain != null)
-            {
-                currentRain = remoteCurrentWeatherData.rain.get3h().ToString(CultureInfo.InvariantCulture);
-            }
-            this.CurrentRain = currentRain;
-            this.CurrentRainUnits = AppResources.MainPageCurrentRainUnits;
-            NotifyPropertyChanged("CurrentRain");
-            NotifyPropertyChanged("CurrentRainUnits");
-            NotifyPropertyChanged("CurrentRainText");
-
-            this.CurrentSnowText = AppResources.MainPageCurrentSnow;
-            var currentSnow = "";
-            if (remoteCurrentWeatherData.snow != null)
-            {
-                currentSnow = remoteCurrentWeatherData.snow.get3h().ToString(CultureInfo.InvariantCulture);
-            }
-            this.CurrentSnow = currentSnow;
-            this.CurrentSnowUnits = AppResources.MainPageCurrentSnowUnits;
-            NotifyPropertyChanged("CurrentSnow");
-            NotifyPropertyChanged("CurrentSnowUnits");
-            NotifyPropertyChanged("CurrentSnowText");
-
-            this.CurrentWindText = AppResources.MainPageCurrentWind;
-            var currentWind = "";
-            if (remoteCurrentWeatherData.wind != null)
-            {
-                currentWind = remoteCurrentWeatherData.wind.speed.ToString(CultureInfo.InvariantCulture);
-            }
-            this.CurrentWind = currentWind;
-            this.CurrentWindUnits = AppResources.MainPageCurrentWindUnits;
-            NotifyPropertyChanged("CurrentWind");
-            NotifyPropertyChanged("CurrentWindUnits");
-            NotifyPropertyChanged("CurrentWindText");
-
-            this.CurrentCloudsText = AppResources.MainPageCurrentClouds;
-            var currentClouds = "";
-            if (remoteCurrentWeatherData.clouds != null)
-            {
-                currentClouds = remoteCurrentWeatherData.clouds.all.ToString(CultureInfo.InvariantCulture);
-            }
-            this.CurrentClouds = currentClouds;
-            this.CurrentCloudsUnits = AppResources.MainPageCurrentCloudsUnits;
-            NotifyPropertyChanged("CurrentClouds");
-            NotifyPropertyChanged("CurrentCloudsUnits");
-            NotifyPropertyChanged("CurrentCloudsText");
-
-            this.CurrentPressureText = AppResources.MainPageCurrentPressure;
-            var currentPressure = "";
-            if (remoteCurrentWeatherData.main != null)
-            {
-                currentPressure = remoteCurrentWeatherData.main.pressure.ToString(CultureInfo.InvariantCulture);
-            }
-            this.CurrentPressure = currentPressure;
-            this.CurrentPressureUnits = AppResources.MainPageCurrentPressureUnits;
-            NotifyPropertyChanged("CurrentPressure");
-            NotifyPropertyChanged("CurrentPressureUnits");
-            NotifyPropertyChanged("CurrentPressureText");
-
-            this.CurrentSunRiseText = AppResources.MainPageCurrentSunRise;
-            var sunRiseTime = unixTime.AddSeconds(remoteCurrentWeatherData.sys.sunrise).ToLocalTime();
-            this.CurrentSunRise = sunRiseTime.ToString("MM/dd/yy H:mm:ss", CultureInfo.InvariantCulture);
-            NotifyPropertyChanged("CurrentSunRise");
-            NotifyPropertyChanged("CurrentSunRiseText");
-
-            this.CurrentSunSetText = AppResources.MainPageCurrentSunSet;
-            var sunSetTime = unixTime.AddSeconds(remoteCurrentWeatherData.sys.sunset).ToLocalTime();
-            this.CurrentSunSet = sunSetTime.ToString("MM/dd/yy H:mm:ss", CultureInfo.InvariantCulture);
-            NotifyPropertyChanged("CurrentSunSet");
-            NotifyPropertyChanged("CurrentSunSetText");
         }
 
         public bool IsThereCurrentLocation()
