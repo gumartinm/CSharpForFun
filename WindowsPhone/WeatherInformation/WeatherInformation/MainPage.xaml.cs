@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using WeatherInformation.Model;
 using WeatherInformation.Resources;
+using WeatherInformation.ViewModels;
 
 namespace WeatherInformation
 {
@@ -138,7 +139,13 @@ namespace WeatherInformation
 
         private void LongListSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            LongListSelector longListSelector = sender as LongListSelector;
 
+            // TODO: with LINQ :(
+            ItemViewModel element = longListSelector.SelectedItem as ItemViewModel;
+            int index = longListSelector.ItemsSource.IndexOf(element);
+            String uri = string.Format(CultureInfo.InvariantCulture, "/SelectedDatePage.xaml?parameter={0}", index);
+            NavigationService.Navigate(new Uri(uri, UriKind.Relative));
         }
 
         private void Location_Click(object sender, EventArgs e)

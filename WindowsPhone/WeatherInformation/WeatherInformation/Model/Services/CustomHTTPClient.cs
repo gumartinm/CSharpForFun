@@ -22,6 +22,7 @@ namespace WeatherInformation.Model.Services
                 HttpRequestHeaders headers = client.DefaultRequestHeaders;
                 headers.IfModifiedSince = DateTime.UtcNow;
 
+                // TODO: THIS IS FUCKED UP. IT IS WORKING RANDOMLY... THE MOST OF THE TIMES IT STOPS HERE FOREVER...
                 string jsonData = await client.GetStringAsync(url);
 
                 return jsonData;

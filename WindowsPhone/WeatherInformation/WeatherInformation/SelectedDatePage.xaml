@@ -1,0 +1,138 @@
+﻿<phone:PhoneApplicationPage
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ViewModels="clr-namespace:WeatherInformation.ViewModels"
+    x:Class="WeatherInformation.SelectedDate"
+    mc:Ignorable="d"
+    SupportedOrientations="PortraitOrLandscape"  Orientation="Portrait"
+    shell:SystemTray.IsVisible="True"
+    d:DataContext="{d:DesignData /SampleData/SelectedDateViewModelSampleData.xaml}">
+
+	<phone:PhoneApplicationPage.Resources>
+		<ViewModels:SelectedDateViewModel x:Key="SelectedDateViewModelDataSource" d:IsDataSource="True"/>
+	</phone:PhoneApplicationPage.Resources>
+	<phone:PhoneApplicationPage.FontFamily>
+		<StaticResource ResourceKey="PhoneFontFamilyNormal"/>
+	</phone:PhoneApplicationPage.FontFamily>
+	<phone:PhoneApplicationPage.FontSize>
+		<StaticResource ResourceKey="PhoneFontSizeNormal"/>
+	</phone:PhoneApplicationPage.FontSize>
+	<phone:PhoneApplicationPage.Foreground>
+		<StaticResource ResourceKey="PhoneForegroundBrush"/>
+	</phone:PhoneApplicationPage.Foreground>
+<!--LayoutRoot es la cuadrícula raíz donde se coloca todo el contenido de la página-->
+	<Grid x:Name="LayoutRoot" Background="Transparent">
+        <!--Control Pivot-->
+		<phone:Pivot x:Name="TitleTextCityCountry" Title="{Binding LocalizedResources.MainPageTitle, Mode=OneWay, Source={StaticResource LocalizedStrings}}">
+			<!--Elemento Pivot uno-->
+			<phone:PivotItem Header="{Binding SelectedDate}">
+                <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Image Source="/Assets/Tiles/IconicTileMediumLarge.png" Width="100" Height="100" Margin="12,-6,12,0" />
+                            <StackPanel  Orientation="Vertical" VerticalAlignment="Center">
+                                <StackPanel  Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding SelectedDateMaxTemp}" TextWrapping="Wrap" Style="{StaticResource PhoneTextLargeStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
+                                    <TextBlock Text="{Binding SelectedDateMaxTempUnits}" TextWrapping="Wrap" Style="{StaticResource PhoneTextLargeStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
+                                </StackPanel>
+                                <StackPanel  Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding SelectedDateMinTemp}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
+                                    <TextBlock Text="{Binding SelectedDateMinTempUnits}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock Text="{Binding SelectedDateConditions}" TextWrapping="Wrap" Style="{StaticResource PhoneTextLargeStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
+                        </StackPanel>
+                        <Grid Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding SelectedDateHumidityText}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
+                                    <TextBlock Text="{Binding SelectedDateHumidity}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,2,0"/>
+                                    <TextBlock Text="{Binding SelectedDateHumidityUnits}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding SelectedDateRainText}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
+                                    <TextBlock Text="{Binding SelectedDateRain}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,2,0"/>
+                                    <TextBlock Text="{Binding SelectedDateRainUnits}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding SelectedDateWindText}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
+                                    <TextBlock Text="{Binding SelectedDateWind}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,2,0"/>
+                                    <TextBlock Text="{Binding SelectedDateWindUnits}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding SelectedDateCloudsText}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
+                                    <TextBlock Text="{Binding SelectedDateClouds}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,2,0"/>
+                                    <TextBlock Text="{Binding SelectedDateCloudsUnits}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock Text="{Binding SelectedDatePressureText}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" Margin="2,0"/>
+                                <TextBlock Text="{Binding SelectedDatePressure}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" Margin="10,0,2,0"/>
+                                <TextBlock Text="{Binding SelectedDatePressureUnits}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" FontWeight="Bold" Margin="2,0"/>
+                            </StackPanel>
+                        </Grid>
+                        <ScrollViewer Grid.Column="0" Grid.Row="3" HorizontalScrollBarVisibility="Auto">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <StackPanel Orientation="Vertical" Margin="0,0,20,0">
+                                    <TextBlock Text="{Binding SelectedDateMorningTempText}" Margin="2,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding SelectedDateMorningTemp}" Margin="10,0,2,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding SelectedDateMorningTempUnits}" Margin="2,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical" Margin="0,0,20,0">
+                                    <TextBlock Text="{Binding SelectedDateDayTempText}" Margin="2,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding SelectedDateDayTemp}" Margin="10,0,2,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding SelectedDateDayTempUnits}" Margin="2,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical" Margin="0,0,20,0">
+                                    <TextBlock Text="{Binding SelectedDateEveningTempText}" Margin="2,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding SelectedDateEveningTemp}" Margin="10,0,2,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding SelectedDateEveningTempUnits}" Margin="2,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical" Margin="0,0,20,0">
+                                    <TextBlock Text="{Binding SelectedDateNightTempText}" Margin="2,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding SelectedDateNightTemp}" Margin="10,0,2,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding SelectedDateNightTempUnits}" Margin="2,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Grid>
+                </ScrollViewer>
+            </phone:PivotItem>
+            
+		</phone:Pivot>
+	</Grid>
+    
+</phone:PhoneApplicationPage>

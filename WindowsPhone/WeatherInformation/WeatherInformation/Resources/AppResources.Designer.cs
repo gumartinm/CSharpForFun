@@ -331,6 +331,42 @@ namespace WeatherInformation.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a DAY.
+        /// </summary>
+        public static string SelectedDatePageDay {
+            get {
+                return ResourceManager.GetString("SelectedDatePageDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a EVENING.
+        /// </summary>
+        public static string SelectedDatePageEvening {
+            get {
+                return ResourceManager.GetString("SelectedDatePageEvening", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a MORNING.
+        /// </summary>
+        public static string SelectedDatePageMorning {
+            get {
+                return ResourceManager.GetString("SelectedDatePageMorning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a NIGHT.
+        /// </summary>
+        public static string SelectedDatePageNight {
+            get {
+                return ResourceManager.GetString("SelectedDatePageNight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Forecast day numbers.
         /// </summary>
         public static string SettingsForecastDayNumbersHeader {

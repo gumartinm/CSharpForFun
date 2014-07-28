@@ -125,6 +125,22 @@
           <target state="new">hpa</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Not to be translated.</note>
         </trans-unit>
+        <trans-unit id="Resx/SelectedDatePageNight" translate="yes" xml:space="preserve">
+          <source>NIGHT</source>
+          <target state="new">NIGHT</target>
+        </trans-unit>
+        <trans-unit id="Resx/SelectedDatePageMorning" translate="yes" xml:space="preserve">
+          <source>MORNING</source>
+          <target state="new">MORNING</target>
+        </trans-unit>
+        <trans-unit id="Resx/SelectedDatePageEvening" translate="yes" xml:space="preserve">
+          <source>EVENING</source>
+          <target state="new">EVENING</target>
+        </trans-unit>
+        <trans-unit id="Resx/SelectedDatePageDay" translate="yes" xml:space="preserve">
+          <source>DAY</source>
+          <target state="new">DAY</target>
+        </trans-unit>
         <trans-unit id="Resx/MainPageCurrentSnowUnits" translate="yes" xml:space="preserve">
           <source>mm 3h</source>
           <target state="new">mm 3h</target>

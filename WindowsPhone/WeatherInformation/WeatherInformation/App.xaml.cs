@@ -154,6 +154,7 @@ namespace WeatherInformation
                         using (StreamReader sr = new StreamReader(isoStore.OpenFile("JSONDataFile.txt", FileMode.Open)))
                         {
                             // This method loads the data from isolated storage, if it is available.
+                            // TODO: qué pasa si JSONRemoteForecastWeatherData o JSONRemoteCurrentWeatherData son null?
                             string JSONRemoteForecastWeatherData = sr.ReadLine();
                             string JSONRemoteCurrentWeatherData = sr.ReadLine();
                             var weatherData = WeatherParser(JSONRemoteForecastWeatherData, JSONRemoteCurrentWeatherData);
@@ -244,6 +245,7 @@ namespace WeatherInformation
             using (IsolatedStorageFileStream fileStream = isoStore.OpenFile(isoFileName, FileMode.OpenOrCreate))
             using (StreamWriter sw = new StreamWriter(fileStream))
             {
+                // TODO: qué pasa si JSONRemoteForecastWeatherData o JSONRemoteCurrentWeatherData son null?
                 sw.Write(value.JSONRemoteForecastWeatherData);
                 sw.Write(value.JSONRemoteCurrentWeatherData);
                 fileStream.Flush(true);
@@ -273,20 +275,28 @@ namespace WeatherInformation
 
             // Coming from TOMBSTONED
             // Check to see if the key for the application state data is in the State dictionary.
+            string JSONRemoteForecastWeatherData = null;
             if (PhoneApplicationService.Current.State.ContainsKey("JSONRemoteForecastWeatherData"))
             {
                 // If it exists, assign the data to the application member variable.
-                string JSONRemoteForecastWeatherData = PhoneApplicationService.Current.State["JSONRemoteForecastWeatherData"] as string;
-                // string remoteCurrentWeatherData = sr.ReadLine();
-                var weatherData = WeatherParser(JSONRemoteForecastWeatherData, null);
-                weatherData.JSONRemoteForecastWeatherData = JSONRemoteForecastWeatherData;
-                weatherData.JSONRemoteCurrentWeatherData = null;
-                weatherData.WasThereRemoteError = false;
-                ApplicationDataObject = weatherData;
+                JSONRemoteForecastWeatherData = PhoneApplicationService.Current.State["JSONRemoteForecastWeatherData"] as string;
             }
+            string JSONRemoteCurrentWeatherData = null;
+            if (PhoneApplicationService.Current.State.ContainsKey("JSONRemoteCurrentWeatherData"))
+            {
+                // If it exists, assign the data to the application member variable.
+                JSONRemoteCurrentWeatherData = PhoneApplicationService.Current.State["JSONRemoteCurrentWeatherData"] as string;
+            }
+            // TODO: qué pasa si JSONRemoteForecastWeatherData o JSONRemoteCurrentWeatherData son null?
+            var weatherData = WeatherParser(JSONRemoteForecastWeatherData, JSONRemoteCurrentWeatherData);
+            weatherData.JSONRemoteForecastWeatherData = JSONRemoteForecastWeatherData;
+            weatherData.JSONRemoteCurrentWeatherData = JSONRemoteCurrentWeatherData;
+            weatherData.WasThereRemoteError = false;
+            ApplicationDataObject = weatherData;
+            
             if (PhoneApplicationService.Current.State.ContainsKey("IsNewLocation"))
             {
-                IsNewLocation = (bool)IsolatedStorageSettings.ApplicationSettings["IsNewLocation"];
+                IsNewLocation = (bool)PhoneApplicationService.Current.State["IsNewLocation"];
             }
         }
 
@@ -301,7 +311,12 @@ namespace WeatherInformation
                 if (!string.IsNullOrEmpty(weatherData.JSONRemoteForecastWeatherData))
                 {
                     // Store it in the State dictionary.
-                    PhoneApplicationService.Current.State["JSONRemoteForecastWeatherData"] = weatherData.JSONRemoteForecastWeatherData;
+                    PhoneApplicationService.Current.State["JSONRemoteForecastWeatherData"] = weatherData.JSONRemoteForecastWeatherData; 
+                }
+                if (!string.IsNullOrEmpty(weatherData.JSONRemoteCurrentWeatherData))
+                {
+                    // Store it in the State dictionary.
+                    PhoneApplicationService.Current.State["JSONRemoteCurrentWeatherData"] = weatherData.JSONRemoteCurrentWeatherData;
                 }
                 PhoneApplicationService.Current.State["IsNewLocation"] = IsNewLocation;
 

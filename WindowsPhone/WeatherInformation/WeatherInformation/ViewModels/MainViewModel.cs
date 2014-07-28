@@ -145,6 +145,7 @@ namespace WeatherInformation.ViewModels
             }
 
             // TODO: nullables?
+            // TODO: nullables para distinguir cuando hay datos o no. Ahora me llega 0 si no datos (supongo) cuando double/integer
 
             var remoteCurrentWeatherData = weatherData.RemoteCurrentWeatherData;
 
@@ -172,6 +173,7 @@ namespace WeatherInformation.ViewModels
             NotifyPropertyChanged("CurrentMinTemp");
             NotifyPropertyChanged("CurrentMinTempUnits");
 
+            // TODO: static resource :(
             var currentConditions = "no description available";
             if (remoteCurrentWeatherData.weather.Count > 0)
             {

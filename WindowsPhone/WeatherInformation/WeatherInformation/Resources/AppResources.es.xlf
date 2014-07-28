@@ -139,6 +139,22 @@
           <source>hpa</source>
           <target state="new">hpa</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Not to be translated.</note>
+          </trans-unit>
+        <trans-unit id="Resx/SelectedDatePageNight" translate="yes" xml:space="preserve">
+          <source>NIGHT</source>
+          <target state="translated">NOCHE</target>
+        </trans-unit>
+        <trans-unit id="Resx/SelectedDatePageMorning" translate="yes" xml:space="preserve">
+          <source>MORNING</source>
+          <target state="translated">MAÑANA</target>
+        </trans-unit>
+        <trans-unit id="Resx/SelectedDatePageEvening" translate="yes" xml:space="preserve">
+          <source>EVENING</source>
+          <target state="translated">TARDE</target>
+        </trans-unit>
+        <trans-unit id="Resx/SelectedDatePageDay" translate="yes" xml:space="preserve">
+          <source>DAY</source>
+          <target state="translated">DÍA</target>
         </trans-unit>
         <trans-unit id="Resx/MainPageCurrentSnowUnits" translate="yes" xml:space="preserve">
           <source>mm 3h</source>
@@ -152,12 +168,12 @@
           <source>%</source>
           <target state="new">%</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Not to be translated.</note>
-        </trans-unit>
+          </trans-unit>
         <trans-unit id="Resx/MainPageCurrentCloudsUnits" translate="yes" xml:space="preserve">
           <source>%</source>
           <target state="new">%</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Not to be translated.</note>
-        </trans-unit>
+          </trans-unit>
         <trans-unit id="Resx/MainPageCurrentSunSet" translate="yes" xml:space="preserve">
           <source>SUN SET</source>
           <target state="translated">SOL SE PONE</target>

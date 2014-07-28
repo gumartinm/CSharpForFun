@@ -280,4 +280,16 @@
     <value>hpa</value>
     <comment>Not to be translated.</comment>
   </data>
+  <data name="SelectedDatePageDay" xml:space="preserve">
+    <value>DAY</value>
+  </data>
+  <data name="SelectedDatePageEvening" xml:space="preserve">
+    <value>EVENING</value>
+  </data>
+  <data name="SelectedDatePageMorning" xml:space="preserve">
+    <value>MORNING</value>
+  </data>
+  <data name="SelectedDatePageNight" xml:space="preserve">
+    <value>NIGHT</value>
+  </data>
 </root>
