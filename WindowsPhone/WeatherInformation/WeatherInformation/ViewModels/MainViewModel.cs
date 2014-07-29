@@ -44,6 +44,7 @@ namespace WeatherInformation.ViewModels
         /// </summary>
         public ObservableCollection<ItemViewModel> ForecastItems{ get; private set; }
         public ObservableCollection<ItemViewModel> CurrentItems { get; private set; }
+        public String TitleTextCityCountry { get; private set; }
         public String CurrentMaxTemp { get; private set; }
         public String CurrentMaxTempUnits { get; private set; }
         public String CurrentMinTemp { get; private set; }
@@ -110,6 +111,13 @@ namespace WeatherInformation.ViewModels
             }
             double tempUnits = isFahrenheit ? 0 : 273.15;
             string symbol = isFahrenheit ? AppResources.TemperatureUnitsFahrenheitSymbol : AppResources.TemperatureUnitsCentigradeSymbol;
+
+
+            // TODO: What if address is not available? I should show something like "Address not found" by default...
+            string country = (string)IsolatedStorageSettings.ApplicationSettings["Country"];
+            string city = (string)IsolatedStorageSettings.ApplicationSettings["City"];
+            string cityCountry = String.Format(CultureInfo.InvariantCulture, "{0}, {1}", city, country);
+            this.TitleTextCityCountry = cityCountry;
 
             DateTime unixTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 

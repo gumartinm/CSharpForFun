@@ -47,7 +47,7 @@
          -->
 
         <!--Control Pivot-->
-        <phone:Pivot x:Name="TitleTextCityCountry" Title="{Binding LocalizedResources.MainPageTitle, Mode=OneWay, Source={StaticResource LocalizedStrings}}">
+        <phone:Pivot x:Name="TitleTextCityCountry" Title="{Binding TitleTextCityCountry}">
             <!--Elemento Pivot uno-->
             <phone:PivotItem Header="{Binding LocalizedResources.MainPageForecastHeader, Mode=OneWay, Source={StaticResource LocalizedStrings}}">
                 <phone:LongListSelector x:Name="ForecastItems" Margin="0,0,-12,0" ItemsSource="{Binding ForecastItems}" SelectionChanged="LongListSelector_SelectionChanged">

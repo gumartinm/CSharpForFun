@@ -13,8 +13,6 @@ namespace WeatherInformation
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        private bool _isNewPageInstance = false;
-
         // Constructor
         public MainPage()
         {
@@ -23,9 +21,6 @@ namespace WeatherInformation
 
             // Establecer el contexto de datos del control ListBox control en los datos de ejemplo
             DataContext = App.MainViewModel;
-
-
-            _isNewPageInstance = true;
 
             // Set the event handler for when the application data object changes.
             // TODO: doing this, when is the GC going to release this object? I do not think it is going to be able... This is weird...
@@ -44,64 +39,22 @@ namespace WeatherInformation
         // Cargar datos para los elementos MainViewModel
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            // If _isNewPageInstance is true, the page constructor has been called, so
-            // state may need to be restored.
-            if (_isNewPageInstance)
+            if (App.MainViewModel.IsThereCurrentLocation())
             {
-                if (!App.MainViewModel.IsThereCurrentLocation())
+                // If the application member variable is not empty,
+                // set the page's data object from the application member variable.
+                // TODO: I am setting and getting ApplicationDataObject from different threads!!!! What if I do not see its last value? Do I need synchronization? :/
+                WeatherData weatherData = (Application.Current as WeatherInformation.App).ApplicationDataObject;
+                if (weatherData != null && !(Application.Current as WeatherInformation.App).IsNewLocation)
                 {
-                    MessageBox.Show(
-                        AppResources.NoticeThereIsNotCurrentLocation,
-                        AppResources.AskForLocationConsentMessageBoxCaption,
-                        MessageBoxButton.OK);
+                    UpdateApplicationDataUI();
                 }
                 else
                 {
-                    // If the application member variable is not empty,
-                    // set the page's data object from the application member variable.
-                    // TODO: I am setting and getting ApplicationDataObject from different threads!!!! What if I do not see its last value? Do I need synchronization? :/
-                    WeatherData weatherData = (Application.Current as WeatherInformation.App).ApplicationDataObject;
-                    if (weatherData != null && !(Application.Current as WeatherInformation.App).IsNewLocation)
-                    {
-                        UpdateApplicationDataUI();
-                    }
-                    else
-                    {
-                        // Otherwise, call the method that loads data.
-                        (Application.Current as WeatherInformation.App).GetDataAsync();
-                    }
+                    // Otherwise, call the method that loads data.
+                    (Application.Current as WeatherInformation.App).GetDataAsync();
                 }
             }
-            else
-            {
-                if (!App.MainViewModel.IsThereCurrentLocation())
-                {
-                    MessageBox.Show(
-                        AppResources.NoticeThereIsNotCurrentLocation,
-                        AppResources.AskForLocationConsentMessageBoxCaption,
-                        MessageBoxButton.OK);
-                }
-                else
-                {
-                    // If the application member variable is not empty,
-                    // set the page's data object from the application member variable.
-                    // TODO: I am setting and getting ApplicationDataObject from different threads!!!! What if I do not see the its last state? Do I need synchronization? :/
-                    WeatherData weatherData = (Application.Current as WeatherInformation.App).ApplicationDataObject;
-                    if (weatherData != null && !(Application.Current as WeatherInformation.App).IsNewLocation)
-                    {
-                        UpdateApplicationDataUI();  
-                    }
-                    else
-                    {
-                        // Otherwise, call the method that loads data.
-                        (Application.Current as WeatherInformation.App).GetDataAsync();
-                    }
-                }
-            }
-
-            // Set _isNewPageInstance to false. If the user navigates back to this page
-            // and it has remained in memory, this value will continue to be false.
-            _isNewPageInstance = false;
         }
 
         // The event handler called when the ApplicationDataObject changes.
@@ -128,13 +81,6 @@ namespace WeatherInformation
             App.MainViewModel.LoadData(weatherData);
 
             (Application.Current as WeatherInformation.App).IsNewLocation = false;
-
-            // TODO: Should I try to move this code to MainViewModel. It seems so but how?
-            // TODO: What if the address is not available? I should show something like "Address not found" by default...
-            string country = (string)IsolatedStorageSettings.ApplicationSettings["Country"];
-            string city = (string)IsolatedStorageSettings.ApplicationSettings["City"];
-            string cityCountry = String.Format(CultureInfo.InvariantCulture, "{0}, {1}", city, country);
-            this.TitleTextCityCountry.Title = cityCountry;
         }
 
         private void LongListSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
