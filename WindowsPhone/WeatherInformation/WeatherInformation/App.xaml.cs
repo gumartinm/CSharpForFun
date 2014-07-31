@@ -65,12 +65,6 @@ namespace WeatherInformation
             }
         }
 
-        public bool IsNewLocation
-        {
-            get;
-            set;
-        }
-
         // Create a method to raise the ApplicationDataObjectChanged event.
         protected void OnApplicationDataObjectChanged(EventArgs e)
         {
@@ -142,7 +136,7 @@ namespace WeatherInformation
                 TimeSinceLastSave = DateTime.Now - dataLastSaveTime;
             }
 
-            if (TimeSinceLastSave.TotalSeconds < 30 && !IsNewLocation)
+            if (TimeSinceLastSave.TotalSeconds < 30 && !StoredLocation.IsNewLocation)
             {
                 GetStoredData();
             }
@@ -213,19 +207,20 @@ namespace WeatherInformation
         /// </summary>
         async public Task LoadDataAsync()
         {
+            double latitude = StoredLocation.CurrentLatitude;
+            double longitude = StoredLocation.CurrentLongitude;
+            int resultsNumber = Convert.ToInt32(AppResources.APIOpenWeatherMapResultsNumber);
+
             CustomHTTPClient httpClient = new CustomHTTPClient();
 
-            int resultsNumber = 14;
             string formattedForecastURL = String.Format(
                 CultureInfo.InvariantCulture, AppResources.URIAPIOpenWeatherMapForecast,
-                AppResources.APIVersionOpenWeatherMap, (double)IsolatedStorageSettings.ApplicationSettings["CurrentLatitude"],
-                (double)IsolatedStorageSettings.ApplicationSettings["CurrentLongitude"], resultsNumber);
+                AppResources.APIVersionOpenWeatherMap, latitude, longitude, resultsNumber);
             string JSONRemoteForecastWeather = await httpClient.GetWeatherDataAsync(formattedForecastURL);
 
             string formattedCurrentURL = String.Format(
                 CultureInfo.InvariantCulture, AppResources.URIAPIOpenWeatherMapCurrent,
-                AppResources.APIVersionOpenWeatherMap, (double)IsolatedStorageSettings.ApplicationSettings["CurrentLatitude"],
-                (double)IsolatedStorageSettings.ApplicationSettings["CurrentLongitude"], resultsNumber);
+                AppResources.APIVersionOpenWeatherMap, latitude, longitude, resultsNumber);
             string JSONRemoteCurrentWeather = await httpClient.GetWeatherDataAsync(formattedCurrentURL);
 
             ApplicationDataObject = WeatherDataParser(JSONRemoteForecastWeather, JSONRemoteCurrentWeather);
@@ -316,11 +311,6 @@ namespace WeatherInformation
             }
 
             ApplicationDataObject = WeatherDataParser(JSONRemoteForecastWeather, JSONRemoteCurrentWeather);
-            
-            if (PhoneApplicationService.Current.State.ContainsKey("IsNewLocation"))
-            {
-                IsNewLocation = (bool)PhoneApplicationService.Current.State["IsNewLocation"];
-            }
         }
 
         // Código para ejecutar cuando la aplicación se desactiva (se envía a segundo plano)
@@ -347,8 +337,6 @@ namespace WeatherInformation
                     // Also store it in isolated storage, in case the application is never reactivated.
                     SaveDataToIsolatedStorage("JSONRemoteCurrentWeatherDataFile.txt", weatherData.JSONRemoteCurrentWeatherData);
                 }
-
-                PhoneApplicationService.Current.State["IsNewLocation"] = IsNewLocation;
             }
         }
 

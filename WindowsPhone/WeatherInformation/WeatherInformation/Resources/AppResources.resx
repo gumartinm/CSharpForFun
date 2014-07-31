@@ -292,4 +292,8 @@
   <data name="SelectedDatePageNight" xml:space="preserve">
     <value>NIGHT</value>
   </data>
+  <data name="APIOpenWeatherMapResultsNumber" xml:space="preserve">
+    <value>14</value>
+    <comment>Not to be translated.</comment>
+  </data>
 </root>

@@ -61,6 +61,15 @@ namespace WeatherInformation.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a 14.
+        /// </summary>
+        public static string APIOpenWeatherMapResultsNumber {
+            get {
+                return ResourceManager.GetString("APIOpenWeatherMapResultsNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a 2.5.
         /// </summary>
         public static string APIVersionOpenWeatherMap {

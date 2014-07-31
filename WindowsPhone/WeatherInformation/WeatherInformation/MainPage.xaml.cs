@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 using WeatherInformation.Model;
+using WeatherInformation.Model.Services;
 using WeatherInformation.Resources;
 using WeatherInformation.ViewModels;
 
@@ -45,7 +46,7 @@ namespace WeatherInformation
                 // set the page's data object from the application member variable.
                 // TODO: I am setting and getting ApplicationDataObject from different threads!!!! What if I do not see its last value? Do I need synchronization? :/
                 WeatherData weatherData = (Application.Current as WeatherInformation.App).ApplicationDataObject;
-                if (weatherData != null && !(Application.Current as WeatherInformation.App).IsNewLocation)
+                if (weatherData != null && !StoredLocation.IsNewLocation)
                 {
                     UpdateApplicationDataUI();
                 }
@@ -80,7 +81,7 @@ namespace WeatherInformation
     
             App.MainViewModel.LoadData(weatherData);
 
-            (Application.Current as WeatherInformation.App).IsNewLocation = false;
+            StoredLocation.IsNewLocation = false;
         }
 
         private void LongListSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)

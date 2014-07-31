@@ -16,6 +16,7 @@ using Microsoft.Phone.Maps.Controls;
 using WeatherInformation.Resources;
 using System.Globalization;
 using Microsoft.Phone.Maps.Services;
+using WeatherInformation.Model.Services;
 
 namespace WeatherInformation
 {
@@ -128,13 +129,12 @@ namespace WeatherInformation
                     this.LocationTextCityCountry.Text = cityCountry;
 
                     // TODO: If I want to store more than one place I should use a database :(
-                    _settings["CurrentLatitude"] = currentGeoCoordinate.Latitude;
-                    _settings["CurrentLongitude"] = currentGeoCoordinate.Longitude;
+                    StoredLocation.CurrentLatitude = currentGeoCoordinate.Latitude;
+                    StoredLocation.CurrentLongitude = currentGeoCoordinate.Longitude;
                     // TODO: If I want to store more thant one place I should use a database :(
-                    _settings["City"] = address.City;
-                    _settings["Country"] = address.Country;
-
-                    (Application.Current as WeatherInformation.App).IsNewLocation = true;
+                    StoredLocation.City = address.City;
+                    StoredLocation.Country = address.Country;
+                    StoredLocation.IsNewLocation = true;
 
                     // Create a small circle to mark the current location.
                     Ellipse myCircle = new Ellipse();
