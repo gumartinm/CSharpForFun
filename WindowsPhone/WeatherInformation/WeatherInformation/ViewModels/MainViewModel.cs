@@ -121,7 +121,7 @@ namespace WeatherInformation.ViewModels
 
             DateTime unixTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-            var remoteForecastWeatherData = weatherData.RemoteForecastWeatherData;
+            var remoteForecastWeatherData = weatherData.RemoteForecast;
             if (remoteForecastWeatherData != null)
             {
                 this.ForecastItems.Clear();
@@ -160,7 +160,7 @@ namespace WeatherInformation.ViewModels
             // TODO: nullables?
             // TODO: nullables para distinguir cuando hay datos o no. Ahora me llega 0 si no datos (supongo) cuando double/integer
 
-            var remoteCurrentWeatherData = weatherData.RemoteCurrentWeatherData;
+            var remoteCurrentWeatherData = weatherData.RemoteCurrent;
             if (remoteCurrentWeatherData != null)
             {
                 var currentMaxTemp = "";
@@ -295,16 +295,6 @@ namespace WeatherInformation.ViewModels
                 NotifyPropertyChanged("CurrentSunSetText");
             }
 
-        }
-
-        public bool IsThereCurrentLocation()
-        {
-            if (_settings.Contains("CurrentLatitude") && _settings.Contains("CurrentLongitude"))
-            {
-                return true;
-            }
-
-            return false;
         }
 
         /// <summary>

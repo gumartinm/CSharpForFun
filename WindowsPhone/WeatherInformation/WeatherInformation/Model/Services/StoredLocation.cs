@@ -91,5 +91,19 @@ namespace WeatherInformation.Model.Services
                 IsolatedStorageSettings.ApplicationSettings["IsNewLocation"] = value;
             }
         }
+
+        public static bool IsThereCurrentLocation
+        {
+            get
+            {
+                if (IsolatedStorageSettings.ApplicationSettings.Contains("CurrentLatitude") &&
+                IsolatedStorageSettings.ApplicationSettings.Contains("CurrentLongitude"))
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
     }
 }

@@ -10,24 +10,24 @@ namespace WeatherInformation.Model
 {
     public class WeatherData
     {
-        public ForecastWeather RemoteForecastWeatherData
+        public ForecastWeather RemoteForecast
         {
             get;
             set;
         }
-        public string JSONRemoteForecastWeatherData
+        public string JSONRemoteForecast
         {
             get;
             set;
         }
 
 
-        public CurrentWeather RemoteCurrentWeatherData
+        public CurrentWeather RemoteCurrent
         {
             get;
             set;
         }
-        public string JSONRemoteCurrentWeatherData
+        public string JSONRemoteCurrent
         {
             get;
             set;

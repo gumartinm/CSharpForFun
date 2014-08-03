@@ -14,14 +14,15 @@ namespace WeatherInformation
 {
     public partial class MainPage : PhoneApplicationPage
     {
+        private MainViewModel _mainViewModel;
+        private bool _isNewPageInstance = false;
+
         // Constructor
         public MainPage()
         {
             InitializeComponent();
 
-
-            // Establecer el contexto de datos del control ListBox control en los datos de ejemplo
-            DataContext = App.MainViewModel;
+            _isNewPageInstance = true;
 
             // Set the event handler for when the application data object changes.
             // TODO: doing this, when is the GC going to release this object? I do not think it is going to be able... This is weird...
@@ -40,7 +41,29 @@ namespace WeatherInformation
         // Cargar datos para los elementos MainViewModel
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (App.MainViewModel.IsThereCurrentLocation())
+            base.OnNavigatedTo(e);
+
+            // If _isNewPageInstance is true, the page constuctor has been called, so
+            // state may need to be restored.
+            if (_isNewPageInstance)
+            {
+                if (_mainViewModel == null)
+                {
+                    _mainViewModel = new MainViewModel();
+                }
+
+                DataContext = _mainViewModel;
+            }
+            // Set _isNewPageInstance to false. If the user navigates back to this page
+            // and it has remained in memory, this value will continue to be false.
+            _isNewPageInstance = false;
+
+            UpdateApplicationDataUI();
+        }
+
+        private void UpdateApplicationDataUI()
+        {
+            if (StoredLocation.IsThereCurrentLocation)
             {
                 // If the application member variable is not empty,
                 // set the page's data object from the application member variable.
@@ -48,7 +71,7 @@ namespace WeatherInformation
                 WeatherData weatherData = (Application.Current as WeatherInformation.App).ApplicationDataObject;
                 if (weatherData != null && !StoredLocation.IsNewLocation)
                 {
-                    UpdateApplicationDataUI();
+                    UpdateUI();
                 }
                 else
                 {
@@ -62,26 +85,29 @@ namespace WeatherInformation
         void MainPage_ApplicationDataObjectChanged(object sender, EventArgs e)
         {
             // Call UpdateApplicationData on the UI thread.
-            Dispatcher.BeginInvoke(() => UpdateApplicationDataUI());
+            Dispatcher.BeginInvoke(() => UpdateUI());
         }
 
-        void UpdateApplicationDataUI()
+        void UpdateUI()
         {
             // Set the ApplicationData and ApplicationDataStatus members of the ViewModel
             WeatherData weatherData = (Application.Current as WeatherInformation.App).ApplicationDataObject;
 
-            if (weatherData.WasThereRemoteError)
+            if (weatherData != null)
             {
-                MessageBox.Show(
-                     AppResources.NoticeThereIsNotCurrentLocation,
-                     AppResources.AskForLocationConsentMessageBoxCaption,
-                     MessageBoxButton.OK);
-                return;
-            }
-    
-            App.MainViewModel.LoadData(weatherData);
+                if (weatherData.WasThereRemoteError)
+                {
+                    MessageBox.Show(
+                         AppResources.NoticeThereIsNotCurrentLocation,
+                         AppResources.AskForLocationConsentMessageBoxCaption,
+                         MessageBoxButton.OK);
+                    return;
+                }
 
-            StoredLocation.IsNewLocation = false;
+                _mainViewModel.LoadData(weatherData);
+
+                StoredLocation.IsNewLocation = false;
+            }
         }
 
         private void LongListSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)

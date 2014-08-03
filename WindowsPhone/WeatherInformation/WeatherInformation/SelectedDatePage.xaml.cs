@@ -11,8 +11,8 @@ namespace WeatherInformation
 {
     public partial class SelectedDate : PhoneApplicationPage
     {
-        SelectedDateViewModel _selectedDateViewModel;
-        bool _isNewPageInstance = false;
+        private SelectedDateViewModel _selectedDateViewModel;
+        private bool _isNewPageInstance = false;
 
         public SelectedDate()
         {
@@ -50,23 +50,26 @@ namespace WeatherInformation
         {
             WeatherData weatherData = (Application.Current as WeatherInformation.App).ApplicationDataObject;
 
-            if (weatherData.WasThereRemoteError)
+            if (weatherData != null)
             {
-                MessageBox.Show(
-                     AppResources.NoticeThereIsNotCurrentLocation,
-                     AppResources.AskForLocationConsentMessageBoxCaption,
-                     MessageBoxButton.OK);
-                return;
+                if (weatherData.WasThereRemoteError)
+                {
+                    MessageBox.Show(
+                         AppResources.NoticeThereIsNotCurrentLocation,
+                         AppResources.AskForLocationConsentMessageBoxCaption,
+                         MessageBoxButton.OK);
+                    return;
+                }
+
+                _selectedDateViewModel.LoadData(weatherData);
+
+                // TODO: Should I try to move this code to MainViewModel. It seems so but how?
+                // TODO: What if the address is not available? I should show something like "Address not found" by default...
+                string country = (string)IsolatedStorageSettings.ApplicationSettings["Country"];
+                string city = (string)IsolatedStorageSettings.ApplicationSettings["City"];
+                string cityCountry = String.Format(CultureInfo.InvariantCulture, "{0}, {1}", city, country);
+                this.TitleTextCityCountry.Title = cityCountry;
             }
-
-            _selectedDateViewModel.LoadData(weatherData);
-
-            // TODO: Should I try to move this code to MainViewModel. It seems so but how?
-            // TODO: What if the address is not available? I should show something like "Address not found" by default...
-            string country = (string)IsolatedStorageSettings.ApplicationSettings["Country"];
-            string city = (string)IsolatedStorageSettings.ApplicationSettings["City"];
-            string cityCountry = String.Format(CultureInfo.InvariantCulture, "{0}, {1}", city, country);
-            this.TitleTextCityCountry.Title = cityCountry;
         }
     }
 }
