@@ -298,6 +298,9 @@ namespace WeatherInformation
 
         // Código para ejecutar cuando la aplicación se desactiva (se envía a segundo plano)
         // Este código no se ejecutará cuando la aplicación se cierre
+        // TODO: no siempre pasa por aqui cuando se lanza una nueva ventana de la misma aplicación.
+        //       Y POR ESO HAY PROBLEMAS CON GetDataAsync PORQUE ESTO NO TIENE NADA DE NADA Y DEVUELVE NULL
+        //       Y SIEMPRE HACE UNA PETICIÓN AL SERVIDOR :(
         private void Application_Deactivated(object sender, DeactivatedEventArgs e)
         {
             // If there is data in the application member variable...

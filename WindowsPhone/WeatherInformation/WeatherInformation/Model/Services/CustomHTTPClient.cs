@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -10,23 +10,73 @@ namespace WeatherInformation.Model.Services
 {
     class CustomHTTPClient
     {
-        async public Task<string> GetWeatherDataAsync(string url)
+        async public Task<string> GetWeatherDataAsync(string uri)
         {
-            
-            using (HttpClient client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) })
+            if (string.IsNullOrEmpty(uri))
             {
-                // TODO: I wish my string to be converted to UTF-8. WTH is doing HttpClient? Dunno :(
-                // How do I control the encoding used by HttpClient?
-
-                // Disable WindowsPhone cache
-                HttpRequestHeaders headers = client.DefaultRequestHeaders;
-                headers.IfModifiedSince = DateTime.UtcNow;
-
-                // TODO: THIS IS FUCKED UP. IT IS WORKING RANDOMLY... THE MOST OF THE TIMES IT STOPS HERE FOREVER...
-                string jsonData = await client.GetStringAsync(url);
-
-                return jsonData;
+                throw new ArgumentException("Missing argument", "uri");
             }
-        } 
+
+            // TODO: it would be nice to use the same HttpClient for the the 2 requests instead of creating
+            //       a new one for each connection. :( Not easy with using statement and async :(
+            using(HttpClientHandler handler = new HttpClientHandler
+            {
+                // TODO: check if this really works when receiving compressed data.
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+            })
+            using (HttpClient client = new HttpClient(handler) { Timeout = TimeSpan.FromSeconds(30) })
+            {
+                HttpRequestHeaders headers = client.DefaultRequestHeaders;
+
+                headers.UserAgent.Clear();
+                headers.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("WeatherInformation", "WP8")));
+
+                headers.AcceptCharset.Clear();
+                headers.AcceptCharset.Add(new StringWithQualityHeaderValue("utf-8"));
+
+                headers.Accept.Clear();
+                headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                headers.AcceptEncoding.Clear();
+                headers.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
+                headers.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
+
+                // Bypassing Windows cache
+                DateTime currentDate = DateTime.UtcNow;
+                string uriWindowsCacheSucks = String.Concat(uri, currentDate);
+
+                // TODO: HttpCompletionOption, without it, by default, I am buffering the received data.
+                //       in this case it is not a problem but when receiving loads of bytes I do not
+                //       think it is a great idea to buffer all of them... :(
+                using (HttpResponseMessage response = await client.GetAsync(uriWindowsCacheSucks))
+                {
+                    response.EnsureSuccessStatusCode();
+
+                    using (HttpContent contentRESULT = response.Content)
+                    {
+                        return await this.ReadResponseAsync(contentRESULT);
+                    }
+                }
+            }
+        }
+
+        async private Task<string> ReadResponseAsync(HttpContent content)
+        {
+            Encoding encoding;
+            if (content.Headers != null && content.Headers.ContentType != null && content.Headers.ContentType.CharSet != null)
+            {
+                encoding = Encoding.GetEncoding(content.Headers.ContentType.CharSet);
+            }
+            else
+            {
+                encoding = Encoding.UTF8;
+            }
+
+            using (Stream stream = await content.ReadAsStreamAsync())
+            using (StreamReader streamReader = new StreamReader(stream, encoding))
+            {
+                return await streamReader.ReadToEndAsync();
+            }
+        }
     }  
 }

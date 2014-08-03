@@ -1,5 +1,6 @@
 ﻿<ViewModels:SelectedDateViewModel
     xmlns:ViewModels="clr-namespace:WeatherInformation.ViewModels"
+    TitleTextCityCountry="City,country"
     SelectedDate="July 27"
     SelectedDateRainText="RAIN"
     SelectedDateMaxTempUnits="ºC"

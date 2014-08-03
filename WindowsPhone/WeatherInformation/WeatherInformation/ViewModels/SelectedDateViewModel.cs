@@ -7,6 +7,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using WeatherInformation.Model;
+using WeatherInformation.Model.Services;
 using WeatherInformation.Resources;
 
 namespace WeatherInformation.ViewModels
@@ -16,6 +17,8 @@ namespace WeatherInformation.ViewModels
 
         [DataMember]
         public Int32 SelectedDateIndex { get; set; }
+
+        public String TitleTextCityCountry { get; private set; }
 
         public String SelectedDate { get; private set; }
         public String SelectedDateMaxTemp { get; private set; }
@@ -202,6 +205,13 @@ namespace WeatherInformation.ViewModels
             NotifyPropertyChanged("SelectedDateNightTemp");
             this.SelectedDateNightTempUnits = selectedDateTempUnits;
             NotifyPropertyChanged("SelectedDateNightTempUnits");
+
+            // TODO: What if address is not available? I should show something like "Address not found" by default...
+            string country = StoredLocation.Country;
+            string city = StoredLocation.City;
+            string cityCountry = String.Format(CultureInfo.InvariantCulture, "{0}, {1}", city, country);
+            this.TitleTextCityCountry = cityCountry;
+            NotifyPropertyChanged("TitleTextCityCountry");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

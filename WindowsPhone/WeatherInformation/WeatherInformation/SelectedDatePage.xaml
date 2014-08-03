@@ -27,7 +27,7 @@
 <!--LayoutRoot es la cuadrícula raíz donde se coloca todo el contenido de la página-->
 	<Grid x:Name="LayoutRoot" Background="Transparent">
         <!--Control Pivot-->
-		<phone:Pivot x:Name="TitleTextCityCountry" Title="{Binding LocalizedResources.MainPageTitle, Mode=OneWay, Source={StaticResource LocalizedStrings}}">
+		<phone:Pivot x:Name="TitleTextCityCountry" Title="{Binding TitleTextCityCountry}">
 			<!--Elemento Pivot uno-->
 			<phone:PivotItem Header="{Binding SelectedDate}">
                 <ScrollViewer HorizontalScrollBarVisibility="Auto">

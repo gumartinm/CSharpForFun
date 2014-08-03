@@ -62,13 +62,6 @@ namespace WeatherInformation
                 }
 
                 _selectedDateViewModel.LoadData(weatherData);
-
-                // TODO: Should I try to move this code to MainViewModel. It seems so but how?
-                // TODO: What if the address is not available? I should show something like "Address not found" by default...
-                string country = (string)IsolatedStorageSettings.ApplicationSettings["Country"];
-                string city = (string)IsolatedStorageSettings.ApplicationSettings["City"];
-                string cityCountry = String.Format(CultureInfo.InvariantCulture, "{0}, {1}", city, country);
-                this.TitleTextCityCountry.Title = cityCountry;
             }
         }
     }

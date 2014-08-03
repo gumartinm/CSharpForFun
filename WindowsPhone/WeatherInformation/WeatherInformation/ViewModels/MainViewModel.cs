@@ -111,14 +111,6 @@ namespace WeatherInformation.ViewModels
             }
             double tempUnits = isFahrenheit ? 0 : 273.15;
             string symbol = isFahrenheit ? AppResources.TemperatureUnitsFahrenheitSymbol : AppResources.TemperatureUnitsCentigradeSymbol;
-
-
-            // TODO: What if address is not available? I should show something like "Address not found" by default...
-            string country = (string)IsolatedStorageSettings.ApplicationSettings["Country"];
-            string city = (string)IsolatedStorageSettings.ApplicationSettings["City"];
-            string cityCountry = String.Format(CultureInfo.InvariantCulture, "{0}, {1}", city, country);
-            this.TitleTextCityCountry = cityCountry;
-
             DateTime unixTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
             var remoteForecastWeatherData = weatherData.RemoteForecast;
@@ -293,6 +285,13 @@ namespace WeatherInformation.ViewModels
                 this.CurrentSunSet = sunSetTime.ToString("MM/dd/yy H:mm:ss", CultureInfo.InvariantCulture);
                 NotifyPropertyChanged("CurrentSunSet");
                 NotifyPropertyChanged("CurrentSunSetText");
+
+                // TODO: What if address is not available? I should show something like "Address not found" by default...
+                string country = StoredLocation.Country;
+                string city = StoredLocation.City;
+                string cityCountry = String.Format(CultureInfo.InvariantCulture, "{0}, {1}", city, country);
+                this.TitleTextCityCountry = cityCountry;
+                NotifyPropertyChanged("TitleTextCityCountry");
             }
 
         }

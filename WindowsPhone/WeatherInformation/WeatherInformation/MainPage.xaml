@@ -105,10 +105,10 @@
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
-                        <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,28,0,0">
                             <TextBlock Text="{Binding CurrentConditions}" TextWrapping="Wrap" Style="{StaticResource PhoneTextLargeStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
                         </StackPanel>
-                        <Grid Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center">
+                        <Grid Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center" Margin="0,28,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
@@ -149,7 +149,7 @@
                             </StackPanel>
                         </Grid>
                         <StackPanel Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" Margin="0,28,0,0">
                                 <TextBlock Text="{Binding CurrentPressureText}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
                                 <TextBlock Text="{Binding CurrentPressure}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,2,0"/>
                                 <TextBlock Text="{Binding CurrentPressureUnits}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
