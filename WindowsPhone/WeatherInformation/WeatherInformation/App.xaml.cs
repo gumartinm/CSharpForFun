@@ -239,13 +239,33 @@ namespace WeatherInformation
             };
         }
 
-        // Temporary file? NO RIGHT WAY WITH WINDOWS :O Windows sucks? AFAIK YES.
-        // rename is not atomic (AFAIK) and destination file must not exist... ROFL
-        // Microsoft should learn from UNIX: http://thunk.org/tytso/blog/2009/03/15/dont-fear-the-fsync/
-        private void SaveDataToIsolatedStorage(string isoFileName, string value)
+        private void SaveDataToIsolatedStorage(string fileName, string value)
+        {
+            string pathToTemporaryFile = CreateTemporaryFile(fileName);
+
+            SaveDataToTemporaryFile(pathToTemporaryFile, value);
+
+            using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                // Hopefully NTFS rename atomic... No too much information :/
+                isoStore.MoveFile(pathToTemporaryFile, fileName);
+            }
+        }
+
+        private string CreateTemporaryFile(string fileName)
         {
             using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetUserStoreForApplication())
-            using (IsolatedStorageFileStream fileStream = isoStore.OpenFile(isoFileName, FileMode.OpenOrCreate))
+            {
+                isoStore.CreateDirectory("tmp");
+            }
+
+            return String.Concat("tmp/", fileName);
+        }
+
+        private void SaveDataToTemporaryFile(string pathToTemporaryFile, string value)
+        {
+            using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetUserStoreForApplication())
+            using (IsolatedStorageFileStream fileStream = isoStore.OpenFile(pathToTemporaryFile, FileMode.Create))
             using (StreamWriter sw = new StreamWriter(fileStream))
             {
                 sw.Write(value);
