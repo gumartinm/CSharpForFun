@@ -239,6 +239,7 @@ namespace WeatherInformation
             };
         }
 
+        // no way of moving temporary file atomically with IsolatedStorageFile. LINUX OWNS MICROSOFT.
         private void SaveDataToIsolatedStorage(string fileName, string value)
         {
             string pathToTemporaryFile = CreateTemporaryFile(fileName);
@@ -247,7 +248,14 @@ namespace WeatherInformation
 
             using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetUserStoreForApplication())
             {
-                // Hopefully NTFS rename atomic... No too much information :/
+                // NO FUCKING WAY, MoveFile throws exception if destination file exists!!!!
+                // And documentation doesn't say anything... ROFL
+                // Linux OWNS Microsoft...
+                // If there are corrupted files do not blame me.... Unbelievable....
+                if (isoStore.FileExists(fileName))
+                {
+                    isoStore.DeleteFile(fileName);
+                }
                 isoStore.MoveFile(pathToTemporaryFile, fileName);
             }
         }
@@ -259,7 +267,7 @@ namespace WeatherInformation
                 isoStore.CreateDirectory("tmp");
             }
 
-            return String.Concat("tmp/", fileName);
+            return Path.Combine("tmp", fileName);
         }
 
         private void SaveDataToTemporaryFile(string pathToTemporaryFile, string value)
