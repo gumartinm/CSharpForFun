@@ -304,6 +304,15 @@ namespace WeatherInformation.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Save Location.
+        /// </summary>
+        public static string MapPageSaveLocationButton {
+            get {
+                return ResourceManager.GetString("MapPageSaveLocationButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Location autodetection seems to be disabled in your phone.
         /// </summary>
         public static string NoticeErrorLocationAutodetection {

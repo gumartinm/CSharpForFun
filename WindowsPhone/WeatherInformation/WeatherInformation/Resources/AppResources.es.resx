@@ -253,4 +253,8 @@
   <data name="SelectedDatePageDay" xml:space="preserve">
     <value>DÍA</value>
   </data>
+  <data name="MapPageSaveLocationButton" xml:space="preserve">
+    <value>Guardar posición</value>
+    <comment>Map page, button saves the user's chosen location</comment>
+  </data>
 </root>

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace WeatherInformation.Model.Services
 {
     // TODO: If I want to store more than one place I should use a database :(
+    // TODO: What if Double.NAN or null... Am I going to have some problem storing data in IsolatedStorageSettings?
     class StoredLocation
     {
         public static double CurrentLatitude
@@ -41,6 +42,91 @@ namespace WeatherInformation.Model.Services
             set
             {
                 IsolatedStorageSettings.ApplicationSettings["CurrentLongitude"] = value;
+            }
+        }
+
+        public static double CurrentAltitude
+        {
+            get
+            {
+                if (IsolatedStorageSettings.ApplicationSettings.Contains("CurrentAltitude"))
+                {
+                    return (double)IsolatedStorageSettings.ApplicationSettings["CurrentAltitude"];
+                }
+                // TODO: what if settings does not contain this value? :/
+                return 0;
+            }
+            set
+            {
+                IsolatedStorageSettings.ApplicationSettings["CurrentAltitude"] = value;
+            }
+        }
+
+        public static double CurrentHorizontalAccuracy
+        {
+            get
+            {
+                if (IsolatedStorageSettings.ApplicationSettings.Contains("CurrentHorizontalAccuracy"))
+                {
+                    return (double)IsolatedStorageSettings.ApplicationSettings["CurrentHorizontalAccuracy"];
+                }
+                // TODO: what if settings does not contain this value? :/
+                return 0;
+            }
+            set
+            {
+                IsolatedStorageSettings.ApplicationSettings["CurrentHorizontalAccuracy"] = value;
+            }
+        }
+
+        public static double CurrentVerticalAccuracy
+        {
+            get
+            {
+                if (IsolatedStorageSettings.ApplicationSettings.Contains("CurrentVerticalAccuracy"))
+                {
+                    return (double)IsolatedStorageSettings.ApplicationSettings["CurrentVerticalAccuracy"];
+                }
+                // TODO: what if settings does not contain this value? :/
+                return 0;
+            }
+            set
+            {
+                IsolatedStorageSettings.ApplicationSettings["CurrentVerticalAccuracy"] = value;
+            }
+        }
+
+        public static double CurrentSpeed
+        {
+            get
+            {
+                if (IsolatedStorageSettings.ApplicationSettings.Contains("CurrentSpeed"))
+                {
+                    return (double)IsolatedStorageSettings.ApplicationSettings["CurrentSpeed"];
+                }
+                // TODO: what if settings does not contain this value? :/
+                return 0;
+            }
+            set
+            {
+                IsolatedStorageSettings.ApplicationSettings["CurrentSpeed"] = value;
+            }
+        }
+
+        public static double CurrentCourse
+        {
+            get
+            {
+                if (IsolatedStorageSettings.ApplicationSettings.Contains("CurrentCourse"))
+                {
+                    return (double)IsolatedStorageSettings.ApplicationSettings["CurrentCourse"];
+                }
+                // TODO: what if settings does not contain this value? :/
+                return 0;
+            }
+            set
+            {
+                IsolatedStorageSettings.ApplicationSettings["CurrentCourse"] = value;
             }
         }
 

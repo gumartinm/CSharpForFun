@@ -19,6 +19,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!--TitlePanel contiene el nombre de la aplicación y el título de la página-->
@@ -29,8 +30,9 @@
 
         <!--ContentPanel. Colocar aquí el contenido adicional-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <maps:Map x:Name="mapWeatherInformation" Grid.Row="1"/>
+            <maps:Map x:Name="mapWeatherInformation" Grid.Row="1" Tap="mapWeatherInformation_Tap"/>
         </Grid>
+        <Button x:Name="SaveLocationButton" Grid.Row="2" Content="{Binding LocalizedResources.MapPageSaveLocationButton, Mode=OneWay, Source={StaticResource LocalizedStrings}}" HorizontalAlignment="Center"  VerticalAlignment="Bottom" Click="SaveLocationButton_Click"/>
     </Grid>
 
 </phone:PhoneApplicationPage>
