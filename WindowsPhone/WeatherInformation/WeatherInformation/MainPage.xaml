@@ -84,6 +84,9 @@
                 <ScrollViewer HorizontalScrollBarVisibility="Auto">
                     <Grid>
                         <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
@@ -108,57 +111,53 @@
                         <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,28,0,0">
                             <TextBlock Text="{Binding CurrentConditions}" TextWrapping="Wrap" Style="{StaticResource PhoneTextLargeStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
                         </StackPanel>
-                        <Grid Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center" Margin="0,28,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding CurrentFeelsLikeText}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
-                                    <TextBlock Text="{Binding CurrentFeelsLikeTemp}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,2,0"/>
-                                    <TextBlock Text="{Binding CurrentFeelsLikeTempUnits}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding CurrentHumidityText}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
-                                    <TextBlock Text="{Binding CurrentHumidity}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,2,0"/>
-                                    <TextBlock Text="{Binding CurrentHumidityUnits}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding CurrentRainText}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
-                                    <TextBlock Text="{Binding CurrentRain}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,2,0"/>
-                                    <TextBlock Text="{Binding CurrentRainUnits}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
-                                </StackPanel>
+                        <Grid Grid.Column="0" Grid.Row="2" Margin="0,10,0,0">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding CurrentFeelsLikeText}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
+                                <TextBlock Text="{Binding CurrentFeelsLikeTemp}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,2,0"/>
+                                <TextBlock Text="{Binding CurrentFeelsLikeTempUnits}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
                             </StackPanel>
-                            <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Center">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding CurrentSnowText}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0,12,0"/>
-                                    <TextBlock Text="{Binding CurrentSnow}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,2,0"/>
-                                    <TextBlock Text="{Binding CurrentSnowUnits}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding CurrentWindText}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
-                                    <TextBlock Text="{Binding CurrentWind}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,2,0"/>
-                                    <TextBlock Text="{Binding CurrentWindUnits}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding CurrentCloudsText}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
-                                    <TextBlock Text="{Binding CurrentClouds}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,2,0"/>
-                                    <TextBlock Text="{Binding CurrentCloudsUnits}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
-                                </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding CurrentSnowText}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0,12,0"/>
+                                <TextBlock Text="{Binding CurrentSnow}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,2,0"/>
+                                <TextBlock Text="{Binding CurrentSnowUnits}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
                             </StackPanel>
                         </Grid>
-                        <StackPanel Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <StackPanel Orientation="Horizontal" Margin="0,28,0,0">
+                        <Grid Grid.Column="0" Grid.Row="3" Margin="0,10,0,0">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding CurrentHumidityText}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
+                                <TextBlock Text="{Binding CurrentHumidity}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,2,0"/>
+                                <TextBlock Text="{Binding CurrentHumidityUnits}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding CurrentWindText}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
+                                <TextBlock Text="{Binding CurrentWind}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,2,0"/>
+                                <TextBlock Text="{Binding CurrentWindUnits}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
+                            </StackPanel>
+                        </Grid>
+                        <Grid Grid.Column="0" Grid.Row="4" Margin="0,10,0,0">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding CurrentRainText}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
+                                <TextBlock Text="{Binding CurrentRain}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,2,0"/>
+                                <TextBlock Text="{Binding CurrentRainUnits}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                 <TextBlock Text="{Binding CurrentCloudsText}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
+                                 <TextBlock Text="{Binding CurrentClouds}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,2,0"/>
+                                 <TextBlock Text="{Binding CurrentCloudsUnits}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
+                            </StackPanel>
+                        </Grid>
+                        <StackPanel Grid.Column="0" Grid.Row="5" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                                 <TextBlock Text="{Binding CurrentPressureText}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
                                 <TextBlock Text="{Binding CurrentPressure}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,2,0"/>
                                 <TextBlock Text="{Binding CurrentPressureUnits}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                                 <TextBlock Text="{Binding CurrentSunRiseText}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
                                 <TextBlock Text="{Binding CurrentSunRise}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                                 <TextBlock Text="{Binding CurrentSunSetText}" TextWrapping="Wrap" Style="{StaticResource PhoneTextTitle3Style}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
                                 <TextBlock Text="{Binding CurrentSunSet}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
                             </StackPanel>
