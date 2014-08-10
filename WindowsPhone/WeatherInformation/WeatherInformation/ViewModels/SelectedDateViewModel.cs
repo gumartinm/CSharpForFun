@@ -207,8 +207,8 @@ namespace WeatherInformation.ViewModels
             NotifyPropertyChanged("SelectedDateNightTempUnits");
 
             // TODO: What if address is not available? I should show something like "Address not found" by default...
-            string country = StoredLocation.Country;
-            string city = StoredLocation.City;
+            string country = weatherData.Country;
+            string city = weatherData.City;
             string cityCountry = String.Format(CultureInfo.InvariantCulture, "{0}, {1}", city, country);
             this.TitleTextCityCountry = cityCountry;
             NotifyPropertyChanged("TitleTextCityCountry");

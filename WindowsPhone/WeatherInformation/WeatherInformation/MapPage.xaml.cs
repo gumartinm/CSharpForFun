@@ -17,96 +17,61 @@ using WeatherInformation.Resources;
 using System.Globalization;
 using Microsoft.Phone.Maps.Services;
 using WeatherInformation.Model.Services;
+using System.Threading.Tasks;
+using WeatherInformation.Model;
 
 namespace WeatherInformation
 {
     public partial class MapPage : PhoneApplicationPage
     {
-        // Settings
-        private readonly IsolatedStorageSettings _settings;
+        // Data context for the local database
+        private LocationDataContext _locationDB;
 
         public MapPage()
         {
             InitializeComponent();
 
-            // Get the _settings for this application.
-            _settings = IsolatedStorageSettings.ApplicationSettings;
+            // Connect to the database and instantiate data context.
+            _locationDB = new LocationDataContext(LocationDataContext.DBConnectionString);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (!_settings.Contains("LocationConsent"))
+            
+            // Define the query to gather all of the to-do items.
+            // var toDoItemsInDB = from Location location in _locationDB.Locations where location.IsSelected select location;
+            var locationItem = _locationDB.Locations.Where(location => location.IsSelected).FirstOrDefault();
+            if (locationItem != null)
             {
-                MessageBoxResult result = MessageBox.Show(
-                    AppResources.AskForLocationConsentMessageBox,
-                    AppResources.AskForLocationConsentMessageBoxCaption,
-                    MessageBoxButton.OKCancel);
+                GeoCoordinate geoCoordinate = ConvertLocation(locationItem);
 
-                if (result == MessageBoxResult.OK)
-                {
-                    _settings["LocationConsent"] = true;
-                }
-                else
-                {
-                    _settings["LocationConsent"] = false;
-                }
-
-                _settings.Save();
-            }
-
-            if ((bool)_settings["LocationConsent"] != true)
-            {
-                // The user has opted out of Location.
-                return;
-            }
-
-            if (!StoredLocation.IsThereCurrentLocation)
-            {
-                this.GetLocation();
-            }
-            else
-            {
-                GeoCoordinate geoCoordinate = CoordinateHelper.GetStoredGeoCoordinate();
-
-                this.UpdateMap(geoCoordinate, StoredLocation.City, StoredLocation.Country);
+                this.UpdateMap(geoCoordinate, locationItem.City, locationItem.Country);
             }
         }
 
-        private async void GetLocation()
+        protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            // Call the base method.
+            base.OnNavigatedFrom(e);
+
+            // Save changes to the database.
+            _locationDB.SubmitChanges();
+
+            // No calling _locationDB.Dispose? :/
+        }
+
+        private async Task GetCurrentLocationAndUpdateMap()
         {
             Geolocator geolocator = new Geolocator();
             geolocator.DesiredAccuracyInMeters = 50;
 
-            try
-            {
-                Geoposition geoposition = await geolocator.GetGeopositionAsync(
-                    maximumAge: TimeSpan.FromMinutes(5),
-                    timeout: TimeSpan.FromSeconds(10)
-                    );
-                GeoCoordinate currentGeoCoordinate = CoordinateHelper.ConvertGeocoordinate(geoposition.Coordinate);
+            Geoposition geoposition = await geolocator.GetGeopositionAsync(
+                maximumAge: TimeSpan.FromMinutes(5),
+                timeout: TimeSpan.FromSeconds(10)
+                );
+            GeoCoordinate currentGeoCoordinate = CoordinateHelper.ConvertGeocoordinate(geoposition.Coordinate);
 
-                ReverseGeocodeAndUpdateMap(currentGeoCoordinate);
-            }
-            catch (Exception ex)
-            {
-                if ((uint)ex.HResult == 0x80004004)
-                {
-
-                    // the application does not have the right capability or the location master switch is off
-                    MessageBox.Show(
-                        AppResources.NoticeErrorLocationAutodetection,
-                        AppResources.AskForLocationConsentMessageBoxCaption,
-                        MessageBoxButton.OK);
-                }
-                else
-                {
-                    // something else happened acquring the location
-                    MessageBox.Show(
-                        AppResources.NoticeErrorLocationAutodetection,
-                        AppResources.AskForLocationConsentMessageBoxCaption,
-                        MessageBoxButton.OK);
-                }
-            }
+            ReverseGeocodeAndUpdateMap(currentGeoCoordinate);
         }
 
         // TODO: problems updating Map because this method may be called when automatically retrieving
@@ -133,8 +98,10 @@ namespace WeatherInformation
             Exception errorException = eventData.Error;
             if (errorException != null)
             {
-                // TODO: Show some log. I need to use remote logging :(
-                return;
+                MessageBox.Show(
+                    AppResources.NoticeErrorLocationAutodetection,
+                    AppResources.UnavailableAutomaticCurrentLocationMessageBox,
+                    MessageBoxButton.OK);
             }
             else
             {
@@ -195,34 +162,59 @@ namespace WeatherInformation
                     geocoordinate.Heading ?? Double.NaN
                     );
             }
+        }
 
-            // TODO: database
-            // TODO: What if Double.NAN or null... Am I going to have some problem storing data in IsolatedStorageSettings?
-            public static void StoreGeoCoordinate(GeoCoordinate geocoordinate)
+        // TODO: check data before storing :(
+        // http://stackoverflow.com/questions/4521435/what-specific-values-can-a-c-sharp-double-represent-that-a-sql-server-float-can
+        private void StoreLocation(GeoCoordinate geocoordinate)
+        {
+            var locationItem = _locationDB.Locations.Where(location => location.IsSelected).FirstOrDefault();
+            if (locationItem != null)
             {
-                StoredLocation.CurrentLatitude = geocoordinate.Latitude;
-                StoredLocation.CurrentLongitude = geocoordinate.Longitude;
-                StoredLocation.IsNewLocation = true;
-                StoredLocation.CurrentAltitude = geocoordinate.Altitude;
-                StoredLocation.CurrentHorizontalAccuracy = geocoordinate.HorizontalAccuracy;
-                StoredLocation.CurrentVerticalAccuracy = geocoordinate.VerticalAccuracy;
-                StoredLocation.CurrentSpeed = geocoordinate.Speed;
-                StoredLocation.CurrentCourse = geocoordinate.Course;
+                locationItem.Latitude = geocoordinate.Latitude;
+                locationItem.Longitude = geocoordinate.Longitude;
+                locationItem.Altitude = geocoordinate.Altitude;
+                locationItem.HorizontalAccuracy = geocoordinate.HorizontalAccuracy;
+                locationItem.VerticalAccuracy = geocoordinate.VerticalAccuracy;
+                locationItem.Speed = geocoordinate.Speed;
+                locationItem.Course = geocoordinate.Course;
+                locationItem.IsNewLocation = true;
+                locationItem.IsSelected = true;
+                locationItem.StoredTime = DateTime.Now;
             }
+            else
+            {
+                locationItem = new Location()
+                {
+                    Latitude = geocoordinate.Latitude,
+                    Longitude = geocoordinate.Longitude,
+                    Altitude = geocoordinate.Altitude,
+                    HorizontalAccuracy = geocoordinate.HorizontalAccuracy,
+                    VerticalAccuracy = geocoordinate.VerticalAccuracy,
+                    Speed = geocoordinate.Speed,
+                    Course = geocoordinate.Course,
+                    IsNewLocation = true,
+                    IsSelected = true,
+                    StoredTime = DateTime.Now
+                };
 
-            public static GeoCoordinate GetStoredGeoCoordinate()
-            {
-                return new GeoCoordinate
-                    (
-                    StoredLocation.CurrentLatitude,
-                    StoredLocation.CurrentLongitude,
-                    StoredLocation.CurrentAltitude,
-                    StoredLocation.CurrentHorizontalAccuracy,
-                    StoredLocation.CurrentVerticalAccuracy,
-                    StoredLocation.CurrentSpeed,
-                    StoredLocation.CurrentCourse
-                    );
+                // Add a location item to the local database.
+                _locationDB.Locations.InsertOnSubmit(locationItem);
             }
+        }
+
+        private GeoCoordinate ConvertLocation(Location locationItem)
+        {
+            return new GeoCoordinate
+                (
+                locationItem.Latitude,
+                locationItem.Longitude,
+                locationItem.Altitude,
+                locationItem.HorizontalAccuracy,
+                locationItem.VerticalAccuracy,
+                locationItem.Speed,
+                locationItem.Course
+                );
         }
 
         private void mapWeatherInformation_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -231,7 +223,23 @@ namespace WeatherInformation
             GeoCoordinate geocoordinate = this.mapWeatherInformation.ConvertViewportPointToGeoCoordinate(point);
             ReverseGeocodeAndUpdateMap(geocoordinate);
         }
-      
+
+        private async void GetCurrentLocationButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                await this.GetCurrentLocationAndUpdateMap();
+            }
+            catch (Exception ex)
+            {
+                // TODO: make sure when exception in GetCurrentLocationAndUpdateMap we catch it here.
+                MessageBox.Show(
+                    AppResources.NoticeErrorLocationAutodetection,
+                    AppResources.UnavailableAutomaticCurrentLocationMessageBox,
+                    MessageBoxButton.OK);
+            }
+        }
+
         private void SaveLocationButton_Click(object sender, RoutedEventArgs e)
         {
             // TODO: Could there some problem if user clicks button and thread is in this very moment updating map?
@@ -240,7 +248,17 @@ namespace WeatherInformation
             // TODO: What if there is no city or country. Is there null value or empty string?
             //StoredLocation.City = address.City;
             //StoredLocation.Country = address.Country;
-            CoordinateHelper.StoreGeoCoordinate(geoCoordinate);
+            StoreLocation(geoCoordinate);
+        }
+
+        private void ZoomOutButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.mapWeatherInformation.ZoomLevel = this.mapWeatherInformation.ZoomLevel - 1;
+        }
+
+        private void ZoomInButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.mapWeatherInformation.ZoomLevel = this.mapWeatherInformation.ZoomLevel + 1;
         }
     }
 }

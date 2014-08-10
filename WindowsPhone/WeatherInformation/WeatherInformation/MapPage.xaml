@@ -20,6 +20,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!--TitlePanel contiene el nombre de la aplicación y el título de la página-->
@@ -32,7 +33,14 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <maps:Map x:Name="mapWeatherInformation" Grid.Row="1" Tap="mapWeatherInformation_Tap"/>
         </Grid>
-        <Button x:Name="SaveLocationButton" Grid.Row="2" Content="{Binding LocalizedResources.MapPageSaveLocationButton, Mode=OneWay, Source={StaticResource LocalizedStrings}}" HorizontalAlignment="Center"  VerticalAlignment="Bottom" Click="SaveLocationButton_Click"/>
+        <Grid Grid.Row="2">
+            <Button x:Name="SaveLocationButton"  Content="{Binding LocalizedResources.MapPageSaveLocationButton, Mode=OneWay, Source={StaticResource LocalizedStrings}}" Click="SaveLocationButton_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Button x:Name="GetCurrentLocationButton" HorizontalAlignment="Right" VerticalAlignment="Center" Content="{Binding LocalizedResources.MapPageGetCurrentLocationButton, Mode=OneWay, Source={StaticResource LocalizedStrings}}" Click="GetCurrentLocationButton_Click"/>
+        </Grid>
+        <Grid Grid.Row="3">
+            <Button x:Name="ZoomInButton" Click="ZoomInButton_Click" HorizontalAlignment="Left" VerticalAlignment="Center" Content="Zoom +"/>
+            <Button x:Name="ZoomOutButton" Click="ZoomOutButton_Click" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Zoom -"/>
+        </Grid>
     </Grid>
 
 </phone:PhoneApplicationPage>

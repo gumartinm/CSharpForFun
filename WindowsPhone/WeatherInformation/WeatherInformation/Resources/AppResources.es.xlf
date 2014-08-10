@@ -58,11 +58,6 @@
           <target state="translated">fahrenheit</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Settings page, select temperature units fahrenheit</note>
           </trans-unit>
-        <trans-unit id="Resx/AskForLocationConsentMessageBoxCaption" translate="yes" xml:space="preserve">
-          <source>Location</source>
-          <target state="translated">Localización</target>
-          <note from="MultilingualBuild" annotates="source" priority="2">Ask for location consent in map window</note>
-          </trans-unit>
         <trans-unit id="Resx/NoticeThereIsNotCurrentLocation" translate="yes" xml:space="preserve">
           <source>There is not stored locations.</source>
           <target state="translated">No hay localizaciones almacenadas.</target>
@@ -154,6 +149,11 @@
           <target state="translated">Guardar posición</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Map page, button saves the user's chosen location</note>
           </trans-unit>
+        <trans-unit id="Resx/MapPageGetCurrentLocationButton" translate="yes" xml:space="preserve">
+          <source>Current Location</source>
+          <target state="translated">Posición actual</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Map page, button get the user's current location</note>
+          </trans-unit>
         <trans-unit id="Resx/SelectedDatePageMorning" translate="yes" xml:space="preserve">
           <source>MORNING</source>
           <target state="translated">MAÑANA</target>
@@ -225,15 +225,15 @@
           <source>ºC</source>
           <target state="needs-review-translation" state-qualifier="mt-suggestion">º C</target>
         </trans-unit>
-        <trans-unit id="Resx/AskForLocationConsentMessageBox" translate="yes" xml:space="preserve">
-          <source>This app accesses your phone's location. Is that ok?</source>
-          <target state="translated">Esta aplicación accede a los datos de tu localización. ¿Estás de acuerdo?</target>
-          <note from="MultilingualBuild" annotates="source" priority="2">Ask for location consent in map window</note>
-          </trans-unit>
         <trans-unit id="Resx/APIVersionOpenWeatherMap" translate="no" xml:space="preserve">
           <source>2.5</source>
           <target state="needs-review-translation" state-qualifier="mt-suggestion">2.5</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Not to be translated.</note>
+          </trans-unit>
+        <trans-unit id="Resx/UnavailableAutomaticCurrentLocationMessageBox" translate="yes" xml:space="preserve">
+          <source>The location master switch might be off or location service is unavailable.</source>
+          <target state="translated">Detección automática de la ubicación parece estar desactivada en el teléfono o el servicio no está disponible.</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Message box error: while trying to get automatic current location</note>
           </trans-unit>
         <trans-unit id="Resx/URIAPIOpenWeatherMapForecast" translate="no" xml:space="preserve">
           <source>http://api.openweathermap.org/data/{0}/forecast/daily?lat={1}%%amp;lon={2}%%amp;cnt={3}%%amp;mode=json</source>

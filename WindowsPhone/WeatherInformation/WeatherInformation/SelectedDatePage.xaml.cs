@@ -56,7 +56,7 @@ namespace WeatherInformation
                 {
                     MessageBox.Show(
                          AppResources.NoticeThereIsNotCurrentLocation,
-                         AppResources.AskForLocationConsentMessageBoxCaption,
+                         AppResources.UnavailableAutomaticCurrentLocationMessageBox,
                          MessageBoxButton.OK);
                     return;
                 }

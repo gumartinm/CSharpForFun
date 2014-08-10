@@ -166,13 +166,9 @@
     <value>2.5</value>
     <comment>Not to be translated.</comment>
   </data>
-  <data name="AskForLocationConsentMessageBox" xml:space="preserve">
-    <value>This app accesses your phone's location. Is that ok?</value>
-    <comment>Ask for location consent in map window</comment>
-  </data>
-  <data name="AskForLocationConsentMessageBoxCaption" xml:space="preserve">
-    <value>Location</value>
-    <comment>Ask for location consent in map window</comment>
+  <data name="UnavailableAutomaticCurrentLocationMessageBox" xml:space="preserve">
+    <value>The location master switch might be off or location service is unavailable.</value>
+    <comment>Message box error: while trying to get automatic current location</comment>
   </data>
   <data name="NoticeThereIsNotCurrentLocation" xml:space="preserve">
     <value>There is not stored locations.</value>
@@ -299,5 +295,9 @@
   <data name="MapPageSaveLocationButton" xml:space="preserve">
     <value>Save Location</value>
     <comment>Map page, button saves the user's chosen location</comment>
+  </data>
+  <data name="MapPageGetCurrentLocationButton" xml:space="preserve">
+    <value>Current Location</value>
+    <comment>Map page, button get the user's current location</comment>
   </data>
 </root>

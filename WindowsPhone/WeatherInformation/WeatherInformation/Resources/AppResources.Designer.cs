@@ -106,24 +106,6 @@ namespace WeatherInformation.Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a This app accesses your phone&apos;s location. Is that ok?.
-        /// </summary>
-        public static string AskForLocationConsentMessageBox {
-            get {
-                return ResourceManager.GetString("AskForLocationConsentMessageBox", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Busca una cadena traducida similar a Location.
-        /// </summary>
-        public static string AskForLocationConsentMessageBoxCaption {
-            get {
-                return ResourceManager.GetString("AskForLocationConsentMessageBoxCaption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Busca una cadena traducida similar a City, country.
         /// </summary>
         public static string LocationPageSubTitle {
@@ -300,6 +282,15 @@ namespace WeatherInformation.Resources {
         public static string MainPageTitle {
             get {
                 return ResourceManager.GetString("MainPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Current Location.
+        /// </summary>
+        public static string MapPageGetCurrentLocationButton {
+            get {
+                return ResourceManager.GetString("MapPageGetCurrentLocationButton", resourceCulture);
             }
         }
         
@@ -498,6 +489,15 @@ namespace WeatherInformation.Resources {
         public static string TemperatureUnitsFahrenheitSymbol {
             get {
                 return ResourceManager.GetString("TemperatureUnitsFahrenheitSymbol", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The location master switch might be off or location service is unavailable..
+        /// </summary>
+        public static string UnavailableAutomaticCurrentLocationMessageBox {
+            get {
+                return ResourceManager.GetString("UnavailableAutomaticCurrentLocationMessageBox", resourceCulture);
             }
         }
         

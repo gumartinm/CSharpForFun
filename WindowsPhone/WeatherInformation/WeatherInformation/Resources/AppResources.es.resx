@@ -158,10 +158,6 @@
     <value>fahrenheit</value>
     <comment>Settings page, select temperature units fahrenheit</comment>
   </data>
-  <data name="AskForLocationConsentMessageBoxCaption" xml:space="preserve">
-    <value>Localización</value>
-    <comment>Ask for location consent in map window</comment>
-  </data>
   <data name="NoticeThereIsNotCurrentLocation" xml:space="preserve">
     <value>No hay localizaciones almacenadas.</value>
     <comment>Main window, notice message, no available locations</comment>
@@ -205,10 +201,6 @@
   <data name="MainPageCurrentHeader" xml:space="preserve">
     <value>actual</value>
     <comment>Current header in main page</comment>
-  </data>
-  <data name="AskForLocationConsentMessageBox" xml:space="preserve">
-    <value>Esta aplicación accede a los datos de tu localización. ¿Estás de acuerdo?</value>
-    <comment>Ask for location consent in map window</comment>
   </data>
   <data name="MainPageTitle" xml:space="preserve">
     <value>Ciudad, país</value>
@@ -256,5 +248,13 @@
   <data name="MapPageSaveLocationButton" xml:space="preserve">
     <value>Guardar posición</value>
     <comment>Map page, button saves the user's chosen location</comment>
+  </data>
+  <data name="MapPageGetCurrentLocationButton" xml:space="preserve">
+    <value>Posición actual</value>
+    <comment>Map page, button get the user's current location</comment>
+  </data>
+  <data name="UnavailableAutomaticCurrentLocationMessageBox" xml:space="preserve">
+    <value>Detección automática de la ubicación parece estar desactivada en el teléfono o el servicio no está disponible.</value>
+    <comment>Message box error: while trying to get automatic current location</comment>
   </data>
 </root>
