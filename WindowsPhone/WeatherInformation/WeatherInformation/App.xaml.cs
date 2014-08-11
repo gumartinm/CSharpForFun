@@ -112,6 +112,79 @@ namespace WeatherInformation
             }
         }
 
+        public bool IsStoredDataFresh()
+        {
+            // Check to see if the data is fresh.
+            // This example uses 30 seconds as the valid time window to make it easy to test. 
+            // Real apps will use a larger window.
+
+            // Check the time elapsed since data was last saved to isolated storage.
+            TimeSpan TimeSinceLastSave = TimeSpan.FromSeconds(0);
+            if (IsolatedStorageSettings.ApplicationSettings.Contains("DataLastSavedTime"))
+            {
+                DateTime dataLastSaveTime = (DateTime)IsolatedStorageSettings.ApplicationSettings["DataLastSavedTime"];
+                TimeSinceLastSave = DateTime.Now - dataLastSaveTime;
+            }
+
+            if (TimeSinceLastSave.TotalSeconds < 30)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public WeatherData GetIsolatedStoredData()
+        {
+            string JSONRemoteCurrentWeather = null;
+            string JSONRemoteForecastWeather = null;
+            string city = null;
+            string country = null;
+
+            using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                if (isoStore.FileExists("JSONRemoteCurrentWeatherFile.txt") &&
+                    isoStore.FileExists("JSONRemoteForecastWeatherFile.txt") &&
+                    isoStore.FileExists("CityFile.txt") &&
+                    isoStore.FileExists("CountryFile.txt"))
+                {
+                    using (IsolatedStorageFileStream file = isoStore.OpenFile("JSONRemoteCurrentWeatherFile.txt", FileMode.Open))
+                    using (StreamReader sr = new StreamReader(file))
+                    {
+                        // This method loads the data from isolated storage, if it is available.
+                        JSONRemoteCurrentWeather = sr.ReadLine();
+                    }
+
+                    using (IsolatedStorageFileStream file = isoStore.OpenFile("CityFile.txt", FileMode.Open))
+                    using (StreamReader sr = new StreamReader(file))
+                    {
+                        // This method loads the data from isolated storage, if it is available.
+                        city = sr.ReadLine();
+                    }
+
+                    using (IsolatedStorageFileStream file = isoStore.OpenFile("CountryFile.txt", FileMode.Open))
+                    using (StreamReader sr = new StreamReader(file))
+                    {
+                        // This method loads the data from isolated storage, if it is available.
+                        country = sr.ReadLine();
+                    }
+                }
+            }
+
+            if (!string.IsNullOrEmpty(JSONRemoteCurrentWeather) && !string.IsNullOrEmpty(JSONRemoteForecastWeather))
+            {
+                // TODO: I am repeating this code 2 times. What could I do to improve it?
+                var parser = new ServiceParser(new JsonParser());
+                var weatherData = parser.WeatherDataParser(JSONRemoteForecastWeather, JSONRemoteCurrentWeather);
+                weatherData.City = city ?? "";
+                weatherData.Country = country ?? "";
+
+                return weatherData;
+            }
+
+            return null;
+        }
+
         // no way of moving temporary file atomically with IsolatedStorageFile. LINUX OWNS MICROSOFT.
         private void SaveDataToIsolatedStorage(string fileName, string value)
         {
@@ -154,8 +227,6 @@ namespace WeatherInformation
             }
         }
 
-
-
         // Código para ejecutar cuando la aplicación se inicia (p.ej. a partir de Inicio)
         // Este código no se ejecutará cuando la aplicación se reactive
         private void Application_Launching(object sender, LaunchingEventArgs e)
@@ -179,19 +250,33 @@ namespace WeatherInformation
             // Check to see if the key for the application state data is in the State dictionary.
             string JSONRemoteForecastWeather = null;
             string JSONRemoteCurrentWeather = null;
+            string city = null;
+            string country = null;
             if (PhoneApplicationService.Current.State.ContainsKey("JSONRemoteForecastWeather") &&
-                PhoneApplicationService.Current.State.ContainsKey("JSONRemoteCurrentWeather"))
+                PhoneApplicationService.Current.State.ContainsKey("JSONRemoteCurrentWeather") &&
+                PhoneApplicationService.Current.State.ContainsKey("City") &&
+                PhoneApplicationService.Current.State.ContainsKey("Country"))
             {
                 // If it exists, assign the data to the application member variable.
                 JSONRemoteForecastWeather = PhoneApplicationService.Current.State["JSONRemoteForecastWeather"] as string;
 
                 // If it exists, assign the data to the application member variable.
                 JSONRemoteCurrentWeather = PhoneApplicationService.Current.State["JSONRemoteCurrentWeather"] as string;
+
+                // If it exists, assign the data to the application member variable.
+                city = PhoneApplicationService.Current.State["City"] as string;
+
+                // If it exists, assign the data to the application member variable.
+                country = PhoneApplicationService.Current.State["Country"] as string;
             }
             
             if (!string.IsNullOrEmpty(JSONRemoteCurrentWeather) && !string.IsNullOrEmpty(JSONRemoteForecastWeather))
             {
-                weatherData = WeatherDataParser(JSONRemoteForecastWeather, JSONRemoteCurrentWeather);
+                // TODO: I am repeating this code 2 times. What could I do to improve it?
+                var parser = new ServiceParser(new JsonParser());
+                weatherData = parser.WeatherDataParser(JSONRemoteForecastWeather, JSONRemoteCurrentWeather);
+                weatherData.City = city ?? "";
+                weatherData.Country = country ?? "";
             }
 
             ApplicationDataObject = weatherData;
@@ -211,6 +296,8 @@ namespace WeatherInformation
                 if (!string.IsNullOrEmpty(weatherData.JSONRemoteCurrent) &&
                     !string.IsNullOrEmpty(weatherData.JSONRemoteForecast))
                 {
+                    // TODO: too many files? Remember there is a time limit for running this method!!! :/
+
                     // Store it in the State dictionary.
                     PhoneApplicationService.Current.State["JSONRemoteForecastWeather"] = weatherData.JSONRemoteForecast;
 
@@ -222,6 +309,18 @@ namespace WeatherInformation
 
                     // Also store it in isolated storage, in case the application is never reactivated.
                     SaveDataToIsolatedStorage("JSONRemoteCurrentWeatherFile.txt", weatherData.JSONRemoteCurrent);
+
+                    // Store it in the State dictionary.
+                    PhoneApplicationService.Current.State["City"] = weatherData.City;
+
+                    // Also store it in isolated storage, in case the application is never reactivated.
+                    SaveDataToIsolatedStorage("CityFile.txt", weatherData.City);
+
+                    // Store it in the State dictionary.
+                    PhoneApplicationService.Current.State["Country"] = weatherData.Country;
+
+                    // Also store it in isolated storage, in case the application is never reactivated.
+                    SaveDataToIsolatedStorage("CountryFile.txt", weatherData.Country);
 
                     IsolatedStorageSettings.ApplicationSettings["DataLastSavedTime"] = DateTime.Now;
                 }
@@ -240,16 +339,24 @@ namespace WeatherInformation
                 if (!string.IsNullOrEmpty(weatherData.JSONRemoteForecast) &&
                     !string.IsNullOrEmpty(weatherData.JSONRemoteCurrent))
                 {
+                    // TODO: too many files? Remember there is a time limit for running this method!!! :/
+
                     // Also store it in isolated storage, in case the application is never reactivated.
                     SaveDataToIsolatedStorage("JSONRemoteForecastWeatherFile.txt", weatherData.JSONRemoteForecast);
 
                     // Also store it in isolated storage, in case the application is never reactivated.
                     SaveDataToIsolatedStorage("JSONRemoteCurrentWeatherFile.txt", weatherData.JSONRemoteCurrent);
 
+                    // Also store it in isolated storage, in case the application is never reactivated.
+                    SaveDataToIsolatedStorage("CityFile.txt", weatherData.City);
+
+                    // Also store it in isolated storage, in case the application is never reactivated.
+                    SaveDataToIsolatedStorage("CountryFile.txt", weatherData.Country);
+
                     IsolatedStorageSettings.ApplicationSettings["DataLastSavedTime"] = DateTime.Now;
                 }
             }
-        }     
+        }
 
         // Código para ejecutar si hay un error de navegación
         private void RootFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)

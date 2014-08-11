@@ -3,12 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO.IsolatedStorage;
-using System.Threading.Tasks;
-using System.Windows;
 using WeatherInformation.Model;
-using WeatherInformation.Model.ForecastWeatherParser;
-using WeatherInformation.Model.JsonDataParser;
-using WeatherInformation.Model.Services;
 using WeatherInformation.Resources;
 
 namespace WeatherInformation.ViewModels
@@ -27,13 +22,11 @@ namespace WeatherInformation.ViewModels
 
         // Settings
         private readonly IsolatedStorageSettings _settings;
-        private readonly ServiceParser _serviceParser;
 
         public MainViewModel()
         {
             this.ForecastItems = new ObservableCollection<ItemViewModel>();
             this.CurrentItems = new ObservableCollection<ItemViewModel>();
-            this._serviceParser = new ServiceParser(new JsonParser());
 
             // Get the _settings for this application.
             _settings = IsolatedStorageSettings.ApplicationSettings;

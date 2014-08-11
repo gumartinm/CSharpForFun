@@ -44,7 +44,6 @@ namespace WeatherInformation
             // Connect to the database and instantiate data context.
             _locationDB = new LocationDataContext(LocationDataContext.DBConnectionString);
 
-            _locationItem = _locationDB.Locations.Where(location => location.IsSelected).FirstOrDefault();
             // Código de ejemplo para traducir ApplicationBar
             //BuildLocalizedApplicationBar();
         }
@@ -70,6 +69,8 @@ namespace WeatherInformation
             // and it has remained in memory, this value will continue to be false.
             _isNewPageInstance = false;
 
+            _locationItem = _locationDB.Locations.Where(location => location.IsSelected).FirstOrDefault();
+
             UpdateApplicationDataUI();
         }
 
@@ -79,6 +80,7 @@ namespace WeatherInformation
             base.OnNavigatedFrom(e);
 
             // Save changes to the database.
+            // TODO: How does DataContext work? How does it know what data was modified? Is it wasting memory? :(
             _locationDB.SubmitChanges();
 
             // No calling _locationDB.Dispose? :/
@@ -96,7 +98,10 @@ namespace WeatherInformation
             // set the page's data object from the application member variable.
             // TODO: I am setting and getting ApplicationDataObject from different threads!!!! What if I do not see its last value? Do I need synchronization? :/
             WeatherData weatherData = (Application.Current as WeatherInformation.App).ApplicationDataObject;
-            if (weatherData != null && !_locationItem.IsNewLocation && IsStoredDataFresh())
+            if (weatherData != null &&
+                !_locationItem.IsNewLocation &&
+                // TODO: NO ESTOY USANDO GetIsolatedStoredData!!!!!! :(
+                (Application.Current as WeatherInformation.App).IsStoredDataFresh())
             {
                 UpdateUI();
             }
@@ -132,11 +137,7 @@ namespace WeatherInformation
 
                 _mainViewModel.LoadData(weatherData);
 
-                var locationItem = _locationDB.Locations.Where(location => location.IsSelected).FirstOrDefault();
-                if (locationItem != null)
-                {
-                    locationItem.IsNewLocation = false;
-                }           
+                _locationItem.IsNewLocation = false;        
             }
         }
 
@@ -151,28 +152,11 @@ namespace WeatherInformation
             NavigationService.Navigate(new Uri(uri, UriKind.Relative));
         }
 
-        public void GetDataAsync()
+        async private void GetDataAsync()
         {
-            // Call the GetData method on a new thread.
-            // TODO: Are there too many threads? HttpClient is going to create more... (threadpools and stuff like that...)
-            Thread t = new Thread(new ThreadStart(GetData));
-            t.Start();
-        }
-
-        async private void GetData()
-        {
-            // Check to see if data exists in storage and see if the data is fresh.
-            WeatherData weatherData = GetIsolatedStoredData();
-
-            if ((weatherData != null) && IsStoredDataFresh() && !_locationItem.IsNewLocation)
-            {
-                (Application.Current as WeatherInformation.App).ApplicationDataObject = weatherData;
-            }
-            else
-            {
-                // Otherwise, it gets the data from the web.
-                (Application.Current as WeatherInformation.App).ApplicationDataObject = await LoadDataAsync();
-            }
+            // Gets the data from the web.
+            // TODO: multiple threads writing/reading same data :(
+            (Application.Current as WeatherInformation.App).ApplicationDataObject = await LoadDataAsync();
         }
 
         /// <summary>
@@ -196,93 +180,8 @@ namespace WeatherInformation
                 AppResources.APIVersionOpenWeatherMap, latitude, longitude, resultsNumber);
             string JSONRemoteCurrentWeather = await httpClient.GetWeatherDataAsync(formattedCurrentURL);
 
-            return WeatherDataParser(JSONRemoteForecastWeather, JSONRemoteCurrentWeather);
-        }
-
-        // ESTE METODO ERA PARA CARGAR LOS DATOS JSON NO LOS DE LA BASE DE DATOS. HAY QUE REPENSAR ESTO :(
-        private bool IsStoredDataFresh()
-        {
-            // Check to see if the data is fresh.
-            // This example uses 30 seconds as the valid time window to make it easy to test. 
-            // Real apps will use a larger window.
-
-            // Check the time elapsed since data was last saved to storage.
-            DateTime dataLastSaveTime = _locationItem.StoredTime;
-            TimeSpan timeSinceLastSave = DateTime.Now - dataLastSaveTime;
-
-            if (timeSinceLastSave.TotalSeconds < 30)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        private WeatherData GetIsolatedStoredData()
-        {
-            string JSONRemoteCurrentWeather = null;
-            string JSONRemoteForecastWeather = null;
-
-            using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                if (isoStore.FileExists("JSONRemoteCurrentWeatherFile.txt") &&
-                    isoStore.FileExists("JSONRemoteForecastWeatherFile.txt"))
-                {
-                    using (IsolatedStorageFileStream file = isoStore.OpenFile("JSONRemoteCurrentWeatherFile.txt", FileMode.Open))
-                    using (StreamReader sr = new StreamReader(file))
-                    {
-                        // This method loads the data from isolated storage, if it is available.
-                        JSONRemoteCurrentWeather = sr.ReadLine();
-                    }
-
-                    using (IsolatedStorageFileStream file = isoStore.OpenFile("JSONRemoteCurrentWeatherFile.txt", FileMode.Open))
-                    using (StreamReader sr = new StreamReader(file))
-                    {
-                        // This method loads the data from isolated storage, if it is available.
-                        JSONRemoteForecastWeather = sr.ReadLine();
-                    }
-                }
-            }
-
-            if (!string.IsNullOrEmpty(JSONRemoteCurrentWeather) && !string.IsNullOrEmpty(JSONRemoteForecastWeather))
-            {
-                return WeatherDataParser(JSONRemoteForecastWeather, JSONRemoteCurrentWeather);
-            }
-
-            return null;
-        }
-
-        private ForecastWeather ForecastWeatherParser(string remoteForecastWeatherData)
-        {
-            ServiceParser parser = new ServiceParser(new JsonParser());
-            return parser.GetForecastWeather(remoteForecastWeatherData);
-        }
-
-        private CurrentWeather CurrentWeatherParser(string remoteCurrentWeatherData)
-        {
-            ServiceParser parser = new ServiceParser(new JsonParser());
-            return parser.GetCurrentWeather(remoteCurrentWeatherData);
-        }
-
-        private WeatherData WeatherDataParser(string JSONRemoteForecastWeather, string JSONRemoteCurrentWeather)
-        {
-            if (string.IsNullOrEmpty(JSONRemoteForecastWeather))
-            {
-                throw new ArgumentException("Missing argument", "JSONRemoteForecastWeather");
-            }
-            if (string.IsNullOrEmpty(JSONRemoteCurrentWeather))
-            {
-                throw new ArgumentException("Missing argument", "JSONRemoteCurrentWeather");
-            }
-
-            return new WeatherData
-            {
-                JSONRemoteCurrent = JSONRemoteCurrentWeather,
-                JSONRemoteForecast = JSONRemoteForecastWeather,
-                RemoteCurrent = CurrentWeatherParser(JSONRemoteCurrentWeather),
-                RemoteForecast = ForecastWeatherParser(JSONRemoteForecastWeather),
-                WasThereRemoteError = false
-            };
+            var parser = new ServiceParser(new JsonParser());
+            return parser.WeatherDataParser(JSONRemoteForecastWeather, JSONRemoteCurrentWeather);
         }
 
         private void Location_Click(object sender, EventArgs e)

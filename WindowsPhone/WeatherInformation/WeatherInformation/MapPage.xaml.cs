@@ -26,6 +26,9 @@ namespace WeatherInformation
     {
         // Data context for the local database
         private LocationDataContext _locationDB;
+        // TODO anything better than these two instance fields? :(
+        private string _city;
+        private string _country;
 
         public MapPage()
         {
@@ -143,6 +146,8 @@ namespace WeatherInformation
             // TODO: What if there is no city or country. Is there null value or empty string?
             string cityCountry = String.Format(CultureInfo.InvariantCulture, "{0}, {1}", city, country);
             this.LocationTextCityCountry.Text = cityCountry;
+            _city = city;
+            _country = country;
             // Add the MapLayer to the Map.
             this.mapWeatherInformation.Layers.Add(myLocationLayer);
         }
@@ -174,13 +179,14 @@ namespace WeatherInformation
                 locationItem.Latitude = geocoordinate.Latitude;
                 locationItem.Longitude = geocoordinate.Longitude;
                 locationItem.Altitude = geocoordinate.Altitude;
+                locationItem.City = _city ?? "";
+                locationItem.Country = _country ?? "";
                 locationItem.HorizontalAccuracy = geocoordinate.HorizontalAccuracy;
                 locationItem.VerticalAccuracy = geocoordinate.VerticalAccuracy;
                 locationItem.Speed = geocoordinate.Speed;
                 locationItem.Course = geocoordinate.Course;
                 locationItem.IsNewLocation = true;
                 locationItem.IsSelected = true;
-                locationItem.StoredTime = DateTime.Now;
             }
             else
             {
@@ -189,13 +195,14 @@ namespace WeatherInformation
                     Latitude = geocoordinate.Latitude,
                     Longitude = geocoordinate.Longitude,
                     Altitude = geocoordinate.Altitude,
+                    City = _city ?? "",
+                    Country = _country ?? "",
                     HorizontalAccuracy = geocoordinate.HorizontalAccuracy,
                     VerticalAccuracy = geocoordinate.VerticalAccuracy,
                     Speed = geocoordinate.Speed,
                     Course = geocoordinate.Course,
                     IsNewLocation = true,
                     IsSelected = true,
-                    StoredTime = DateTime.Now
                 };
 
                 // Add a location item to the local database.

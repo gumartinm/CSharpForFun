@@ -244,25 +244,6 @@ namespace WeatherInformation.Model
             }
         }
 
-        private DateTime _storedTime;
-        [Column(CanBeNull = false)]
-        public DateTime StoredTime
-        {
-            get
-            {
-                return _storedTime;
-            }
-            set
-            {
-                if (_storedTime != value)
-                {
-                    NotifyPropertyChanging("StoredTime");
-                    _storedTime = value;
-                    NotifyPropertyChanged("StoredTime");
-                }
-            }
-        }
-
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
