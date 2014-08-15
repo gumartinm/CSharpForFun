@@ -109,13 +109,12 @@ namespace GumartinM.JsonRPC4NET
         {
             // see: http://stackoverflow.com/questions/1329739/nested-using-statements-in-c-sharp
             // see: http://stackoverflow.com/questions/5895879/when-do-we-need-to-call-dispose-in-dot-net-c
-            //TODO: Am I really sure I have to call the Dispose method of HttpContent content? In this case, shouldn't it be stupid?
-            // For HttpResponseMessage response I am sure I have to do it but I am not for HttpContent content.
             using (HttpClient client = new HttpClient { Timeout = TimeSpan.FromSeconds(5) })
             using (HttpContent contentPOST = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json-rpc"))
-            // TODO: in WindowsPhone 8 client.PostAsync does not seem to spawn new thread :/ WTF
-            // Using WindowsPhone 8 the result is returned in the same thread!!!!! WTF
-            using (HttpResponseMessage response = await client.PostAsync(uri, contentPOST, cancellation))   
+            // TODO: HttpCompletionOption, without it, by default, I am buffering the received data.
+            // ConfigureAwait(false): This API will always return data in a different context (different thread) to the calling one.
+            // In this way upper layers may decide what context to use for returning data (the calling context or a diferent one)
+            using (HttpResponseMessage response = await client.PostAsync(uri, contentPOST, cancellation).ConfigureAwait(false))
             {
                 //TODO: What if response is null? :(
                 response.EnsureSuccessStatusCode();
