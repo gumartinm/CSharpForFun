@@ -11,12 +11,14 @@ namespace RemoteAgents.WindowsPhone.ViewModel
 
         async public Task<string> GetCurrentDateAsync()
         {
-            return await _remoteClient.PostRemoteServiceAsync<string>(uri, "getCurrentDate");
+            // Returning data in a diferent context. Upper layer decides.
+            return await _remoteClient.PostRemoteServiceAsync<string>(uri, "getCurrentDate").ConfigureAwait(false);
         }
 
         async public Task SetWriteTextAsync(string text, int number)
         {
-            await _remoteClient.PostRemoteServiceAsync(uriSetWriteText, "setWriteText", text, number);
+            // Returning data in a diferent context. Upper layer decides.
+            await _remoteClient.PostRemoteServiceAsync(uriSetWriteText, "setWriteText", text, number).ConfigureAwait(false);
         }
 
     }

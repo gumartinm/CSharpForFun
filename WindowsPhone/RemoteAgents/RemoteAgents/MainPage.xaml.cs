@@ -38,10 +38,12 @@ namespace RemoteAgents
         {
             try
             {
+                // Returning data in the same context (the UI thread) because we want to update the UI.
                 this.CurrentDateTextBox.Text = await _view.GetCurrentDateAsync();
             }
             catch (Exception exception)
             {
+                // TODO: Should I catch exceptions in the UI thread? I guess it is right but not sure...
                 _logger.ErrorException("ButtonGetDateClicked error: ", exception);
             }
         }
@@ -56,6 +58,7 @@ namespace RemoteAgents
             }
             catch (Exception exception)
             {
+                // TODO: Should I catch exceptions in the UI thread? I guess it is right but not sure...
                 _logger.ErrorException("SendDataButtonClicked error: ", exception);
             }
         }

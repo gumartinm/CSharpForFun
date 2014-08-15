@@ -9,12 +9,14 @@ namespace RemoteAgents.WindowsPhone.View
 
         async public Task<string> GetCurrentDateAsync()
         {
-            return await _vm.GetCurrentDateAsync();
+            // Returning data in a diferent context. Upper layer decides.
+            return await _vm.GetCurrentDateAsync().ConfigureAwait(false);
         }
 
         async public Task SetWriteTextAsync(string text, int number)
         {
-            await _vm.SetWriteTextAsync(text, number);
+            // Returning data in a diferent context. Upper layer decides.
+            await _vm.SetWriteTextAsync(text, number).ConfigureAwait(false);
         }
     }
 }
