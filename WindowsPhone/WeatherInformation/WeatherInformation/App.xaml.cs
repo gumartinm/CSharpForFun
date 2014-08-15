@@ -31,9 +31,6 @@ namespace WeatherInformation
         // Declare a private variable to store application state.
         private WeatherData _remoteWeatherData;
 
-        // Declare an event for when the application data changes.
-        public event EventHandler ApplicationDataObjectChanged;
-
         // Declare a public property to access the application data variable.
         public WeatherData ApplicationDataObject
         {
@@ -43,18 +40,7 @@ namespace WeatherInformation
                 if (value != _remoteWeatherData)
                 {
                     _remoteWeatherData = value;
-                    OnApplicationDataObjectChanged(EventArgs.Empty);
                 }
-            }
-        }
-
-        // Create a method to raise the ApplicationDataObjectChanged event.
-        protected void OnApplicationDataObjectChanged(EventArgs e)
-        {
-            EventHandler handler = ApplicationDataObjectChanged;
-            if (handler != null)
-            {
-                handler(this, e);
             }
         }
 

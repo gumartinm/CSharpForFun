@@ -24,8 +24,6 @@ namespace WeatherInformation
 {
     public partial class MapPage : PhoneApplicationPage
     {
-        // Data context for the local database
-        private LocationDataContext _locationDB;
         // TODO anything better than these two instance fields? :(
         private string _city;
         private string _country;
@@ -33,34 +31,25 @@ namespace WeatherInformation
         public MapPage()
         {
             InitializeComponent();
-
-            // Connect to the database and instantiate data context.
-            _locationDB = new LocationDataContext(LocationDataContext.DBConnectionString);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+
+            Location locationItem = null;
+            using (var db = new LocationDataContext(LocationDataContext.DBConnectionString))
+            {
+                // Define the query to gather all of the to-do items.
+                // var toDoItemsInDB = from Location location in _locationDB.Locations where location.IsSelected select location;
+                locationItem = db.Locations.Where(location => location.IsSelected).FirstOrDefault();
+            }
             
-            // Define the query to gather all of the to-do items.
-            // var toDoItemsInDB = from Location location in _locationDB.Locations where location.IsSelected select location;
-            var locationItem = _locationDB.Locations.Where(location => location.IsSelected).FirstOrDefault();
             if (locationItem != null)
             {
                 GeoCoordinate geoCoordinate = ConvertLocation(locationItem);
 
                 this.UpdateMap(geoCoordinate, locationItem.City, locationItem.Country);
             }
-        }
-
-        protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e)
-        {
-            // Call the base method.
-            base.OnNavigatedFrom(e);
-
-            // Save changes to the database.
-            _locationDB.SubmitChanges();
-
-            // No calling _locationDB.Dispose? :/
         }
 
         private async Task GetCurrentLocationAndUpdateMap()
@@ -173,40 +162,49 @@ namespace WeatherInformation
         // http://stackoverflow.com/questions/4521435/what-specific-values-can-a-c-sharp-double-represent-that-a-sql-server-float-can
         private void StoreLocation(GeoCoordinate geocoordinate)
         {
-            var locationItem = _locationDB.Locations.Where(location => location.IsSelected).FirstOrDefault();
-            if (locationItem != null)
+            Location locationItem = null;
+            using (var db = new LocationDataContext(LocationDataContext.DBConnectionString))
             {
-                locationItem.Latitude = geocoordinate.Latitude;
-                locationItem.Longitude = geocoordinate.Longitude;
-                locationItem.Altitude = geocoordinate.Altitude;
-                locationItem.City = _city ?? "";
-                locationItem.Country = _country ?? "";
-                locationItem.HorizontalAccuracy = geocoordinate.HorizontalAccuracy;
-                locationItem.VerticalAccuracy = geocoordinate.VerticalAccuracy;
-                locationItem.Speed = geocoordinate.Speed;
-                locationItem.Course = geocoordinate.Course;
-                locationItem.IsNewLocation = true;
-                locationItem.IsSelected = true;
-            }
-            else
-            {
-                locationItem = new Location()
-                {
-                    Latitude = geocoordinate.Latitude,
-                    Longitude = geocoordinate.Longitude,
-                    Altitude = geocoordinate.Altitude,
-                    City = _city ?? "",
-                    Country = _country ?? "",
-                    HorizontalAccuracy = geocoordinate.HorizontalAccuracy,
-                    VerticalAccuracy = geocoordinate.VerticalAccuracy,
-                    Speed = geocoordinate.Speed,
-                    Course = geocoordinate.Course,
-                    IsNewLocation = true,
-                    IsSelected = true,
-                };
+                // Define the query to gather all of the to-do items.
+                // var toDoItemsInDB = from Location location in _locationDB.Locations where location.IsSelected select location;
+                locationItem = db.Locations.Where(location => location.IsSelected).FirstOrDefault();
 
-                // Add a location item to the local database.
-                _locationDB.Locations.InsertOnSubmit(locationItem);
+                if (locationItem != null)
+                {
+                    locationItem.Latitude = geocoordinate.Latitude;
+                    locationItem.Longitude = geocoordinate.Longitude;
+                    locationItem.Altitude = geocoordinate.Altitude;
+                    locationItem.City = _city ?? "";
+                    locationItem.Country = _country ?? "";
+                    locationItem.HorizontalAccuracy = geocoordinate.HorizontalAccuracy;
+                    locationItem.VerticalAccuracy = geocoordinate.VerticalAccuracy;
+                    locationItem.Speed = geocoordinate.Speed;
+                    locationItem.Course = geocoordinate.Course;
+                    locationItem.IsNewLocation = true;
+                    locationItem.IsSelected = true;
+                }
+                else
+                {
+                    locationItem = new Location()
+                    {
+                        Latitude = geocoordinate.Latitude,
+                        Longitude = geocoordinate.Longitude,
+                        Altitude = geocoordinate.Altitude,
+                        City = _city ?? "",
+                        Country = _country ?? "",
+                        HorizontalAccuracy = geocoordinate.HorizontalAccuracy,
+                        VerticalAccuracy = geocoordinate.VerticalAccuracy,
+                        Speed = geocoordinate.Speed,
+                        Course = geocoordinate.Course,
+                        IsNewLocation = true,
+                        IsSelected = true,
+                    };
+
+                    // Add a location item to the local database.
+                    db.Locations.InsertOnSubmit(locationItem);
+                }
+
+                db.SubmitChanges();
             }
         }
 

@@ -22,9 +22,6 @@ namespace WeatherInformation
     {
         private MainViewModel _mainViewModel;
         private bool _isNewPageInstance = false;
-        // Data context for the local database
-        private LocationDataContext _locationDB;
-        private Location _locationItem;
 
         // Constructor
         public MainPage()
@@ -32,17 +29,6 @@ namespace WeatherInformation
             InitializeComponent();
 
             _isNewPageInstance = true;
-
-            // Set the event handler for when the application data object changes.
-            // TODO: doing this, when is the GC going to release this object? I do not think it is going to be able... This is weird...
-            // Shouldn't I release this even handler when the MainPage is not used anymore. In my case is not a big problem because
-            // the MainPage should be always active (it is the "mainpage") but if this was not the mainpage... Would the GC be able
-            // to release this object when the page is not active... I DO NOT THINK SO...
-            (Application.Current as WeatherInformation.App).ApplicationDataObjectChanged +=
-                          new EventHandler(MainPage_ApplicationDataObjectChanged);
-
-            // Connect to the database and instantiate data context.
-            _locationDB = new LocationDataContext(LocationDataContext.DBConnectionString);
 
             // Código de ejemplo para traducir ApplicationBar
             //BuildLocalizedApplicationBar();
@@ -69,26 +55,18 @@ namespace WeatherInformation
             // and it has remained in memory, this value will continue to be false.
             _isNewPageInstance = false;
 
-            _locationItem = _locationDB.Locations.Where(location => location.IsSelected).FirstOrDefault();
-
             UpdateApplicationDataUI();
         }
 
-        protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e)
+        async private void UpdateApplicationDataUI()
         {
-            // Call the base method.
-            base.OnNavigatedFrom(e);
+            Location locationItem = null;
+            using (var db = new LocationDataContext(LocationDataContext.DBConnectionString))
+            {
+                locationItem = db.Locations.Where(location => location.IsSelected).FirstOrDefault();
+            }
 
-            // Save changes to the database.
-            // TODO: How does DataContext work? How does it know what data was modified? Is it wasting memory? :(
-            _locationDB.SubmitChanges();
-
-            // No calling _locationDB.Dispose? :/
-        }
-
-        private void UpdateApplicationDataUI()
-        {
-            if (_locationItem == null)
+            if (locationItem == null)
             {
                 // Nothing to do.
                 return;
@@ -99,7 +77,7 @@ namespace WeatherInformation
             // TODO: I am setting and getting ApplicationDataObject from different threads!!!! What if I do not see its last value? Do I need synchronization? :/
             WeatherData weatherData = (Application.Current as WeatherInformation.App).ApplicationDataObject;
             if (weatherData != null &&
-                !_locationItem.IsNewLocation &&
+                !locationItem.IsNewLocation &&
                 // TODO: NO ESTOY USANDO GetIsolatedStoredData!!!!!! :(
                 (Application.Current as WeatherInformation.App).IsStoredDataFresh())
             {
@@ -108,15 +86,10 @@ namespace WeatherInformation
             else
             {
                 // Otherwise, call the method that loads data.
-                GetDataAsync();
+                await GetDataAsync(locationItem);
+                // Call UpdateApplicationData on the UI thread.
+                Dispatcher.BeginInvoke(() => UpdateUI());
             }
-        }
-
-        // The event handler called when the ApplicationDataObject changes.
-        void MainPage_ApplicationDataObjectChanged(object sender, EventArgs e)
-        {
-            // Call UpdateApplicationData on the UI thread.
-            Dispatcher.BeginInvoke(() => UpdateUI());
         }
 
         void UpdateUI()
@@ -137,7 +110,13 @@ namespace WeatherInformation
 
                 _mainViewModel.LoadData(weatherData);
 
-                _locationItem.IsNewLocation = false;        
+                Location locationItem = null;
+                using (var db = new LocationDataContext(LocationDataContext.DBConnectionString))
+                {
+                    locationItem = db.Locations.Where(location => location.IsSelected).FirstOrDefault();
+                    locationItem.IsNewLocation = false;
+                    db.SubmitChanges();
+                }
             }
         }
 
@@ -152,20 +131,20 @@ namespace WeatherInformation
             NavigationService.Navigate(new Uri(uri, UriKind.Relative));
         }
 
-        async private void GetDataAsync()
+        async private Task GetDataAsync(Location locationItem)
         {
             // Gets the data from the web.
             // TODO: multiple threads writing/reading same data :(
-            (Application.Current as WeatherInformation.App).ApplicationDataObject = await LoadDataAsync();
+            (Application.Current as WeatherInformation.App).ApplicationDataObject = await LoadDataAsync(locationItem);
         }
 
         /// <summary>
         /// Retrieve remote weather data.
         /// </summary>
-        async public Task<WeatherData> LoadDataAsync()
+        async public Task<WeatherData> LoadDataAsync(Location locationItem)
         {
-            double latitude = _locationItem.Latitude;
-            double longitude = _locationItem.Longitude;
+            double latitude = locationItem.Latitude;
+            double longitude = locationItem.Longitude;
             int resultsNumber = Convert.ToInt32(AppResources.APIOpenWeatherMapResultsNumber);
 
             CustomHTTPClient httpClient = new CustomHTTPClient();
@@ -181,7 +160,11 @@ namespace WeatherInformation
             string JSONRemoteCurrentWeather = await httpClient.GetWeatherDataAsync(formattedCurrentURL);
 
             var parser = new ServiceParser(new JsonParser());
-            return parser.WeatherDataParser(JSONRemoteForecastWeather, JSONRemoteCurrentWeather);
+            var weatherData = parser.WeatherDataParser(JSONRemoteForecastWeather, JSONRemoteCurrentWeather);
+            weatherData.City = locationItem.City;
+            weatherData.Country = locationItem.Country;
+
+            return weatherData;
         }
 
         private void Location_Click(object sender, EventArgs e)
