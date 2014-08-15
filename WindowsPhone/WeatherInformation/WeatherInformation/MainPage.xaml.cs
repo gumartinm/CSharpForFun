@@ -76,20 +76,25 @@ namespace WeatherInformation
             // set the page's data object from the application member variable.
             // TODO: I am setting and getting ApplicationDataObject from different threads!!!! What if I do not see its last value? Do I need synchronization? :/
             WeatherData weatherData = (Application.Current as WeatherInformation.App).ApplicationDataObject;
-            if (weatherData != null &&
-                !locationItem.IsNewLocation &&
-                // TODO: NO ESTOY USANDO GetIsolatedStoredData!!!!!! :(
-                (Application.Current as WeatherInformation.App).IsStoredDataFresh())
+            if (!IsDataFresh(locationItem.LastRemoteDataUpdate) || weatherData == null)
             {
-                UpdateUI();
+                // Load remote data (aynchronous way by means of async/await)
+
+                // Gets the data from the web.
+                // TODO: multiple threads writing/reading same data :(
+                (Application.Current as WeatherInformation.App).ApplicationDataObject =
+                    await GetRemoteDataAsync(locationItem).ConfigureAwait(false);
+
+                using (var db = new LocationDataContext(LocationDataContext.DBConnectionString))
+                {
+                    locationItem = db.Locations.Where(location => location.IsSelected).FirstOrDefault();
+                    locationItem.LastRemoteDataUpdate = DateTime.UtcNow;
+                    db.SubmitChanges();
+                }
             }
-            else
-            {
-                // Otherwise, call the method that loads data.
-                await GetDataAsync(locationItem);
-                // Call UpdateApplicationData on the UI thread.
-                Dispatcher.BeginInvoke(() => UpdateUI());
-            }
+
+            // Call UpdateUI on the UI thread.
+            Dispatcher.BeginInvoke(() => UpdateUI());
         }
 
         void UpdateUI()
@@ -109,14 +114,6 @@ namespace WeatherInformation
                 }
 
                 _mainViewModel.LoadData(weatherData);
-
-                Location locationItem = null;
-                using (var db = new LocationDataContext(LocationDataContext.DBConnectionString))
-                {
-                    locationItem = db.Locations.Where(location => location.IsSelected).FirstOrDefault();
-                    locationItem.IsNewLocation = false;
-                    db.SubmitChanges();
-                }
             }
         }
 
@@ -131,17 +128,10 @@ namespace WeatherInformation
             NavigationService.Navigate(new Uri(uri, UriKind.Relative));
         }
 
-        async private Task GetDataAsync(Location locationItem)
-        {
-            // Gets the data from the web.
-            // TODO: multiple threads writing/reading same data :(
-            (Application.Current as WeatherInformation.App).ApplicationDataObject = await LoadDataAsync(locationItem);
-        }
-
         /// <summary>
         /// Retrieve remote weather data.
         /// </summary>
-        async public Task<WeatherData> LoadDataAsync(Location locationItem)
+        async public Task<WeatherData> GetRemoteDataAsync(Location locationItem)
         {
             double latitude = locationItem.Latitude;
             double longitude = locationItem.Longitude;
@@ -152,12 +142,12 @@ namespace WeatherInformation
             string formattedForecastURL = String.Format(
                 CultureInfo.InvariantCulture, AppResources.URIAPIOpenWeatherMapForecast,
                 AppResources.APIVersionOpenWeatherMap, latitude, longitude, resultsNumber);
-            string JSONRemoteForecastWeather = await httpClient.GetWeatherDataAsync(formattedForecastURL);
+            string JSONRemoteForecastWeather = await httpClient.GetWeatherDataAsync(formattedForecastURL).ConfigureAwait(false);
 
             string formattedCurrentURL = String.Format(
                 CultureInfo.InvariantCulture, AppResources.URIAPIOpenWeatherMapCurrent,
                 AppResources.APIVersionOpenWeatherMap, latitude, longitude, resultsNumber);
-            string JSONRemoteCurrentWeather = await httpClient.GetWeatherDataAsync(formattedCurrentURL);
+            string JSONRemoteCurrentWeather = await httpClient.GetWeatherDataAsync(formattedCurrentURL).ConfigureAwait(false);
 
             var parser = new ServiceParser(new JsonParser());
             var weatherData = parser.WeatherDataParser(JSONRemoteForecastWeather, JSONRemoteCurrentWeather);
@@ -165,6 +155,24 @@ namespace WeatherInformation
             weatherData.Country = locationItem.Country;
 
             return weatherData;
+        }
+
+        private bool IsDataFresh(DateTime? lastUpdate)
+        {
+            if (lastUpdate == null)
+            {
+                return false;
+            }
+
+            // Check the time elapsed since data was last saved to isolated storage.
+            TimeSpan TimeSinceLastSave = DateTime.UtcNow - lastUpdate.Value;
+
+            if (TimeSinceLastSave.TotalSeconds < 30)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private void Location_Click(object sender, EventArgs e)

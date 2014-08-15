@@ -225,21 +225,21 @@ namespace WeatherInformation.Model
             }
         }
 
-        private bool _isNewLocation;
-        [Column(CanBeNull = false)]
-        public bool IsNewLocation
+        private DateTime? _lastRemoteDataUpdate;
+        [Column(CanBeNull = true)]
+        public DateTime? LastRemoteDataUpdate
         {
             get
             {
-                return _isNewLocation;
+                return _lastRemoteDataUpdate;
             }
             set
             {
-                if (_isNewLocation != value)
+                if (_lastRemoteDataUpdate != value)
                 {
-                    NotifyPropertyChanging("IsNewLocation");
-                    _isNewLocation = value;
-                    NotifyPropertyChanged("IsNewLocation");
+                    NotifyPropertyChanging("LastRemoteDataUpdate");
+                    _lastRemoteDataUpdate = value;
+                    NotifyPropertyChanged("LastRemoteDataUpdate");
                 }
             }
         }

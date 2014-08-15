@@ -48,7 +48,7 @@ namespace WeatherInformation.Model.Services
                 // TODO: HttpCompletionOption, without it, by default, I am buffering the received data.
                 //       in this case it is not a problem but when receiving loads of bytes I do not
                 //       think it is a great idea to buffer all of them... :(
-                using (HttpResponseMessage response = await client.GetAsync(uriWindowsCacheSucks))
+                using (HttpResponseMessage response = await client.GetAsync(uriWindowsCacheSucks).ConfigureAwait(false))
                 {
                     response.EnsureSuccessStatusCode();
 

@@ -180,8 +180,8 @@ namespace WeatherInformation
                     locationItem.VerticalAccuracy = geocoordinate.VerticalAccuracy;
                     locationItem.Speed = geocoordinate.Speed;
                     locationItem.Course = geocoordinate.Course;
-                    locationItem.IsNewLocation = true;
                     locationItem.IsSelected = true;
+                    locationItem.LastRemoteDataUpdate = null;
                 }
                 else
                 {
@@ -196,8 +196,8 @@ namespace WeatherInformation
                         VerticalAccuracy = geocoordinate.VerticalAccuracy,
                         Speed = geocoordinate.Speed,
                         Course = geocoordinate.Course,
-                        IsNewLocation = true,
                         IsSelected = true,
+                        LastRemoteDataUpdate = null,
                     };
 
                     // Add a location item to the local database.
