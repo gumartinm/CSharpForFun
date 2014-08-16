@@ -118,6 +118,7 @@
     <Compile Include="Model\ForecastWeatherParser\List.cs" />
     <Compile Include="Model\ForecastWeatherParser\Temp.cs" />
     <Compile Include="Model\ForecastWeatherParser\Weather.cs" />
+    <Compile Include="Model\Images\RemoteImagesTranslation.cs" />
     <Compile Include="Model\JsonDataParser\JsonParser.cs" />
     <Compile Include="Model\Location.cs" />
     <Compile Include="Model\LocationDataContext.cs" />
@@ -199,6 +200,17 @@
     </Content>
     <Content Include="Images\add.png" />
     <Content Include="Images\feature.settings.png" />
+    <Content Include="Images\weather_clear.png" />
+    <Content Include="Images\weather_clear_night.png" />
+    <Content Include="Images\weather_few_clouds.png" />
+    <Content Include="Images\weather_few_clouds_night.png" />
+    <Content Include="Images\weather_fog.png" />
+    <Content Include="Images\weather_overcast.png" />
+    <Content Include="Images\weather_severe_alert.png" />
+    <Content Include="Images\weather_showers.png" />
+    <Content Include="Images\weather_showers_scattered.png" />
+    <Content Include="Images\weather_snow.png" />
+    <Content Include="Images\weather_storm.png" />
     <Content Include="README_FIRST.txt" />
     <Content Include="Toolkit.Content\ApplicationBar.Add.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />

@@ -170,12 +170,12 @@
           <note from="MultilingualBuild" annotates="source" priority="2">Not to be translated.</note>
         </trans-unit>
         <trans-unit id="Resx/MainPageCurrentSunSet" translate="yes" xml:space="preserve">
-          <source>SUN SET</source>
-          <target state="new">SUN SET</target>
+          <source>SUN SET (UTC)</source>
+          <target state="new">SUN SET (UTC)</target>
         </trans-unit>
         <trans-unit id="Resx/MainPageCurrentSunRise" translate="yes" xml:space="preserve">
-          <source>SUN RISE</source>
-          <target state="new">SUN RISE</target>
+          <source>SUN RISE (UTC)</source>
+          <target state="new">SUN RISE (UTC)</target>
         </trans-unit>
         <trans-unit id="Resx/MainPageCurrentSnow" translate="yes" xml:space="preserve">
           <source>SNOW</source>

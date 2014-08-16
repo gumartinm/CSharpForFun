@@ -232,7 +232,7 @@ namespace WeatherInformation.Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a SUN RISE.
+        ///   Busca una cadena traducida similar a SUN RISE (UTC).
         /// </summary>
         public static string MainPageCurrentSunRise {
             get {
@@ -241,7 +241,7 @@ namespace WeatherInformation.Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a SUN SET.
+        ///   Busca una cadena traducida similar a SUN SET (UTC).
         /// </summary>
         public static string MainPageCurrentSunSet {
             get {

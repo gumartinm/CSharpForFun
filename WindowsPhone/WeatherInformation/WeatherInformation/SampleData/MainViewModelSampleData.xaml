@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:vm="clr-namespace:WeatherInformation.ViewModels"
     TitleTextCityCountry="City,country"
+    CurrentWeatherImagePath="/Images/weather_clear.png"
     CurrentMaxTemp="25"
     CurrentMaxTempUnits="ºC"
     CurrentMinTemp="15"
@@ -14,9 +15,9 @@
     CurrentRainText="RAIN"
     CurrentSnow="10"
     CurrentSnowText="SNOW"
-    CurrentSunRiseText="SUN RISE"
+    CurrentSunRiseText="SUN RISE (UTC)"
     CurrentSunRise="2014.07.19 07:01:54"
-    CurrentSunSetText="SUN SET"
+    CurrentSunSetText="SUN SET (UTC)"
     CurrentSunSet="2014.07.19 21:41:40"
     CurrentWind="1.03"
     CurrentWindText="WIND"
@@ -35,22 +36,13 @@
     CurrentCloudsUnits="%">
 
     <vm:MainViewModel.ForecastItems>
-        <vm:ItemViewModel LineOne="MON" LineTwo="1" LineThree="15ºC" LineFour="10ºC" LineFive="/Assets/Tiles/IconicTileMediumLarge.png"/>
-        <vm:ItemViewModel LineOne="TUE" LineTwo="2" LineThree="16ºC" LineFour="10ºC" LineFive="/Assets/Tiles/IconicTileMediumLarge.png"/>
-        <vm:ItemViewModel LineOne="WED" LineTwo="3" LineThree="14ºC" LineFour="10ºC" LineFive="/Assets/Tiles/IconicTileMediumLarge.png"/>
-        <vm:ItemViewModel LineOne="THU" LineTwo="4" LineThree="12ºC" LineFour="10ºC" LineFive="/Assets/Tiles/IconicTileMediumLarge.png"/>
-        <vm:ItemViewModel LineOne="FRI" LineTwo="5" LineThree="13ºC" LineFour="10ºC" LineFive="/Assets/Tiles/IconicTileMediumLarge.png"/>
-        <vm:ItemViewModel LineOne="SAT" LineTwo="6" LineThree="20ºC" LineFour="10ºC" LineFive="/Assets/Tiles/IconicTileMediumLarge.png"/>
+        <vm:ItemViewModel LineOne="MON" LineTwo="1" LineThree="15ºC" LineFour="10ºC" LineFive="/Images/weather_clear.png"/>
+        <vm:ItemViewModel LineOne="TUE" LineTwo="2" LineThree="16ºC" LineFour="10ºC" LineFive="/Images/weather_clear_night.png"/>
+        <vm:ItemViewModel LineOne="WED" LineTwo="3" LineThree="14ºC" LineFour="10ºC" LineFive="/Images/weather_few_clouds.png"/>
+        <vm:ItemViewModel LineOne="THU" LineTwo="4" LineThree="12ºC" LineFour="10ºC" LineFive="/Images/weather_few_clouds_night.png"/>
+        <vm:ItemViewModel LineOne="FRI" LineTwo="5" LineThree="13ºC" LineFour="10ºC" LineFive="/Images/weather_fog.png"/>
+        <vm:ItemViewModel LineOne="SAT" LineTwo="6" LineThree="20ºC" LineFour="10ºC" LineFive="/Images/weather_overcast.png"/>
     </vm:MainViewModel.ForecastItems>
-
-    <vm:MainViewModel.CurrentItems>
-        <vm:ItemViewModel LineOne="MON 1" LineTwo="15ºC" LineThree="/Assets/Tiles/IconicTileMediumLarge.png"/>
-        <vm:ItemViewModel LineOne="TUE 2" LineTwo="16ºC" LineThree="/Assets/Tiles/IconicTileMediumLarge.png"/>
-        <vm:ItemViewModel LineOne="WED 3" LineTwo="14ºC" LineThree="/Assets/Tiles/IconicTileMediumLarge.png"/>
-        <vm:ItemViewModel LineOne="THU 4" LineTwo="12ºC" LineThree="/Assets/Tiles/IconicTileMediumLarge.png"/>
-        <vm:ItemViewModel LineOne="FRI 5" LineTwo="13ºC" LineThree="/Assets/Tiles/IconicTileMediumLarge.png"/>
-        <vm:ItemViewModel LineOne="SAT 6" LineTwo="20ºC" LineThree="/Assets/Tiles/IconicTileMediumLarge.png"/>
-    </vm:MainViewModel.CurrentItems>
     
 
 </vm:MainViewModel>

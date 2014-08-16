@@ -96,7 +96,7 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <Image Source="/Assets/Tiles/IconicTileMediumLarge.png" Width="100" Height="100" Margin="12,-6,12,0" />
+                            <Image Source="{Binding CurrentWeatherImagePath}" Width="100" Height="100" Margin="12,0" />
                             <StackPanel  Orientation="Vertical" VerticalAlignment="Center">
                                 <StackPanel  Orientation="Horizontal" VerticalAlignment="Center">
                                     <TextBlock Text="{Binding CurrentMaxTemp}" TextWrapping="Wrap" Style="{StaticResource PhoneTextLargeStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Margin="2,0"/>

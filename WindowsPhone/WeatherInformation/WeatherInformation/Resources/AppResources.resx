@@ -243,10 +243,10 @@
     <value>SNOW</value>
   </data>
   <data name="MainPageCurrentSunRise" xml:space="preserve">
-    <value>SUN RISE</value>
+    <value>SUN RISE (UTC)</value>
   </data>
   <data name="MainPageCurrentSunSet" xml:space="preserve">
-    <value>SUN SET</value>
+    <value>SUN SET (UTC)</value>
   </data>
   <data name="MainPageCurrentWind" xml:space="preserve">
     <value>WIND</value>

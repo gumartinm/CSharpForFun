@@ -210,10 +210,10 @@
     <value>VIENTO</value>
   </data>
   <data name="MainPageCurrentSunSet" xml:space="preserve">
-    <value>SOL SE PONE</value>
+    <value>SOL SE PONE (UTC)</value>
   </data>
   <data name="MainPageCurrentSunRise" xml:space="preserve">
-    <value>SOL SALE</value>
+    <value>SOL SALE (UTC)</value>
   </data>
   <data name="MainPageCurrentSnow" xml:space="preserve">
     <value>NIEVE</value>

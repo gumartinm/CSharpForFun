@@ -2,6 +2,7 @@
     xmlns:ViewModels="clr-namespace:WeatherInformation.ViewModels"
     TitleTextCityCountry="City,country"
     SelectedDate="July 27"
+    SelectedDateWeatherImagePath="/Images/weather_clear.png"
     SelectedDateRainText="RAIN"
     SelectedDateMaxTempUnits="ºC"
     SelectedDateCloudsText="CLOUDS"

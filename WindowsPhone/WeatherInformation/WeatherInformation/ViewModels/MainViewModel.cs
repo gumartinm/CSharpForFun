@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO.IsolatedStorage;
 using WeatherInformation.Model;
+using WeatherInformation.Model.Images;
 using WeatherInformation.Resources;
 
 namespace WeatherInformation.ViewModels
@@ -38,6 +39,7 @@ namespace WeatherInformation.ViewModels
         public ObservableCollection<ItemViewModel> ForecastItems{ get; private set; }
         public ObservableCollection<ItemViewModel> CurrentItems { get; private set; }
         public String TitleTextCityCountry { get; private set; }
+        public String CurrentWeatherImagePath { get; private set; }
         public String CurrentMaxTemp { get; private set; }
         public String CurrentMaxTempUnits { get; private set; }
         public String CurrentMinTemp { get; private set; }
@@ -113,7 +115,7 @@ namespace WeatherInformation.ViewModels
                 
                 foreach (WeatherInformation.Model.ForecastWeatherParser.List item in remoteForecastWeatherData.list)
                 {
-                    DateTime date = unixTime.AddSeconds(item.dt).ToLocalTime();
+                    DateTime date = unixTime.AddSeconds(item.dt);
 
                     // TODO: if I do not receive max temp or min temp... Am I going to receive item.temp.max=0 or item.temp.min=0 (I guess because
                     // double has no null value)
@@ -125,13 +127,26 @@ namespace WeatherInformation.ViewModels
                     double minTemp = item.temp.min;
                     minTemp = minTemp - tempUnits;
 
+                    string weatherImage;
+                    if (item.weather.Count > 0 &&
+                        item.weather[0].icon != null &&
+                        RemoteImagesTranslation.GetTransaltedImage(item.weather[0].icon) != null)
+                    {
+                        weatherImage = RemoteImagesTranslation.GetTransaltedImage(item.weather[0].icon);
+                    }
+                    else
+                    {
+                        weatherImage = "weather_severe_alert";
+                    }
+                    string weatherImagePath = String.Format(CultureInfo.InvariantCulture, "/Images/{0}.png", weatherImage);
+
                     this.ForecastItems.Add(new ItemViewModel()
                     {
                         LineOne = date.ToString("ddd", CultureInfo.InvariantCulture),
                         LineTwo = date.ToString("dd", CultureInfo.InvariantCulture),
                         LineThree = String.Format(CultureInfo.InvariantCulture, "{0:0.##}", maxTemp) + symbol,
                         LineFour = String.Format(CultureInfo.InvariantCulture, "{0:0.##}", minTemp) + symbol,
-                        LineFive = "/Assets/Tiles/IconicTileMediumLarge.png"
+                        LineFive = weatherImagePath
                     });
 
                     count--;
@@ -148,6 +163,20 @@ namespace WeatherInformation.ViewModels
             var remoteCurrentWeatherData = weatherData.RemoteCurrent;
             if (remoteCurrentWeatherData != null)
             {
+                string weatherImage;
+                if (remoteCurrentWeatherData.weather.Count > 0 &&
+                    remoteCurrentWeatherData.weather[0].icon != null &&
+                    RemoteImagesTranslation.GetTransaltedImage(remoteCurrentWeatherData.weather[0].icon) != null)
+                {
+                    weatherImage = RemoteImagesTranslation.GetTransaltedImage(remoteCurrentWeatherData.weather[0].icon);
+                }
+                else
+                {
+                    weatherImage = "weather_severe_alert";
+                }
+                this.CurrentWeatherImagePath = String.Format(CultureInfo.InvariantCulture, "/Images/{0}.png", weatherImage);
+                NotifyPropertyChanged("CurrentWeatherImagePath");
+
                 var currentMaxTemp = "";
                 if (remoteCurrentWeatherData.main != null)
                 {
@@ -268,13 +297,13 @@ namespace WeatherInformation.ViewModels
                 NotifyPropertyChanged("CurrentPressureText");
 
                 this.CurrentSunRiseText = AppResources.MainPageCurrentSunRise;
-                var sunRiseTime = unixTime.AddSeconds(remoteCurrentWeatherData.sys.sunrise).ToLocalTime();
+                var sunRiseTime = unixTime.AddSeconds(remoteCurrentWeatherData.sys.sunrise);
                 this.CurrentSunRise = sunRiseTime.ToString("MM/dd/yy H:mm:ss", CultureInfo.InvariantCulture);
                 NotifyPropertyChanged("CurrentSunRise");
                 NotifyPropertyChanged("CurrentSunRiseText");
 
                 this.CurrentSunSetText = AppResources.MainPageCurrentSunSet;
-                var sunSetTime = unixTime.AddSeconds(remoteCurrentWeatherData.sys.sunset).ToLocalTime();
+                var sunSetTime = unixTime.AddSeconds(remoteCurrentWeatherData.sys.sunset);
                 this.CurrentSunSet = sunSetTime.ToString("MM/dd/yy H:mm:ss", CultureInfo.InvariantCulture);
                 NotifyPropertyChanged("CurrentSunSet");
                 NotifyPropertyChanged("CurrentSunSetText");

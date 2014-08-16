@@ -7,6 +7,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using WeatherInformation.Model;
+using WeatherInformation.Model.Images;
 using WeatherInformation.Model.Services;
 using WeatherInformation.Resources;
 
@@ -21,6 +22,7 @@ namespace WeatherInformation.ViewModels
         public String TitleTextCityCountry { get; private set; }
 
         public String SelectedDate { get; private set; }
+        public String SelectedDateWeatherImagePath { get; private set; }
         public String SelectedDateMaxTemp { get; private set; }
         public String SelectedDateMaxTempUnits { get; private set; }
         public String SelectedDateMinTemp { get; private set; }
@@ -68,6 +70,20 @@ namespace WeatherInformation.ViewModels
             bool isFahrenheit = false;
             double tempUnits = isFahrenheit ? 0 : 273.15;
             string symbol = isFahrenheit ? AppResources.TemperatureUnitsFahrenheitSymbol : AppResources.TemperatureUnitsCentigradeSymbol;
+
+            string weatherImage;
+            if (forecast.weather.Count > 0 &&
+                forecast.weather[0].icon != null &&
+                RemoteImagesTranslation.GetTransaltedImage(forecast.weather[0].icon) != null)
+            {
+                weatherImage = RemoteImagesTranslation.GetTransaltedImage(forecast.weather[0].icon);
+            }
+            else
+            {
+                weatherImage = "weather_severe_alert";
+            }
+            this.SelectedDateWeatherImagePath = String.Format(CultureInfo.InvariantCulture, "/Images/{0}.png", weatherImage);
+            NotifyPropertyChanged("SelectedDateWeatherImagePath");
 
             var selectedDateMaxTemp = "";
             var selectedDateTempUnits = "";
