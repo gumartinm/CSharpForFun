@@ -108,17 +108,6 @@ namespace WeatherInformation
             }
         }
 
-        private void SaveDataToTemporaryFile(string pathToTemporaryFile, string value)
-        {
-            using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetUserStoreForApplication())
-            using (IsolatedStorageFileStream fileStream = isoStore.OpenFile(pathToTemporaryFile, FileMode.Create))
-            using (StreamWriter sw = new StreamWriter(fileStream))
-            {
-                sw.Write(value);
-                fileStream.Flush(true);
-            }
-        }
-
         // Código para ejecutar cuando la aplicación se inicia (p.ej. a partir de Inicio)
         // Este código no se ejecutará cuando la aplicación se reactive
         private void Application_Launching(object sender, LaunchingEventArgs e)
