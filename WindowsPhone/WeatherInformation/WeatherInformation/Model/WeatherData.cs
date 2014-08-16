@@ -33,12 +33,6 @@ namespace WeatherInformation.Model
             set;
         }
 
-        public bool WasThereRemoteError
-        {
-            get;
-            set;
-        }
-
         public string City { get; set;}
 
         public string Country { get; set; }

@@ -104,15 +104,6 @@ namespace WeatherInformation
 
             if (weatherData != null)
             {
-                if (weatherData.WasThereRemoteError)
-                {
-                    MessageBox.Show(
-                         AppResources.NoticeThereIsNotCurrentLocation,
-                         AppResources.UnavailableAutomaticCurrentLocationMessageBox,
-                         MessageBoxButton.OK);
-                    return;
-                }
-
                 _mainViewModel.LoadData(weatherData);
             }
         }

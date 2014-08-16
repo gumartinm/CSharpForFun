@@ -45,7 +45,6 @@ namespace WeatherInformation.Model.Services
                 JSONRemoteForecast = JSONRemoteForecastWeather,
                 RemoteCurrent = GetCurrentWeather(JSONRemoteCurrentWeather),
                 RemoteForecast = GetForecastWeather(JSONRemoteForecastWeather),
-                WasThereRemoteError = false
             };
         }
     }
