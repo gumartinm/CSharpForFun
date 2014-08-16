@@ -255,9 +255,6 @@ namespace WeatherInformation
             // TODO: Could there some problem if user clicks button and thread is in this very moment updating map?
             var geoCoordinate = this.mapWeatherInformation.Center;
 
-            // TODO: What if there is no city or country. Is there null value or empty string?
-            //StoredLocation.City = address.City;
-            //StoredLocation.Country = address.Country;
             StoreLocation(geoCoordinate);
         }
 
