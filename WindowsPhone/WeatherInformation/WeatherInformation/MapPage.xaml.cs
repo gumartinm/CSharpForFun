@@ -58,7 +58,7 @@ namespace WeatherInformation
             geolocator.DesiredAccuracyInMeters = 50;
 
             Geoposition geoposition = await geolocator.GetGeopositionAsync(
-                maximumAge: TimeSpan.FromMinutes(5),
+                maximumAge: TimeSpan.FromSeconds(10),
                 timeout: TimeSpan.FromSeconds(10)
                 );
             GeoCoordinate currentGeoCoordinate = CoordinateHelper.ConvertGeocoordinate(geoposition.Coordinate);
