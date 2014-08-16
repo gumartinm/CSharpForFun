@@ -31,15 +31,25 @@ namespace WeatherInformation
         // Declare a private variable to store application state.
         private WeatherData _remoteWeatherData;
 
+        private readonly Object _lock = new Object();
         // Declare a public property to access the application data variable.
         public WeatherData ApplicationDataObject
         {
-            get { return _remoteWeatherData; }
+            get
+            {
+                lock (_lock)
+                {
+                    return _remoteWeatherData;
+                }
+            }
             set
             {
-                if (value != _remoteWeatherData)
+                lock (_lock)
                 {
-                    _remoteWeatherData = value;
+                    if (value != _remoteWeatherData)
+                    {
+                        _remoteWeatherData = value;
+                    }
                 }
             }
         }

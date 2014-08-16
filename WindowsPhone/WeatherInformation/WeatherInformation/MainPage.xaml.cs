@@ -74,14 +74,12 @@ namespace WeatherInformation
 
             // If the application member variable is not empty,
             // set the page's data object from the application member variable.
-            // TODO: I am setting and getting ApplicationDataObject from different threads!!!! What if I do not see its last value? Do I need synchronization? :/
             WeatherData weatherData = (Application.Current as WeatherInformation.App).ApplicationDataObject;
             if (!IsDataFresh(locationItem.LastRemoteDataUpdate) || weatherData == null)
             {
                 // Load remote data (aynchronous way by means of async/await)
 
                 // Gets the data from the web.
-                // TODO: multiple threads writing/reading same data :(
                 (Application.Current as WeatherInformation.App).ApplicationDataObject =
                     await GetRemoteDataAsync(locationItem).ConfigureAwait(false);
 
