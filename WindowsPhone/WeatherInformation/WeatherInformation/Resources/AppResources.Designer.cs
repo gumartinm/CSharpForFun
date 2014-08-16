@@ -106,6 +106,24 @@ namespace WeatherInformation.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a City not found.
+        /// </summary>
+        public static string DefaultCity {
+            get {
+                return ResourceManager.GetString("DefaultCity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Country not found.
+        /// </summary>
+        public static string DefaultCountry {
+            get {
+                return ResourceManager.GetString("DefaultCountry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a City, country.
         /// </summary>
         public static string LocationPageSubTitle {

@@ -154,6 +154,16 @@
           <target state="translated">Posición actual</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Map page, button get the user's current location</note>
           </trans-unit>
+        <trans-unit id="Resx/DefaultCountry" translate="yes" xml:space="preserve">
+          <source>Country not found</source>
+          <target state="translated">País no encontrado</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Country, default value.</note>
+          </trans-unit>
+        <trans-unit id="Resx/DefaultCity" translate="yes" xml:space="preserve">
+          <source>City not found</source>
+          <target state="translated">Ciudad no encontrada</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">City, default value.</note>
+          </trans-unit>
         <trans-unit id="Resx/SelectedDatePageMorning" translate="yes" xml:space="preserve">
           <source>MORNING</source>
           <target state="translated">MAÑANA</target>

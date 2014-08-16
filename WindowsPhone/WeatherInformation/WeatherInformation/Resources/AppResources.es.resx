@@ -257,4 +257,12 @@
     <value>Detección automática de la ubicación parece estar desactivada en el teléfono o el servicio no está disponible.</value>
     <comment>Message box error: while trying to get automatic current location</comment>
   </data>
+  <data name="DefaultCountry" xml:space="preserve">
+    <value>País no encontrado</value>
+    <comment>Country, default value.</comment>
+  </data>
+  <data name="DefaultCity" xml:space="preserve">
+    <value>Ciudad no encontrada</value>
+    <comment>City, default value.</comment>
+  </data>
 </root>

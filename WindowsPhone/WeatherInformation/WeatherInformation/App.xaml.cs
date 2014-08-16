@@ -151,13 +151,13 @@ namespace WeatherInformation
                 country = PhoneApplicationService.Current.State["Country"] as string;
             }
             
-            if (!string.IsNullOrEmpty(JSONRemoteCurrentWeather) && !string.IsNullOrEmpty(JSONRemoteForecastWeather))
+            if (!string.IsNullOrEmpty(JSONRemoteCurrentWeather) && !string.IsNullOrEmpty(JSONRemoteForecastWeather) &&
+                !string.IsNullOrEmpty(city) && !string.IsNullOrEmpty(country))
             {
-                // TODO: I am repeating this code 2 times. What could I do to improve it?
                 var parser = new ServiceParser(new JsonParser());
                 weatherData = parser.WeatherDataParser(JSONRemoteForecastWeather, JSONRemoteCurrentWeather);
-                weatherData.City = city ?? "";
-                weatherData.Country = country ?? "";
+                weatherData.City = city;
+                weatherData.Country = country;
             }
 
             ApplicationDataObject = weatherData;

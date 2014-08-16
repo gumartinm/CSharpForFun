@@ -300,4 +300,12 @@
     <value>Current Location</value>
     <comment>Map page, button get the user's current location</comment>
   </data>
+  <data name="DefaultCity" xml:space="preserve">
+    <value>City not found</value>
+    <comment>City, default value.</comment>
+  </data>
+  <data name="DefaultCountry" xml:space="preserve">
+    <value>Country not found</value>
+    <comment>Country, default value.</comment>
+  </data>
 </root>

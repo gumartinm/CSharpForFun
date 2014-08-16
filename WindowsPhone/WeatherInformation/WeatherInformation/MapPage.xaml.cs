@@ -99,7 +99,6 @@ namespace WeatherInformation
             {
                 if (eventData.Result.Count > 0)
                 {
-                    // TODO: What if there is no city or country. Is there null value or empty string?
                     MapAddress address = eventData.Result[0].Information.Address;
                     GeoCoordinate currentGeoCoordinate = eventData.Result[0].GeoCoordinate;
 
@@ -132,9 +131,15 @@ namespace WeatherInformation
             this.mapWeatherInformation.Center = geoCoordinate;
             this.mapWeatherInformation.ZoomLevel = 13;
 
-            // TODO: What if there is no city or country. Is there null value or empty string?
-            string cityCountry = String.Format(CultureInfo.InvariantCulture, "{0}, {1}", city, country);
-            this.LocationTextCityCountry.Text = cityCountry;
+            if (string.IsNullOrEmpty(city))
+            {
+                city = AppResources.DefaultCity;
+            }
+            if (string.IsNullOrEmpty(country))
+            {
+                country = AppResources.DefaultCountry;
+            }
+            this.LocationTextCityCountry.Text = String.Format(CultureInfo.InvariantCulture, "{0}, {1}", city, country);
             _city = city;
             _country = country;
             // Add the MapLayer to the Map.
