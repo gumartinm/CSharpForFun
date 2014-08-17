@@ -308,4 +308,10 @@
     <value>Country not found</value>
     <comment>Country, default value.</comment>
   </data>
+  <data name="MainPageCurrentDefaultDescription" xml:space="preserve">
+    <value>no description available</value>
+  </data>
+  <data name="SelectedDatePageDefaultDescription" xml:space="preserve">
+    <value>no description available</value>
+  </data>
 </root>

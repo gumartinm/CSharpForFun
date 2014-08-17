@@ -3,11 +3,11 @@ namespace WeatherInformation.Model.ForecastWeatherParser
 {
     public class City
     {
-        public int id { get; set; }
+        public double? id { get; set; }
         public string name { get; set; }
         public Coord coord { get; set; }
         public string country { get; set; }
-        public int population { get; set; }
+        public double? population { get; set; }
     }
 }
 

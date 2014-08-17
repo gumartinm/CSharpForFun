@@ -160,6 +160,15 @@ namespace WeatherInformation.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a no description available.
+        /// </summary>
+        public static string MainPageCurrentDefaultDescription {
+            get {
+                return ResourceManager.GetString("MainPageCurrentDefaultDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a FEELS LIKE.
         /// </summary>
         public static string MainPageCurrentFeelsLike {
@@ -363,6 +372,15 @@ namespace WeatherInformation.Resources {
         public static string SelectedDatePageDay {
             get {
                 return ResourceManager.GetString("SelectedDatePageDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a no description available.
+        /// </summary>
+        public static string SelectedDatePageDefaultDescription {
+            get {
+                return ResourceManager.GetString("SelectedDatePageDefaultDescription", resourceCulture);
             }
         }
         

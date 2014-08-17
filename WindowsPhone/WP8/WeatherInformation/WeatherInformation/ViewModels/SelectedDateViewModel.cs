@@ -58,9 +58,14 @@ namespace WeatherInformation.ViewModels
             var remoteForecastWeatherData = weatherData.Forecast;
 
             WeatherInformation.Model.ForecastWeatherParser.List forecast = remoteForecastWeatherData.list[index];
-            DateTime unixTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-            DateTime date = unixTime.AddSeconds(forecast.dt).ToLocalTime();
-            this.SelectedDate = date.ToString("m", CultureInfo.InvariantCulture);
+            DateTime baseUnixTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            string selectedDate = "";
+            if (forecast.dt != null)
+            {
+                var date = baseUnixTime.AddSeconds(forecast.dt.Value).ToLocalTime();
+                selectedDate = date.ToString("m", CultureInfo.InvariantCulture);
+            }
+            this.SelectedDate = selectedDate;
             NotifyPropertyChanged("SelectedDate");
 
             bool isFahrenheit = true;
@@ -88,7 +93,7 @@ namespace WeatherInformation.ViewModels
 
             var selectedDateMaxTemp = "";
             var selectedDateTempUnits = "";
-            if (forecast.temp != null)
+            if (forecast.temp != null && forecast.temp.max != null)
             {
                 var conversion = forecast.temp.max;
                 conversion -= tempUnits;
@@ -102,7 +107,7 @@ namespace WeatherInformation.ViewModels
 
             var selectedDateMinTemp = "";
             selectedDateTempUnits = "";
-            if (forecast.temp != null)
+            if (forecast.temp != null && forecast.temp.min != null)
             {
                 var conversion = forecast.temp.min;
                 conversion -= tempUnits;
@@ -114,46 +119,69 @@ namespace WeatherInformation.ViewModels
             this.SelectedDateMaxTempUnits = selectedDateTempUnits;
             NotifyPropertyChanged("SelectedDateMinTempUnits");
 
-            // TODO: static resource :(
-            var selectedDateConditions = "no description available";
-            if (forecast.weather.Count > 0)
+            var selectedDateConditions = AppResources.SelectedDatePageDefaultDescription;
+            if (forecast.weather.Count > 0 && !String.IsNullOrEmpty(forecast.weather[0].description))
             {
                 selectedDateConditions = forecast.weather[0].description;
             }
             this.SelectedDateConditions = selectedDateConditions;
             NotifyPropertyChanged("SelectedDateConditions");
 
-            // TODO: nullables para distinguir cuando hay datos o no. Ahora me llega 0 si no datos (supongo) cuando double/integer
             this.SelectedDateHumidityText = AppResources.MainPageCurrentHumidity;
-            this.SelectedDateHumidity = forecast.humidity.ToString(CultureInfo.InvariantCulture);
+            var selectedDateHumidity = "";
+            if (forecast.humidity != null)
+            {
+                selectedDateHumidity = forecast.humidity.Value.ToString(CultureInfo.InvariantCulture);
+            }
+            this.SelectedDateHumidity = selectedDateHumidity;
             this.SelectedDateHumidityUnits = AppResources.MainPageCurrentHumidityUnits;
             NotifyPropertyChanged("SelectedDateHumidity");
             NotifyPropertyChanged("SelectedDateHumidityUnits");
             NotifyPropertyChanged("SelectedDateHumidityText");
 
             this.SelectedDateRainText = AppResources.MainPageCurrentRain;
-            this.SelectedDateRain = forecast.rain.ToString(CultureInfo.InvariantCulture);
+            var selectedDateRain = "";
+            if (forecast.rain != null)
+            {
+                selectedDateRain = forecast.rain.Value.ToString(CultureInfo.InvariantCulture);
+            }
+            this.SelectedDateRain = selectedDateRain;
             this.SelectedDateRainUnits = AppResources.MainPageCurrentRainUnits;
             NotifyPropertyChanged("SelectedDateRain");
             NotifyPropertyChanged("SelectedDateRainUnits");
             NotifyPropertyChanged("SelectedDateRainText");
 
             this.SelectedDateWindText = AppResources.MainPageCurrentWind;
-            this.SelectedDateWind = forecast.speed.ToString(CultureInfo.InvariantCulture);
+            var selectedDateSpeed = "";
+            if (forecast.speed != null)
+            {
+                selectedDateSpeed = forecast.speed.Value.ToString(CultureInfo.InvariantCulture);
+            }
+            this.SelectedDateWind = selectedDateSpeed;
             this.SelectedDateWindUnits = AppResources.MainPageCurrentWindUnits;
             NotifyPropertyChanged("SelectedDateWind");
             NotifyPropertyChanged("SelectedDateWindUnits");
             NotifyPropertyChanged("SelectedDateWindText");
 
             this.SelectedDateCloudsText = AppResources.MainPageCurrentClouds;
-            this.SelectedDateClouds = forecast.clouds.ToString(CultureInfo.InvariantCulture);
+            var selectedDateClouds = "";
+            if (forecast.clouds != null)
+            {
+                selectedDateClouds = forecast.clouds.Value.ToString(CultureInfo.InvariantCulture);
+            }
+            this.SelectedDateClouds = selectedDateClouds;
             this.SelectedDateCloudsUnits = AppResources.MainPageCurrentCloudsUnits;
             NotifyPropertyChanged("SelectedDateClouds");
             NotifyPropertyChanged("SelectedDateCloudsUnits");
             NotifyPropertyChanged("SelectedDateCloudsText");
 
             this.SelectedDatePressureText = AppResources.MainPageCurrentPressure;
-            this.SelectedDatePressure = forecast.pressure.ToString(CultureInfo.InvariantCulture);
+            var selectedDatePressure = "";
+            if (forecast.pressure != null)
+            {
+                selectedDatePressure = forecast.pressure.Value.ToString(CultureInfo.InvariantCulture);
+            }
+            this.SelectedDatePressure = selectedDatePressure;
             this.SelectedDatePressureUnits = AppResources.MainPageCurrentPressureUnits;
             NotifyPropertyChanged("SelectedDatePressure");
             NotifyPropertyChanged("SelectedDatePressureUnits");

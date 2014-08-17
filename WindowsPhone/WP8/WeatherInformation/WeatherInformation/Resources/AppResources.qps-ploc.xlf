@@ -144,6 +144,14 @@
           <target state="new">Country not found</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Country, default value.</note>
         </trans-unit>
+        <trans-unit id="Resx/MainPageCurrentDefaultDescription" translate="yes" xml:space="preserve">
+          <source>no description available</source>
+          <target state="new">no description available</target>
+        </trans-unit>
+        <trans-unit id="Resx/SelectedDatePageDefaultDescription" translate="yes" xml:space="preserve">
+          <source>no description available</source>
+          <target state="new">no description available</target>
+        </trans-unit>
         <trans-unit id="Resx/DefaultCity" translate="yes" xml:space="preserve">
           <source>City not found</source>
           <target state="new">City not found</target>

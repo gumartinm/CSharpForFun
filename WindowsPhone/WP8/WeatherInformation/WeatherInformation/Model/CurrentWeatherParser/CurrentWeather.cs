@@ -13,10 +13,10 @@ namespace WeatherInformation.Model.CurrentWeatherParser
         public Snow snow { get; set; }
         public Rain rain { get; set; }
         public Clouds clouds { get; set; }
-        public int dt { get; set; }
-        public int id { get; set; }
+        public long? dt { get; set; }
+        public long? id { get; set; }
         public string name { get; set; }
-        public int cod { get; set; }
+        public long? cod { get; set; }
     }
 }
 
