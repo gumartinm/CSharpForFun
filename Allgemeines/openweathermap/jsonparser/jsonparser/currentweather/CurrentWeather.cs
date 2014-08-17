@@ -13,10 +13,10 @@ namespace jsonparser.currentweather
         public Wind wind { get; set; }
         public Rain rain { get; set; }
         public Clouds clouds { get; set; }
-        public int dt { get; set; }
-        public int id { get; set; }
+        public int? dt { get; set; }
+        public int? id { get; set; }
         public string name { get; set; }
-        public int cod { get; set; }
+        public int? cod { get; set; }
     }
 }
 

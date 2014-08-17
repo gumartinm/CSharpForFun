@@ -4,7 +4,7 @@ namespace jsonparser.currentweather
 {
     public class Clouds
     {
-        public int all { get; set; }
+        public int? all { get; set; }
     }
 }
 

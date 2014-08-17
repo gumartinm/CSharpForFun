@@ -80,37 +80,42 @@ namespace jsonparser
 
             CurrentWeather current = JsonConvert.DeserializeObject<CurrentWeather>(jsonCurrentWeatherData, _jsonSettings);
 
-            Console.WriteLine("lat: " + current.coord.lat);
-            Console.WriteLine("lon: " + current.coord.lon);
+            Console.WriteLine("lat: " + current.coord.lat ?? "");
+            Console.WriteLine("lon: " + current.coord.lon ?? "");
             foreach (jsonparser.currentweather.Weather weather in current.weather)
             {
-                Console.WriteLine("description: " + weather.description);
-                Console.WriteLine("main: " + weather.main);
-                Console.WriteLine("id: " + weather.id);
-                Console.WriteLine("icon: " + weather.icon);
+                Console.WriteLine("description: " + weather.description ?? "");
+                Console.WriteLine("main: " + weather.main ?? "");
+                Console.WriteLine("id: " + weather.id ?? "");
+                Console.WriteLine("icon: " + weather.icon ?? "");
             }
-            Console.WriteLine("humidity: " + current.main.humidity);
-            Console.WriteLine("pressure: " + current.main.pressure);
-            Console.WriteLine("temp: " + current.main.temp);
-            Console.WriteLine("temp_min: " + current.main.temp_min);
-            Console.WriteLine("temp_max: " + current.main.temp_max);
-            Console.WriteLine("rain: " + current.rain.get3h());
-            Console.WriteLine("clouds: " + current.clouds.all);
+            Console.WriteLine("humidity: " + current.main.humidity ?? "");
+            Console.WriteLine("pressure: " + current.main.pressure ?? "");
+            Console.WriteLine("temp: " + current.main.temp ?? "");
+            Console.WriteLine("temp_min: " + current.main.temp_min ?? "");
+            Console.WriteLine("temp_max: " + current.main.temp_max ?? "");
+            Console.WriteLine("rain: " + current.rain.get3h() ?? "");
+            Console.WriteLine("clouds: " + current.clouds.all ?? "");
+
+            Console.ReadLine();
+
 
 
             ForecastWeather forecast = JsonConvert.DeserializeObject<ForecastWeather>(jsonForeCastWeatherData, _jsonSettings);
 
-            Console.WriteLine("lat: " + forecast.city.coord.lat);
-            Console.WriteLine("lon: " + forecast.city.coord.lon);
-            Console.WriteLine("name: " + forecast.city.name);
+            Console.WriteLine("lat: " + forecast.city.coord.lat ?? "");
+            Console.WriteLine("lon: " + forecast.city.coord.lon ?? "");
+            Console.WriteLine("name: " + forecast.city.name ?? "");
 
             foreach (jsonparser.forecastweather.List list in forecast.list)
             {
-                Console.WriteLine("temp day: " + list.temp.day);
-                Console.WriteLine("temp eve: " + list.temp.eve);
-                Console.WriteLine("temp max: " + list.temp.max);
-                Console.WriteLine("temp min: " + list.temp.min);
+                Console.WriteLine("temp day: " + list.temp.day ?? "");
+                Console.WriteLine("temp eve: " + list.temp.eve ?? "");
+                Console.WriteLine("temp max: " + list.temp.max ?? "");
+                Console.WriteLine("temp min: " + list.temp.min ?? "");
             }
+
+            Console.ReadLine();
         }
     }
 }
