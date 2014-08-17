@@ -54,7 +54,7 @@ namespace WeatherInformation.Model.Services
 
                     using (HttpContent contentRESULT = response.Content)
                     {
-                        return await this.ReadResponseAsync(contentRESULT);
+                        return await this.ReadResponseAsync(contentRESULT).ConfigureAwait(false);
                     }
                 }
             }
@@ -72,10 +72,10 @@ namespace WeatherInformation.Model.Services
                 encoding = Encoding.UTF8;
             }
 
-            using (Stream stream = await content.ReadAsStreamAsync())
+            using (Stream stream = await content.ReadAsStreamAsync().ConfigureAwait(false))
             using (StreamReader streamReader = new StreamReader(stream, encoding))
             {
-                return await streamReader.ReadToEndAsync();
+                return await streamReader.ReadToEndAsync().ConfigureAwait(false);
             }
         }
     }  
