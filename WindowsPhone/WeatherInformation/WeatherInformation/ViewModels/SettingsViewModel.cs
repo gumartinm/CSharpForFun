@@ -12,8 +12,6 @@ using WeatherInformation.Resources;
 
 namespace WeatherInformation.ViewModels
 {
-    // TODO: to use this class or something like that in every place of this application where the settings must be retrieved!!!
-    // (do not copy-paste code!!!)
     // TODO: IMHO INotifyPropertyChanged does not do anything useful in this class... NotifyPropertyChanged has no effect :(
     public class SettingsViewModel : INotifyPropertyChanged
     {

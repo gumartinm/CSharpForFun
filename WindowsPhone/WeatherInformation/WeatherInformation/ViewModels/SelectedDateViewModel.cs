@@ -15,6 +15,7 @@ namespace WeatherInformation.ViewModels
 {
     public class SelectedDateViewModel : INotifyPropertyChanged
     {
+        private readonly SettingsViewModel _settings = new SettingsViewModel();
 
         [DataMember]
         public Int32 SelectedDateIndex { get; set; }
@@ -66,8 +67,12 @@ namespace WeatherInformation.ViewModels
             this.SelectedDate = date.ToString("m", CultureInfo.InvariantCulture);
             NotifyPropertyChanged("SelectedDate");
 
-            // TODO: units :(
-            bool isFahrenheit = false;
+            bool isFahrenheit = true;
+            int temperatureUnitsSelection = _settings.TemperaruteUnitsSelectionSetting;
+            if (temperatureUnitsSelection != 0)
+            {
+                isFahrenheit = false;
+            }
             double tempUnits = isFahrenheit ? 0 : 273.15;
             string symbol = isFahrenheit ? AppResources.TemperatureUnitsFahrenheitSymbol : AppResources.TemperatureUnitsCentigradeSymbol;
 

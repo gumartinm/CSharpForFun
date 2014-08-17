@@ -11,18 +11,7 @@ namespace WeatherInformation.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-        // The key names of _settings
-        // TODO: reuse settings object instead of using the same code here again...
-        private const string _temperatureUnitsSelectionSettingKeyName = "TemperatureUnitsSelection";
-        private const string _forecastDayNumbersSelectionSelectionSettingKeyName = "ForecastDayNumbersSelection";
-
-        // The default value of _settings
-        // TODO: reuse settings object instead of using the same code here again...
-        private const int _temperatureUnitsSelectionSettingDefault = 0;
-        private const int _forecastDayNumbersSelectionSettingDefault = 0;
-
-        // Settings
-        private readonly IsolatedStorageSettings _settings;
+        private readonly SettingsViewModel _settings;
 
         public MainViewModel()
         {
@@ -30,7 +19,7 @@ namespace WeatherInformation.ViewModels
             this.CurrentItems = new ObservableCollection<ItemViewModel>();
 
             // Get the _settings for this application.
-            _settings = IsolatedStorageSettings.ApplicationSettings;
+            _settings = new SettingsViewModel();
         }
 
         /// <summary>
@@ -77,8 +66,8 @@ namespace WeatherInformation.ViewModels
         public void LoadData(WeatherData weatherData)
         {
             // TODO: there must be a better way than using the index value :(
-            int forecastDayNumbers =
-                    GetValueOrDefault<int>(_forecastDayNumbersSelectionSelectionSettingKeyName, _forecastDayNumbersSelectionSettingDefault);
+
+            int forecastDayNumbers = _settings.ForecastDayNumbersSelectionSetting;     
             int count;
             switch(forecastDayNumbers)
             {
@@ -98,8 +87,7 @@ namespace WeatherInformation.ViewModels
 
             // TODO: there must be a better way than using the index value :(
             bool isFahrenheit = true;
-            int temperatureUnitsSelection =
-                GetValueOrDefault<int>(_temperatureUnitsSelectionSettingKeyName, _temperatureUnitsSelectionSettingDefault);
+            int temperatureUnitsSelection = _settings.TemperaruteUnitsSelectionSetting;
             if (temperatureUnitsSelection != 0)
             {
                 isFahrenheit = false;
@@ -315,39 +303,6 @@ namespace WeatherInformation.ViewModels
                 NotifyPropertyChanged("TitleTextCityCountry");
             }
 
-        }
-
-        /// <summary>
-        /// Get the current value of the setting, or if it is not found, set the 
-        /// setting to the default value.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="Key"></param>
-        /// <param name="defaultValue"></param>
-        /// <returns></returns>
-        private T GetValueOrDefault<T>(string Key, T defaultValue)
-        {
-            T value;
-
-            // You need to add a check to DesignerProperties.IsInDesignTool to that code since accessing
-            // IsolatedStorageSettings in Visual Studio or Expression Blend is invalid.
-            // see: http://stackoverflow.com/questions/7294461/unable-to-determine-application-identity-of-the-caller
-            if (System.ComponentModel.DesignerProperties.IsInDesignTool)
-            {
-                return defaultValue;
-            }
-
-            // If the key exists, retrieve the value.
-            if (_settings.Contains(Key))
-            {
-                value = (T)_settings[Key];
-            }
-            // Otherwise, use the default value.
-            else
-            {
-                value = defaultValue;
-            }
-            return value;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
