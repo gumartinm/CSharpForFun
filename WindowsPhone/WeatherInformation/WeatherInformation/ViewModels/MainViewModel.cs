@@ -13,13 +13,13 @@ namespace WeatherInformation.ViewModels
     {
         private readonly SettingsViewModel _settings;
 
-        public MainViewModel()
+        public MainViewModel(SettingsViewModel settings)
         {
             this.ForecastItems = new ObservableCollection<ItemViewModel>();
             this.CurrentItems = new ObservableCollection<ItemViewModel>();
 
             // Get the _settings for this application.
-            _settings = new SettingsViewModel();
+            _settings = settings;
         }
 
         /// <summary>

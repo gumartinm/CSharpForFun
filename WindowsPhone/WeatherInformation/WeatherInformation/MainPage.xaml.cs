@@ -46,7 +46,7 @@ namespace WeatherInformation
             {
                 if (_mainViewModel == null)
                 {
-                    _mainViewModel = new MainViewModel();
+                    _mainViewModel = new MainViewModel(new SettingsViewModel());
                 }
 
                 DataContext = _mainViewModel;

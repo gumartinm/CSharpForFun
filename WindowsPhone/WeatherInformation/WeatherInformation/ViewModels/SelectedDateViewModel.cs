@@ -15,8 +15,12 @@ namespace WeatherInformation.ViewModels
 {
     public class SelectedDateViewModel : INotifyPropertyChanged
     {
-        private readonly SettingsViewModel _settings = new SettingsViewModel();
+        private readonly SettingsViewModel _settings;
 
+        public SelectedDateViewModel(SettingsViewModel settings)
+        {
+            _settings = settings;
+        }
 
         public String TitleTextCityCountry { get; private set; }
 

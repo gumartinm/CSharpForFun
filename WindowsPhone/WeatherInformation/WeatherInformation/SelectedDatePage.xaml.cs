@@ -31,7 +31,7 @@ namespace WeatherInformation
             {
                 if (_selectedDateViewModel == null)
                 {
-                    _selectedDateViewModel = new SelectedDateViewModel();
+                    _selectedDateViewModel = new SelectedDateViewModel(new SettingsViewModel());
                 }
 
                 DataContext = _selectedDateViewModel;
