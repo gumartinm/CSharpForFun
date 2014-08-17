@@ -80,7 +80,7 @@ namespace GumartinM.JsonRPC4NET
                 jsonData = JsonConvert.SerializeObject(postData, _jsonSettings);
             }
 
-            POSTResult<TResult> postResult = await this.PostAsync<TResult>(uri, method, jsonData, CancellationToken.None);
+            POSTResult<TResult> postResult = await this.PostAsync<TResult>(uri, method, jsonData, CancellationToken.None).ConfigureAwait(false);
 
             return postResult.result;
         }
@@ -94,7 +94,7 @@ namespace GumartinM.JsonRPC4NET
         /// <param name="parameters">Parameters.</param>
         async public Task PostRemoteServiceAsync(string uri, string method, params object[] parameters)
         {
-            await this.PostRemoteServiceAsync<object>(uri, method, parameters);
+            await this.PostRemoteServiceAsync<object>(uri, method, parameters).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace GumartinM.JsonRPC4NET
                 using (HttpContent contentRESULT = response.Content)
                 {
                     //TODO: What if contentRESULT is null? :(
-                    return await this.ReadResponseAsync<TResult>(contentRESULT);
+                    return await this.ReadResponseAsync<TResult>(contentRESULT).ConfigureAwait(false);
                 }
             }
         }
@@ -147,12 +147,12 @@ namespace GumartinM.JsonRPC4NET
             //return this.ReadResponse<TResult>(jsonBytes);
 
             // Option b) with stream
-            using (Stream stream = await content.ReadAsStreamAsync ())
+            using (Stream stream = await content.ReadAsStreamAsync().ConfigureAwait(false))
             using (StreamReader streamReader = new StreamReader(stream, encoding))
             {
                 // This line makes this method useless (IMHO it is the same as the one working with bytes)
                 // How could I work with JSON saving memory?
-                string json = await streamReader.ReadToEndAsync();
+                string json = await streamReader.ReadToEndAsync().ConfigureAwait(false);
 
                 return this.ReadResponse<TResult>(json);
             }
