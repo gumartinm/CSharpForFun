@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 using WeatherInformation.Model;
 using WeatherInformation.Model.Images;
-using WeatherInformation.Model.Services;
 using WeatherInformation.Resources;
 
 namespace WeatherInformation.ViewModels

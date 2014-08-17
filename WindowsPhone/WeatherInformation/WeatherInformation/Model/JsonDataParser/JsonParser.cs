@@ -1,6 +1,4 @@
 ﻿using Newtonsoft.Json;
-using WeatherInformation.Model.CurrentWeatherParser;
-using WeatherInformation.Model.ForecastWeatherParser;
 using System;
 
 namespace WeatherInformation.Model.JsonDataParser

@@ -2,7 +2,6 @@
 using System;
 using System.Linq;
 using System.Globalization;
-using System.IO.IsolatedStorage;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
@@ -10,10 +9,7 @@ using WeatherInformation.Model;
 using WeatherInformation.Model.Services;
 using WeatherInformation.Resources;
 using WeatherInformation.ViewModels;
-using System.Threading;
 using System.Threading.Tasks;
-using WeatherInformation.Model.ForecastWeatherParser;
-using WeatherInformation.Model.CurrentWeatherParser;
 using WeatherInformation.Model.JsonDataParser;
 
 namespace WeatherInformation

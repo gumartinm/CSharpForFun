@@ -8,15 +8,9 @@ using Microsoft.Phone.Shell;
 using System.Threading; 
 using System.Globalization; 
 using WeatherInformation.Resources;
-using WeatherInformation.ViewModels;
-using System.IO.IsolatedStorage;
-using System.IO;
 using WeatherInformation.Model;
 using WeatherInformation.Model.Services;
-using System.Threading.Tasks;
-using WeatherInformation.Model.ForecastWeatherParser;
 using WeatherInformation.Model.JsonDataParser;
-using WeatherInformation.Model.CurrentWeatherParser;
 
 namespace WeatherInformation
 {

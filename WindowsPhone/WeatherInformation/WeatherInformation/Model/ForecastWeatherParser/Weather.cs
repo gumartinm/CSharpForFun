@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace WeatherInformation.Model.ForecastWeatherParser
 {
     public class Weather

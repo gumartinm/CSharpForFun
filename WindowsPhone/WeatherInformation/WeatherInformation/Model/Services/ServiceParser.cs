@@ -2,10 +2,6 @@
 using WeatherInformation.Model.ForecastWeatherParser;
 using WeatherInformation.Model.JsonDataParser;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WeatherInformation.Model.Services
 {

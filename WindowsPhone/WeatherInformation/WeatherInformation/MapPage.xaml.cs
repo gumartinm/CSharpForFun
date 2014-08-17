@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
-using System.IO.IsolatedStorage;
 using Windows.Devices.Geolocation;
 using System.Device.Location;
 using System.Windows.Shapes;
@@ -16,7 +12,6 @@ using Microsoft.Phone.Maps.Controls;
 using WeatherInformation.Resources;
 using System.Globalization;
 using Microsoft.Phone.Maps.Services;
-using WeatherInformation.Model.Services;
 using System.Threading.Tasks;
 using WeatherInformation.Model;
 

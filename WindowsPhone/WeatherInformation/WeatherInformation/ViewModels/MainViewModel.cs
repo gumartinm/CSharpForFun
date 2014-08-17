@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
-using System.IO.IsolatedStorage;
 using WeatherInformation.Model;
 using WeatherInformation.Model.Images;
 using WeatherInformation.Resources;
