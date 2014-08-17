@@ -61,7 +61,7 @@ namespace WeatherInformation.ViewModels
 
         public void LoadData(WeatherData weatherData, int index)
         {
-            var remoteForecastWeatherData = weatherData.RemoteForecast;
+            var remoteForecastWeatherData = weatherData.Forecast;
 
             WeatherInformation.Model.ForecastWeatherParser.List forecast = remoteForecastWeatherData.list[index];
             DateTime unixTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);

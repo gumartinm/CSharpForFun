@@ -81,7 +81,7 @@ namespace WeatherInformation
 
                 // Gets the data from the web.
                 (Application.Current as WeatherInformation.App).ApplicationDataObject =
-                    await GetRemoteDataAsync(locationItem).ConfigureAwait(false);
+                    await GetRemoteDataAsync(locationItem);
 
                 using (var db = new LocationDataContext(LocationDataContext.DBConnectionString))
                 {
@@ -92,7 +92,10 @@ namespace WeatherInformation
             }
 
             // Call UpdateUI on the UI thread.
-            Dispatcher.BeginInvoke(() => UpdateUI());
+            // Without ConfigureAwait(false) await returns data on the calling thread. In this case the calling one
+            // is the UI thread. So, I can save the call to Dispatcher.BeginInvoke.
+            //Dispatcher.BeginInvoke(() => UpdateUI());
+            UpdateUI();
         }
 
         void UpdateUI()
@@ -131,17 +134,15 @@ namespace WeatherInformation
             string formattedForecastURL = String.Format(
                 CultureInfo.InvariantCulture, AppResources.URIAPIOpenWeatherMapForecast,
                 AppResources.APIVersionOpenWeatherMap, latitude, longitude, resultsNumber);
-            string JSONRemoteForecastWeather = await httpClient.GetWeatherDataAsync(formattedForecastURL).ConfigureAwait(false);
+            string jsonForecast = await httpClient.GetWeatherDataAsync(formattedForecastURL).ConfigureAwait(false);
 
             string formattedCurrentURL = String.Format(
                 CultureInfo.InvariantCulture, AppResources.URIAPIOpenWeatherMapCurrent,
                 AppResources.APIVersionOpenWeatherMap, latitude, longitude, resultsNumber);
-            string JSONRemoteCurrentWeather = await httpClient.GetWeatherDataAsync(formattedCurrentURL).ConfigureAwait(false);
+            string jsonCurrent = await httpClient.GetWeatherDataAsync(formattedCurrentURL).ConfigureAwait(false);
 
             var parser = new ServiceParser(new JsonParser());
-            var weatherData = parser.WeatherDataParser(JSONRemoteForecastWeather, JSONRemoteCurrentWeather);
-            weatherData.City = locationItem.City;
-            weatherData.Country = locationItem.Country;
+            var weatherData = parser.WeatherDataParser(jsonForecast, jsonCurrent, locationItem.City, locationItem.Country);
 
             return weatherData;
         }

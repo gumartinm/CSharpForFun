@@ -10,31 +10,29 @@ namespace WeatherInformation.Model
 {
     public class WeatherData
     {
-        public ForecastWeather RemoteForecast
-        {
-            get;
-            set;
-        }
-        public string JSONRemoteForecast
-        {
-            get;
-            set;
-        }
+        private readonly ForecastWeather _forecast;
+        private readonly string _jsonForecast;
+        private readonly CurrentWeather _current;
+        private readonly string _jsonCurrent;
+        private readonly string _city;
+        private readonly string _country;
 
-
-        public CurrentWeather RemoteCurrent
+        public WeatherData(ForecastWeather forecast, string jsonForecast, CurrentWeather current,
+                           string jsonCurrent, string city, string country)
         {
-            get;
-            set;
-        }
-        public string JSONRemoteCurrent
-        {
-            get;
-            set;
+            _forecast = forecast;
+            _jsonForecast = jsonForecast;
+            _current = current;
+            _jsonCurrent = jsonCurrent;
+            _city = city;
+            _country = country;
         }
 
-        public string City { get; set;}
-
-        public string Country { get; set; }
+        public ForecastWeather Forecast { get { return _forecast; } }
+        public string JSONForecast { get { return _jsonForecast; } }
+        public CurrentWeather Current { get { return _current; } }
+        public string JSONCurrent { get { return _jsonCurrent; } }
+        public string City { get { return _city; } }
+        public string Country { get { return _country; } }
     }
 }

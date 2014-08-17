@@ -129,20 +129,20 @@ namespace WeatherInformation
             WeatherData weatherData = null;
 
             // Check to see if the key for the application state data is in the State dictionary.
-            string JSONRemoteForecastWeather = null;
-            string JSONRemoteCurrentWeather = null;
+            string jsonForecast = null;
+            string jsonCurrent = null;
             string city = null;
             string country = null;
-            if (PhoneApplicationService.Current.State.ContainsKey("JSONRemoteForecastWeather") &&
-                PhoneApplicationService.Current.State.ContainsKey("JSONRemoteCurrentWeather") &&
+            if (PhoneApplicationService.Current.State.ContainsKey("JSONForecast") &&
+                PhoneApplicationService.Current.State.ContainsKey("JSONCurrent") &&
                 PhoneApplicationService.Current.State.ContainsKey("City") &&
                 PhoneApplicationService.Current.State.ContainsKey("Country"))
             {
                 // If it exists, assign the data to the application member variable.
-                JSONRemoteForecastWeather = PhoneApplicationService.Current.State["JSONRemoteForecastWeather"] as string;
+                jsonForecast = PhoneApplicationService.Current.State["JSONForecast"] as string;
 
                 // If it exists, assign the data to the application member variable.
-                JSONRemoteCurrentWeather = PhoneApplicationService.Current.State["JSONRemoteCurrentWeather"] as string;
+                jsonCurrent = PhoneApplicationService.Current.State["JSONCurrent"] as string;
 
                 // If it exists, assign the data to the application member variable.
                 city = PhoneApplicationService.Current.State["City"] as string;
@@ -150,14 +150,12 @@ namespace WeatherInformation
                 // If it exists, assign the data to the application member variable.
                 country = PhoneApplicationService.Current.State["Country"] as string;
             }
-            
-            if (!string.IsNullOrEmpty(JSONRemoteCurrentWeather) && !string.IsNullOrEmpty(JSONRemoteForecastWeather) &&
+
+            if (!string.IsNullOrEmpty(jsonCurrent) && !string.IsNullOrEmpty(jsonForecast) &&
                 !string.IsNullOrEmpty(city) && !string.IsNullOrEmpty(country))
             {
                 var parser = new ServiceParser(new JsonParser());
-                weatherData = parser.WeatherDataParser(JSONRemoteForecastWeather, JSONRemoteCurrentWeather);
-                weatherData.City = city;
-                weatherData.Country = country;
+                weatherData = parser.WeatherDataParser(jsonForecast, jsonCurrent, city, country);
             }
 
             ApplicationDataObject = weatherData;
@@ -171,14 +169,14 @@ namespace WeatherInformation
             var weatherData = ApplicationDataObject;
             if (weatherData != null)
             {
-                if (!string.IsNullOrEmpty(weatherData.JSONRemoteCurrent) &&
-                    !string.IsNullOrEmpty(weatherData.JSONRemoteForecast))
+                if (!string.IsNullOrEmpty(weatherData.JSONCurrent) &&
+                    !string.IsNullOrEmpty(weatherData.JSONForecast))
                 {
                     // Store it in the State dictionary.
-                    PhoneApplicationService.Current.State["JSONRemoteForecastWeather"] = weatherData.JSONRemoteForecast;
+                    PhoneApplicationService.Current.State["JSONForecast"] = weatherData.JSONForecast;
 
                     // Store it in the State dictionary.
-                    PhoneApplicationService.Current.State["JSONRemoteCurrentWeather"] = weatherData.JSONRemoteCurrent;
+                    PhoneApplicationService.Current.State["JSONCurrent"] = weatherData.JSONCurrent;
 
                     // Store it in the State dictionary.
                     PhoneApplicationService.Current.State["City"] = weatherData.City;

@@ -96,7 +96,7 @@ namespace WeatherInformation.ViewModels
             string symbol = isFahrenheit ? AppResources.TemperatureUnitsFahrenheitSymbol : AppResources.TemperatureUnitsCentigradeSymbol;
             DateTime unixTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-            var remoteForecastWeatherData = weatherData.RemoteForecast;
+            var remoteForecastWeatherData = weatherData.Forecast;
             if (remoteForecastWeatherData != null)
             {
                 this.ForecastItems.Clear();
@@ -148,7 +148,7 @@ namespace WeatherInformation.ViewModels
             // TODO: nullables?
             // TODO: nullables para distinguir cuando hay datos o no. Ahora me llega 0 si no datos (supongo) cuando double/integer
 
-            var remoteCurrentWeatherData = weatherData.RemoteCurrent;
+            var remoteCurrentWeatherData = weatherData.Current;
             if (remoteCurrentWeatherData != null)
             {
                 string weatherImage;

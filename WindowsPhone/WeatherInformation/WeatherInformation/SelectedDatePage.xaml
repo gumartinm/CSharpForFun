@@ -12,9 +12,6 @@
     shell:SystemTray.IsVisible="True"
     d:DataContext="{d:DesignData /SampleData/SelectedDateViewModelSampleData.xaml}">
 
-	<phone:PhoneApplicationPage.Resources>
-		<ViewModels:SelectedDateViewModel x:Key="SelectedDateViewModelDataSource" d:IsDataSource="True"/>
-	</phone:PhoneApplicationPage.Resources>
 	<phone:PhoneApplicationPage.FontFamily>
 		<StaticResource ResourceKey="PhoneFontFamilyNormal"/>
 	</phone:PhoneApplicationPage.FontFamily>

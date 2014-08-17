@@ -28,24 +28,21 @@ namespace WeatherInformation.Model.Services
             return this._jsonParser.ParserWeatherData<ForecastWeather>(jsonData);
         }
 
-        public WeatherData WeatherDataParser(string JSONRemoteForecastWeather, string JSONRemoteCurrentWeather)
+        public WeatherData WeatherDataParser(
+            string JSONForecast, string JSONCurrent, string city, string country)
         {
-            if (string.IsNullOrEmpty(JSONRemoteForecastWeather))
+            if (string.IsNullOrEmpty(JSONForecast))
             {
-                throw new ArgumentException("Missing argument", "JSONRemoteForecastWeather");
+                throw new ArgumentException("Missing argument", "JSONForecast");
             }
-            if (string.IsNullOrEmpty(JSONRemoteCurrentWeather))
+            if (string.IsNullOrEmpty(JSONCurrent))
             {
-                throw new ArgumentException("Missing argument", "JSONRemoteCurrentWeather");
+                throw new ArgumentException("Missing argument", "JSONCurrent");
             }
 
-            return new WeatherData
-            {
-                JSONRemoteCurrent = JSONRemoteCurrentWeather,
-                JSONRemoteForecast = JSONRemoteForecastWeather,
-                RemoteCurrent = GetCurrentWeather(JSONRemoteCurrentWeather),
-                RemoteForecast = GetForecastWeather(JSONRemoteForecastWeather),
-            };
+            var forecast = GetForecastWeather(JSONForecast);
+            var current = GetCurrentWeather(JSONCurrent);
+            return new WeatherData(forecast, JSONForecast, current, JSONCurrent, city, country);
         }
     }
 }
