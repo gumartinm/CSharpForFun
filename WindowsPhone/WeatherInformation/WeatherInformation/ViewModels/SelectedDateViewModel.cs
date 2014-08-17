@@ -17,8 +17,6 @@ namespace WeatherInformation.ViewModels
     {
         private readonly SettingsViewModel _settings = new SettingsViewModel();
 
-        [DataMember]
-        public Int32 SelectedDateIndex { get; set; }
 
         public String TitleTextCityCountry { get; private set; }
 
@@ -57,11 +55,11 @@ namespace WeatherInformation.ViewModels
         public String SelectedDatePressure { get; private set; }
         public String SelectedDatePressureUnits { get; private set; }
 
-        public void LoadData(WeatherData weatherData)
+        public void LoadData(WeatherData weatherData, int index)
         {
             var remoteForecastWeatherData = weatherData.RemoteForecast;
 
-            WeatherInformation.Model.ForecastWeatherParser.List forecast = remoteForecastWeatherData.list[this.SelectedDateIndex];
+            WeatherInformation.Model.ForecastWeatherParser.List forecast = remoteForecastWeatherData.list[index];
             DateTime unixTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             DateTime date = unixTime.AddSeconds(forecast.dt).ToLocalTime();
             this.SelectedDate = date.ToString("m", CultureInfo.InvariantCulture);

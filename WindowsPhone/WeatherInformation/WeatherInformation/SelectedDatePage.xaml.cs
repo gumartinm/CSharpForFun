@@ -32,9 +32,6 @@ namespace WeatherInformation
                 if (_selectedDateViewModel == null)
                 {
                     _selectedDateViewModel = new SelectedDateViewModel();
-                    // I always receive my parameter even if page was tombstoned. :)
-                    string stringIndex = NavigationContext.QueryString["parameter"];
-                    _selectedDateViewModel.SelectedDateIndex = Convert.ToInt32(stringIndex, CultureInfo.InvariantCulture);    
                 }
 
                 DataContext = _selectedDateViewModel;
@@ -43,16 +40,20 @@ namespace WeatherInformation
             // and it has remained in memory, this value will continue to be false.
             _isNewPageInstance = false;
 
-            UpdateApplicationDataUI();
+            // I always receive my parameter even if page was tombstoned. :)
+            string stringIndex = NavigationContext.QueryString["parameter"];
+            int index = Convert.ToInt32(stringIndex, CultureInfo.InvariantCulture);
+
+            UpdateApplicationDataUI(index);
         }
 
-        void UpdateApplicationDataUI()
+        void UpdateApplicationDataUI(int index)
         {
             WeatherData weatherData = (Application.Current as WeatherInformation.App).ApplicationDataObject;
 
             if (weatherData != null)
             {
-                _selectedDateViewModel.LoadData(weatherData);
+                _selectedDateViewModel.LoadData(weatherData, index);
             }
         }
     }
