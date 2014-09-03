@@ -30,7 +30,8 @@ namespace WeatherInformation
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-
+            // TODO: I am not saving the UI state. If location changed but it was not saved
+            // user will have to pick her location again :(
             Location locationItem = null;
             using (var db = new LocationDataContext(LocationDataContext.DBConnectionString))
             {
