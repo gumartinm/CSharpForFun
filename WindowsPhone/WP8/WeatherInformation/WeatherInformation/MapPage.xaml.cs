@@ -123,6 +123,9 @@ namespace WeatherInformation
 
             this.mapWeatherInformation.Layers.Clear();
 
+            // TODO: problems? user could press save location and if she is fast enough she
+            // could not realize the location changed.
+            // But well... She will realize later... So.. Is this really a problem?
             this.mapWeatherInformation.Center = geoCoordinate;
             this.mapWeatherInformation.ZoomLevel = 13;
 
