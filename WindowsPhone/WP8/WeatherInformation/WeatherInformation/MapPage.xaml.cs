@@ -86,6 +86,7 @@ namespace WeatherInformation
             Exception errorException = eventData.Error;
             if (errorException != null)
             {
+                // TODO: if user changed the page, where is this going to appear?
                 MessageBox.Show(
                     AppResources.NoticeErrorLocationAutodetection,
                     AppResources.UnavailableAutomaticCurrentLocationMessageBox,
@@ -95,6 +96,10 @@ namespace WeatherInformation
             {
                 if (eventData.Result.Count > 0)
                 {
+                    // TODO: Should I call UpdateMap even if there are not results?
+                    // I could use country and city default values in that case...
+                    // Problem this method: requires GeoCoordinate and I wouldn't have it here...
+                    // Somehow this method should take them...
                     MapAddress address = eventData.Result[0].Information.Address;
                     GeoCoordinate currentGeoCoordinate = eventData.Result[0].GeoCoordinate;
 
@@ -242,6 +247,7 @@ namespace WeatherInformation
             catch (Exception ex)
             {
                 // TODO: make sure when exception in GetCurrentLocationAndUpdateMap we catch it here.
+                // TODO: if user changed the page, where is this going to appear?
                 MessageBox.Show(
                     AppResources.NoticeErrorLocationAutodetection,
                     AppResources.UnavailableAutomaticCurrentLocationMessageBox,
