@@ -11,6 +11,7 @@ using WeatherInformation.Resources;
 using WeatherInformation.ViewModels;
 using System.Threading.Tasks;
 using WeatherInformation.Model.JsonDataParser;
+using Microsoft.Phone.Shell;
 
 namespace WeatherInformation
 {
@@ -35,6 +36,8 @@ namespace WeatherInformation
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+
+            CreateFlipTile();
 
             // If _isNewPageInstance is true, the page constuctor has been called, so
             // state may need to be restored.
@@ -169,6 +172,22 @@ namespace WeatherInformation
         private void Settings_Click(object sender, EventArgs e)
         {
             NavigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative));
+        }
+
+        private void CreateFlipTile()
+        {
+            ShellTile tile = ShellTile.ActiveTiles.FirstOrDefault(
+                x => x.NavigationUri.ToString().Contains("flip"));
+            tile = ShellTile.ActiveTiles.First();
+            var activeTiles = ShellTile.ActiveTiles;
+
+            var tileData = new FlipTileData();
+            tileData.Title = "GUSTAVO RULES";
+            tileData.BackTitle = "Gustavo Rules Back";
+            tileData.BackContent = "Gustavo Back Content";
+            tileData.WideBackContent = "Gustavo Wid Back Content";
+            tile.Update(tileData);
+
         }
 
         // Código de ejemplo para compilar una ApplicationBar traducida

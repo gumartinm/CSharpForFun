@@ -182,10 +182,6 @@
     <value>Previsión 5 días</value>
     <comment>Settings page, select forecast day numbers</comment>
   </data>
-  <data name="LocationPageSubTitle" xml:space="preserve">
-    <value>Ciudad, país</value>
-    <comment>Subtitle in location page</comment>
-  </data>
   <data name="LocationPageTitle" xml:space="preserve">
     <value>Selecciona tu localización</value>
     <comment>Title in location page</comment>
@@ -270,5 +266,17 @@
   </data>
   <data name="SelectedDatePageDefaultDescription" xml:space="preserve">
     <value>descripción no disponible</value>
+  </data>
+  <data name="SettingsTileNotificationSwitchOn" xml:space="preserve">
+    <value>Activado</value>
+    <comment>Settings page, switch notifications on</comment>
+  </data>
+  <data name="SettingsTileNotificationSwitchOff" xml:space="preserve">
+    <value>Desactivado</value>
+    <comment>Settings page, switch notifications off</comment>
+  </data>
+  <data name="SettingsTileNotificationSwitchHeader" xml:space="preserve">
+    <value>Notificaciones</value>
+    <comment>Settings page, switch notifications header</comment>
   </data>
 </root>

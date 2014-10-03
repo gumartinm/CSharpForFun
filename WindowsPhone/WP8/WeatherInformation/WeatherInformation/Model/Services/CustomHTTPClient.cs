@@ -42,8 +42,7 @@ namespace WeatherInformation.Model.Services
                 headers.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
 
                 // Bypassing Windows cache
-                DateTime currentDate = DateTime.UtcNow;
-                string uriWindowsCacheSucks = String.Concat(uri, currentDate);
+                string uriWindowsCacheSucks = String.Concat(uri, "&time=", DateTime.UtcNow.Ticks);
 
                 // TODO: HttpCompletionOption, without it, by default, I am buffering the received data.
                 //       in this case it is not a problem but when receiving loads of bytes I do not

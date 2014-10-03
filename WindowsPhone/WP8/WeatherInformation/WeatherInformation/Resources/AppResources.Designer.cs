@@ -124,15 +124,6 @@ namespace WeatherInformation.Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a City, country.
-        /// </summary>
-        public static string LocationPageSubTitle {
-            get {
-                return ResourceManager.GetString("LocationPageSubTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Busca una cadena traducida similar a Pick your location.
         /// </summary>
         public static string LocationPageTitle {
@@ -507,6 +498,33 @@ namespace WeatherInformation.Resources {
         public static string SettingsTemperatureUnitsSelectionFahrenheit {
             get {
                 return ResourceManager.GetString("SettingsTemperatureUnitsSelectionFahrenheit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Notifications.
+        /// </summary>
+        public static string SettingsTileNotificationSwitchHeader {
+            get {
+                return ResourceManager.GetString("SettingsTileNotificationSwitchHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Off.
+        /// </summary>
+        public static string SettingsTileNotificationSwitchOff {
+            get {
+                return ResourceManager.GetString("SettingsTileNotificationSwitchOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a On.
+        /// </summary>
+        public static string SettingsTileNotificationSwitchOn {
+            get {
+                return ResourceManager.GetString("SettingsTileNotificationSwitchOn", resourceCulture);
             }
         }
         

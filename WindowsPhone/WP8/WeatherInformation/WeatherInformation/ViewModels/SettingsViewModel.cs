@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO.IsolatedStorage;
+using WeatherInformation.Resources;
 
 namespace WeatherInformation.ViewModels
 {
@@ -14,11 +15,15 @@ namespace WeatherInformation.ViewModels
         private const string _languageSelectionSettingKeyName = "LanguageSelection";
         private const string _temperatureUnitsSelectionSettingKeyName = "TemperatureUnitsSelection";
         private const string _forecastDayNumbersSelectionSelectionSettingKeyName = "ForecastDayNumbersSelection";
+        private const string _tileNotificationSwitchSettingKeyName = "TileNotificationSwitch";
+        private const string _tileNotificationSwitchContentSettingKeyName = "TileNotificationSwitchContentSetting";
 
-        // The default value of ListPicker _settings
+        // The default values
         private const int _languageSelectionSettingDefault = 0;
         private const int _temperatureUnitsSelectionSettingDefault = 0;
         private const int _forecastDayNumbersSelectionSettingDefault = 0;
+        // Notifications off.
+        private const bool _tileNotificationSwitchSettingDefault = false;
 
 
         public SettingsViewModel()
@@ -89,6 +94,50 @@ namespace WeatherInformation.ViewModels
                 NotifyPropertyChanged(_forecastDayNumbersSelectionSelectionSettingKeyName);
             }
         }
+
+        /// <summary>
+        /// Turns on/off tile notification.
+        /// </summary>
+        public bool TileNotificationSwitchSetting
+        {
+            get
+            {
+                bool value = GetValueOrDefault<bool>(_tileNotificationSwitchSettingKeyName, _tileNotificationSwitchSettingDefault);
+                if (value)
+                {
+                    TileNotificationSwitchContentSetting = AppResources.SettingsTileNotificationSwitchOn;
+                }
+                else
+                {
+                    TileNotificationSwitchContentSetting = AppResources.SettingsTileNotificationSwitchOff;       
+                }
+                NotifyPropertyChanged(_tileNotificationSwitchContentSettingKeyName);
+                return value;
+            }
+            set
+            {
+                if (AddOrUpdateValue(_tileNotificationSwitchSettingKeyName, value))
+                {
+                    Save();
+                }
+                if (value)
+                {
+                    TileNotificationSwitchContentSetting = AppResources.SettingsTileNotificationSwitchOn;
+                }
+                else
+                {
+                    TileNotificationSwitchContentSetting = AppResources.SettingsTileNotificationSwitchOff;
+                }
+                NotifyPropertyChanged(_tileNotificationSwitchSettingKeyName);
+                NotifyPropertyChanged(_tileNotificationSwitchContentSettingKeyName);
+            }
+        }
+
+        /// <summary>
+        /// Changes content switch notification setting.
+        /// </summary>
+        public string TileNotificationSwitchContentSetting { get; private set; }
+
 
         /// <summary>
         /// Get the current value of the setting, or if it is not found, set the 

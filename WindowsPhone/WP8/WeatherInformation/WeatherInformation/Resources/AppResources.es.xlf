@@ -92,11 +92,6 @@
           <source>ºF</source>
           <target state="needs-review-translation" state-qualifier="mt-suggestion">º F</target>
         </trans-unit>
-        <trans-unit id="Resx/LocationPageSubTitle" translate="yes" xml:space="preserve">
-          <source>City, country</source>
-          <target state="translated" state-qualifier="mt-suggestion">Ciudad, país</target>
-          <note from="MultilingualBuild" annotates="source" priority="2">Subtitle in location page</note>
-          </trans-unit>
         <trans-unit id="Resx/LocationPageTitle" translate="yes" xml:space="preserve">
           <source>Pick your location</source>
           <target state="translated">Selecciona tu localización</target>
@@ -167,6 +162,21 @@
           <source>no description available</source>
           <target state="translated">descripción no disponible</target>
         </trans-unit>
+        <trans-unit id="Resx/SettingsTileNotificationSwitchHeader" translate="yes" xml:space="preserve">
+          <source>Notifications</source>
+          <target state="translated">Notificaciones</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Settings page, switch notifications header</note>
+          </trans-unit>
+        <trans-unit id="Resx/SettingsTileNotificationSwitchOn" translate="yes" xml:space="preserve">
+          <source>On</source>
+          <target state="translated">Activado</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Settings page, switch notifications on</note>
+          </trans-unit>
+        <trans-unit id="Resx/SettingsTileNotificationSwitchOff" translate="yes" xml:space="preserve">
+          <source>Off</source>
+          <target state="translated">Desactivado</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Settings page, switch notifications off</note>
+          </trans-unit>
         <trans-unit id="Resx/DefaultCity" translate="yes" xml:space="preserve">
           <source>City not found</source>
           <target state="translated">Ciudad no encontrada</target>

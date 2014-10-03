@@ -26,7 +26,17 @@
         <!--TitlePanel contiene el nombre de la aplicación y el título de la página-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
             <TextBlock Text="{Binding LocalizedResources.LocationPageTitle, Mode=OneWay, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="LocationTextCityCountry" Text="{Binding LocalizedResources.LocationPageSubTitle, Mode=OneWay, Source={StaticResource LocalizedStrings}}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="42*"/>
+                    <ColumnDefinition Width="41*"/>
+                    <ColumnDefinition Width="151*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="LocationTextCity" Text="{Binding LocalizedResources.DefaultCity, Mode=OneWay, Source={StaticResource LocalizedStrings}}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle2Style}" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.ColumnSpan="3"/>
+                <TextBlock x:Name="LocationTextCountry" Text="{Binding LocalizedResources.DefaultCountry, Mode=OneWay, Source={StaticResource LocalizedStrings}}" Margin="0,-7,0,0" Style="{StaticResource PhoneTextTitle2Style}" FontSize="24" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="2"/>
+            </Grid>
+            <StackPanel Orientation="Horizontal">
+            </StackPanel>
         </StackPanel>
 
         <!--ContentPanel. Colocar aquí el contenido adicional-->
@@ -34,12 +44,15 @@
             <maps:Map x:Name="mapWeatherInformation" Grid.Row="1" Tap="mapWeatherInformation_Tap"/>
         </Grid>
         <Grid Grid.Row="2">
+            <ProgressBar x:Name="ProgressBarRemoteData" IsIndeterminate="True" LargeChange="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Height="80" FontSize="20" FlowDirection="LeftToRight" UseLayoutRounding="True" IsEnabled="False" />
             <Button x:Name="SaveLocationButton"  Content="{Binding LocalizedResources.MapPageSaveLocationButton, Mode=OneWay, Source={StaticResource LocalizedStrings}}" Click="SaveLocationButton_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <Button x:Name="GetCurrentLocationButton" HorizontalAlignment="Right" VerticalAlignment="Center" Content="{Binding LocalizedResources.MapPageGetCurrentLocationButton, Mode=OneWay, Source={StaticResource LocalizedStrings}}" Click="GetCurrentLocationButton_Click"/>
         </Grid>
         <Grid Grid.Row="3">
+            <!-- 
             <Button x:Name="ZoomInButton" Click="ZoomInButton_Click" HorizontalAlignment="Left" VerticalAlignment="Center" Content="Zoom +"/>
-            <Button x:Name="ZoomOutButton" Click="ZoomOutButton_Click" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Zoom -"/>
+            <Button x:Name="ZoomOutButton" Click="ZoomOutButton_Click" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Zoom -"/> 
+        -->
         </Grid>
     </Grid>
 

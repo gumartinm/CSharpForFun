@@ -77,11 +77,6 @@
           <source>ºF</source>
           <target state="new">ºF</target>
         </trans-unit>
-        <trans-unit id="Resx/LocationPageSubTitle" translate="yes" xml:space="preserve">
-          <source>City, country</source>
-          <target state="new">City, country</target>
-          <note from="MultilingualBuild" annotates="source" priority="2">Subtitle in location page</note>
-        </trans-unit>
         <trans-unit id="Resx/LocationPageTitle" translate="yes" xml:space="preserve">
           <source>Pick your location</source>
           <target state="new">Pick your location</target>
@@ -151,6 +146,21 @@
         <trans-unit id="Resx/SelectedDatePageDefaultDescription" translate="yes" xml:space="preserve">
           <source>no description available</source>
           <target state="new">no description available</target>
+        </trans-unit>
+        <trans-unit id="Resx/SettingsTileNotificationSwitchHeader" translate="yes" xml:space="preserve">
+          <source>Notifications</source>
+          <target state="new">Notifications</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Settings page, switch notifications header</note>
+        </trans-unit>
+        <trans-unit id="Resx/SettingsTileNotificationSwitchOn" translate="yes" xml:space="preserve">
+          <source>On</source>
+          <target state="new">On</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Settings page, switch notifications on</note>
+        </trans-unit>
+        <trans-unit id="Resx/SettingsTileNotificationSwitchOff" translate="yes" xml:space="preserve">
+          <source>Off</source>
+          <target state="new">Off</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Settings page, switch notifications off</note>
         </trans-unit>
         <trans-unit id="Resx/DefaultCity" translate="yes" xml:space="preserve">
           <source>City not found</source>

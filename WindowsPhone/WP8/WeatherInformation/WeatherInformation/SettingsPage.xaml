@@ -36,6 +36,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -61,6 +62,13 @@
                                 <toolkit:ListPickerItem Content="{Binding LocalizedResources.SettingsForecastDayNumbersSelectionTen, Mode=OneWay, Source={StaticResource LocalizedStrings}}"/>
                                 <toolkit:ListPickerItem Content="{Binding LocalizedResources.SettingsForecastDayNumbersSelectionFourteen, Mode=OneWay, Source={StaticResource LocalizedStrings}}"/>
                             </toolkit:ListPicker>
+                        </StackPanel>
+                        <StackPanel Grid.Column="0" Grid.Row="3" Orientation="Vertical" VerticalAlignment="Center" Margin="0,30,0,0">
+                            <toolkit:ToggleSwitch x:Name="TileNotificationSwitch"
+                                                  Content="{Binding TileNotificationSwitchContentSetting, Mode=TwoWay, Source={StaticResource SettingsViewModelDataSource}}"
+                                                  Header="{Binding LocalizedResources.SettingsTileNotificationSwitchHeader, Mode=OneWay, Source={StaticResource LocalizedStrings}}"
+                                                  SwitchForeground="#FF0049E5"
+                                                  IsChecked="{Binding TileNotificationSwitchSetting, Mode=TwoWay}"/>
                         </StackPanel>
                     </Grid>
                 </ScrollViewer>

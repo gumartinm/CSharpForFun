@@ -122,6 +122,7 @@
     <Compile Include="Model\JsonDataParser\JsonParser.cs" />
     <Compile Include="Model\Location.cs" />
     <Compile Include="Model\LocationDataContext.cs" />
+    <Compile Include="Model\ReverseGeoCode.cs" />
     <Compile Include="Model\WeatherData.cs" />
     <Compile Include="Model\Services\CustomHTTPClient.cs" />
     <Compile Include="Model\Services\ServiceParser.cs" />
@@ -264,6 +265,7 @@
       <LastGenOutput>AppResources.qps-ploc.resx</LastGenOutput>
     </XliffResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\Microsoft.Multilingual.ResxResources.targets" Label="MultilingualAppToolkit" />

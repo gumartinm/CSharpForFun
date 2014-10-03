@@ -200,10 +200,6 @@
   <data name="TemperatureUnitsFahrenheitSymbol" xml:space="preserve">
     <value>ºF</value>
   </data>
-  <data name="LocationPageSubTitle" xml:space="preserve">
-    <value>City, country</value>
-    <comment>Subtitle in location page</comment>
-  </data>
   <data name="LocationPageTitle" xml:space="preserve">
     <value>Pick your location</value>
     <comment>Title in location page</comment>
@@ -313,5 +309,17 @@
   </data>
   <data name="SelectedDatePageDefaultDescription" xml:space="preserve">
     <value>no description available</value>
+  </data>
+  <data name="SettingsTileNotificationSwitchHeader" xml:space="preserve">
+    <value>Notifications</value>
+    <comment>Settings page, switch notifications header</comment>
+  </data>
+  <data name="SettingsTileNotificationSwitchOff" xml:space="preserve">
+    <value>Off</value>
+    <comment>Settings page, switch notifications off</comment>
+  </data>
+  <data name="SettingsTileNotificationSwitchOn" xml:space="preserve">
+    <value>On</value>
+    <comment>Settings page, switch notifications on</comment>
   </data>
 </root>

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Navigation;
@@ -9,107 +8,148 @@ using System.Device.Location;
 using System.Windows.Shapes;
 using System.Windows.Media;
 using Microsoft.Phone.Maps.Controls;
-using WeatherInformation.Resources;
-using System.Globalization;
-using Microsoft.Phone.Maps.Services;
 using System.Threading.Tasks;
 using WeatherInformation.Model;
 
 namespace WeatherInformation
 {
-    public partial class MapPage : PhoneApplicationPage
+    public partial class MapPage : PhoneApplicationPage, ReverseGeoCode.IReverseGeoCode
     {
-        // TODO anything better than these two instance fields? :(
-        private string _city;
-        private string _country;
+        private bool _isNewPageInstance;
+        private ReverseGeoCode _reverseGeoCodeOnProgress;
+        // TODO: how big is a MapLayer object?
+        private MapOverlay _locationOverlay;
 
         public MapPage()
         {
             InitializeComponent();
+
+            _isNewPageInstance = true;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            // TODO: I am not saving the UI state. If location changed but it was not saved
-            // user will have to pick her location again :(
-            Location locationItem = null;
-            using (var db = new LocationDataContext(LocationDataContext.DBConnectionString))
+            var geolocator = new Geolocator();
+            if (geolocator.LocationStatus != PositionStatus.Ready)
             {
-                // Define the query to gather all of the to-do items.
-                // var toDoItemsInDB = from Location location in _locationDB.Locations where location.IsSelected select location;
-                locationItem = db.Locations.Where(location => location.IsSelected).FirstOrDefault();
+                GetCurrentLocationButton.IsEnabled = false;
             }
-            
-            if (locationItem != null)
-            {
-                GeoCoordinate geoCoordinate = ConvertLocation(locationItem);
 
-                this.UpdateMap(geoCoordinate, locationItem.City, locationItem.Country);
+            GeoCoordinate restoreReverseOnProgress = null;
+            Location restoreLocation = null;
+            if (_isNewPageInstance)
+            {
+                if (State.Count > 0)
+                {
+                    restoreReverseOnProgress = (GeoCoordinate)State["ReverseGeoCoorDinateOnProgress"];
+                    restoreLocation = (Location)State["CurrentChosenMapLocation"];
+                }
             }
+            // Set _isNewPageInstance to false. If the user navigates back to this page
+            // and it has remained in memory, this value will continue to be false.
+            _isNewPageInstance = false;
+
+            Location location;
+            if (restoreLocation != null)
+            {
+                location = restoreLocation;
+            }
+            else if (_locationOverlay != null)
+            {
+                location = CoordinateHelper.GeoCoordinateToLocation(
+                    _locationOverlay.GeoCoordinate,
+                    LocationTextCity.Text,
+                    LocationTextCountry.Text);
+            }
+            else
+            {
+                using (var db = new LocationDataContext(LocationDataContext.DBConnectionString))
+                {
+                    // Define the query to gather all of the to-do items.
+                    // var toDoItemsInDB = from Location location in _locationDB.Locations where location.IsSelected select location;
+                    location = db.Locations.Where(locationItem => locationItem.IsSelected).FirstOrDefault();
+                }
+            }
+
+
+            if (location != null)
+            {
+                UpdateMap(CoordinateHelper.LocationToGeoCoordinate(location),
+                          location.City, location.Country);
+            }
+
+            if (restoreReverseOnProgress != null)
+            {
+                ShowProgressBar();
+                ReverseGeocodeAndUpdateMap(restoreReverseOnProgress);
+            }
+            else
+            {
+                RemoveProgressBar();
+            }
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            if (e.NavigationMode != System.Windows.Navigation.NavigationMode.Back)
+            {
+                // TODO: Could Center be null?
+                State["CurrentChosenMapLocation"] = CoordinateHelper.GeoCoordinateToLocation(
+                    mapWeatherInformation.Center,
+                    LocationTextCity.Text,
+                    LocationTextCountry.Text);
+
+                if (_reverseGeoCodeOnProgress != null)
+                {
+                    State["ReverseGeoCoorDinateOnProgress"] = _reverseGeoCodeOnProgress.CoorDinate;
+                }  
+            }
+        }
+
+        public void OnCompletedReverseGeoCode(GeoCoordinate geoCoordinate, string city, string country)
+        {
+            UpdateMap(geoCoordinate, city, country);
+            RemoveProgressBar();
+            _reverseGeoCodeOnProgress = null;
         }
 
         private async Task GetCurrentLocationAndUpdateMap()
         {
-            Geolocator geolocator = new Geolocator();
+            var geolocator = new Geolocator();
             geolocator.DesiredAccuracyInMeters = 50;
+            geolocator.ReportInterval = 1000;
 
-            Geoposition geoposition = await geolocator.GetGeopositionAsync(
-                maximumAge: TimeSpan.FromSeconds(10),
+            var geoposition = await geolocator.GetGeopositionAsync(
+                maximumAge: TimeSpan.FromSeconds(1),
                 timeout: TimeSpan.FromSeconds(10)
                 );
-            GeoCoordinate currentGeoCoordinate = CoordinateHelper.ConvertGeocoordinate(geoposition.Coordinate);
+            // TODO: check if the following is true:
+            // Without ConfigureAwait(false) await returns data on the calling thread. (AFAIK for this Context)
+            // otherwise I should call: Dispatcher.BeginInvoke(() => ReverseGeocodeAndUpdateMap(currentGeoCoordinate));
 
+            // TODO: What is going to happend when Timeout? Exception or geposition will be null value.
+            //       Should I check for null value in case of Timeout?
+            var currentGeoCoordinate = CoordinateHelper.ConvertGeocoordinate(geoposition.Coordinate);
+            ShowProgressBar();
             ReverseGeocodeAndUpdateMap(currentGeoCoordinate);
         }
 
-        // TODO: problems updating Map because this method may be called when automatically retrieving
-        //       the current user's location or when user taps on map tyring to choose by herself her location.
-        //       There could be 2 threads updating Map at the same time. Solution: remove the feature
-        //       of getting the current user's location (user must always choose her/his location instead of doing
-        //       it automatically)
-        private void ReverseGeocodeAndUpdateMap(GeoCoordinate currentGeoCoordinate)
+        private void ReverseGeocodeAndUpdateMap(GeoCoordinate geoCoordinate)
         {
-            ReverseGeocodeQuery currentReverseGeocodeQuery = new ReverseGeocodeQuery();
-            currentReverseGeocodeQuery.GeoCoordinate = currentGeoCoordinate;
-            currentReverseGeocodeQuery.QueryCompleted += QueryCompletedCallback;
-            currentReverseGeocodeQuery.QueryAsync();
-        }
-
-        private void QueryCompletedCallback(object sender, QueryCompletedEventArgs<IList<MapLocation>> eventData)
-        {
-            if (eventData.Cancelled)
+            var reverseGeoCode = new ReverseGeoCode()
             {
-                // Be careful!!! If you throw exception from this point your program will finish with "Unhandled Exception".
-                return;
+                Page = this,
+                CoorDinate = geoCoordinate
+            };
+
+            if (_reverseGeoCodeOnProgress != null)
+            {
+                // GC may release old object.
+                _reverseGeoCodeOnProgress.Page = null;
             }
 
-            Exception errorException = eventData.Error;
-            if (errorException != null)
-            {
-                // TODO: Should I call UpdateMap even if there are not results?
-                // I could use country and city default values in that case...
-                // Problem this method: requires GeoCoordinate and I wouldn't have it here...
-                // Somehow this method should take them...
-                // TODO: if user changed the page, where is this going to appear?
-                MessageBox.Show(
-                    AppResources.NoticeErrorLocationAutodetection,
-                    AppResources.UnavailableAutomaticCurrentLocationMessageBox,
-                    MessageBoxButton.OK);
-            }
-            else
-            {
-                if (eventData.Result.Count > 0)
-                {
-                    // TODO: Should I call UpdateMap even if there are not results?
-                    // I could use country and city default values in that case...
-                    // Problem this method: requires GeoCoordinate and I wouldn't have it here...
-                    // Somehow this method should take them...
-                    MapAddress address = eventData.Result[0].Information.Address;
-                    GeoCoordinate currentGeoCoordinate = eventData.Result[0].GeoCoordinate;
-
-                    UpdateMap(currentGeoCoordinate, address.City, address.Country);
-                }
-            }
+            _reverseGeoCodeOnProgress = reverseGeoCode;
+            _reverseGeoCodeOnProgress.DoReverseGeocode(geoCoordinate);
         }
 
         private void UpdateMap(GeoCoordinate geoCoordinate, string city, string country)
@@ -122,36 +162,27 @@ namespace WeatherInformation
             myCircle.Opacity = 50;
 
             // Create a MapOverlay to contain the circle.
-            MapOverlay myLocationOverlay = new MapOverlay();
-            myLocationOverlay.Content = myCircle;
-            myLocationOverlay.PositionOrigin = new Point(0.5, 0.5);
-            myLocationOverlay.GeoCoordinate = geoCoordinate;
+            _locationOverlay = new MapOverlay();
+            _locationOverlay.Content = myCircle;
+            _locationOverlay.PositionOrigin = new Point(0.5, 0.5);
+            _locationOverlay.GeoCoordinate = geoCoordinate;
 
             // Create a MapLayer to contain the MapOverlay.
             MapLayer myLocationLayer = new MapLayer();
-            myLocationLayer.Add(myLocationOverlay);
+            myLocationLayer.Add(_locationOverlay);
 
-            this.mapWeatherInformation.Layers.Clear();
+            mapWeatherInformation.Layers.Clear();
 
             // TODO: problems? user could press save location and if she is fast enough she
             // could not realize the location changed.
             // But well... She will realize later... So.. Is this really a problem?
-            this.mapWeatherInformation.Center = geoCoordinate;
-            this.mapWeatherInformation.ZoomLevel = 13;
+            mapWeatherInformation.Center = geoCoordinate;
+            mapWeatherInformation.ZoomLevel = 13;
 
-            if (string.IsNullOrEmpty(city))
-            {
-                city = AppResources.DefaultCity;
-            }
-            if (string.IsNullOrEmpty(country))
-            {
-                country = AppResources.DefaultCountry;
-            }
-            this.LocationTextCityCountry.Text = String.Format(CultureInfo.InvariantCulture, "{0}, {1}", city, country);
-            _city = city;
-            _country = country;
+            LocationTextCity.Text = city;
+            LocationTextCountry.Text = country;
             // Add the MapLayer to the Map.
-            this.mapWeatherInformation.Layers.Add(myLocationLayer);
+            mapWeatherInformation.Layers.Add(myLocationLayer);
         }
 
         private static class CoordinateHelper
@@ -169,11 +200,43 @@ namespace WeatherInformation
                     geocoordinate.Heading ?? Double.NaN
                     );
             }
+
+            public static GeoCoordinate LocationToGeoCoordinate(Location locationItem)
+            {
+                return new GeoCoordinate
+                    (
+                    locationItem.Latitude,
+                    locationItem.Longitude,
+                    locationItem.Altitude,
+                    locationItem.HorizontalAccuracy,
+                    locationItem.VerticalAccuracy,
+                    locationItem.Speed,
+                    locationItem.Course
+                    );
+            }
+
+            public static Location GeoCoordinateToLocation(GeoCoordinate geoCoordinate, string city, string country)
+            {
+                return new Location()
+                {
+                    Latitude = geoCoordinate.Latitude,
+                    Longitude = geoCoordinate.Longitude,
+                    Altitude = geoCoordinate.Altitude,
+                    City = city,
+                    Country = country,
+                    HorizontalAccuracy = geoCoordinate.HorizontalAccuracy,
+                    VerticalAccuracy = geoCoordinate.VerticalAccuracy,
+                    Speed = geoCoordinate.Speed,
+                    Course = geoCoordinate.Course,
+                    IsSelected = true,
+                    LastRemoteDataUpdate = null,
+                };
+            }
         }
 
         // TODO: check data before storing :(
         // http://stackoverflow.com/questions/4521435/what-specific-values-can-a-c-sharp-double-represent-that-a-sql-server-float-can
-        private void StoreLocation(GeoCoordinate geocoordinate)
+        private void StoreLocation(GeoCoordinate geocoordinate, string city, string country)
         {
             Location locationItem = null;
             using (var db = new LocationDataContext(LocationDataContext.DBConnectionString))
@@ -187,8 +250,8 @@ namespace WeatherInformation
                     locationItem.Latitude = geocoordinate.Latitude;
                     locationItem.Longitude = geocoordinate.Longitude;
                     locationItem.Altitude = geocoordinate.Altitude;
-                    locationItem.City = _city ?? "";
-                    locationItem.Country = _country ?? "";
+                    locationItem.City = city;
+                    locationItem.Country = country;
                     locationItem.HorizontalAccuracy = geocoordinate.HorizontalAccuracy;
                     locationItem.VerticalAccuracy = geocoordinate.VerticalAccuracy;
                     locationItem.Speed = geocoordinate.Speed;
@@ -203,8 +266,8 @@ namespace WeatherInformation
                         Latitude = geocoordinate.Latitude,
                         Longitude = geocoordinate.Longitude,
                         Altitude = geocoordinate.Altitude,
-                        City = _city ?? "",
-                        Country = _country ?? "",
+                        City = city,
+                        Country = country,
                         HorizontalAccuracy = geocoordinate.HorizontalAccuracy,
                         VerticalAccuracy = geocoordinate.VerticalAccuracy,
                         Speed = geocoordinate.Speed,
@@ -221,51 +284,56 @@ namespace WeatherInformation
             }
         }
 
-        private GeoCoordinate ConvertLocation(Location locationItem)
-        {
-            return new GeoCoordinate
-                (
-                locationItem.Latitude,
-                locationItem.Longitude,
-                locationItem.Altitude,
-                locationItem.HorizontalAccuracy,
-                locationItem.VerticalAccuracy,
-                locationItem.Speed,
-                locationItem.Course
-                );
-        }
-
         private void mapWeatherInformation_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            // TODO: if exception from here application will crash (I guess)
             var point = e.GetPosition(this.mapWeatherInformation);
             GeoCoordinate geocoordinate = this.mapWeatherInformation.ConvertViewportPointToGeoCoordinate(point);
+            ShowProgressBar();
             ReverseGeocodeAndUpdateMap(geocoordinate);
         }
 
         private async void GetCurrentLocationButton_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                await this.GetCurrentLocationAndUpdateMap();
-            }
-            catch (Exception ex)
-            {
-                // TODO: make sure when exception in GetCurrentLocationAndUpdateMap we catch it here.
-                // TODO: if user changed the page, where is this going to appear?
-                MessageBox.Show(
-                    AppResources.NoticeErrorLocationAutodetection,
-                    AppResources.UnavailableAutomaticCurrentLocationMessageBox,
-                    MessageBoxButton.OK);
-            }
+            //Geolocator geolocator = new Geolocator();
+            //geolocator.DesiredAccuracyInMeters = 50;
+            //if (geolocator.LocationStatus != PositionStatus.Ready)
+            //{
+            //    // TODO: to use ToastPrompt from the Coding4Fun Toolkit (using NuGet)
+            //    return;
+            //}
+            
+            // TODO: if exception from here application will crash (I guess)
+            await this.GetCurrentLocationAndUpdateMap();
         }
 
         private void SaveLocationButton_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: Could there some problem if user clicks button and thread is in this very moment updating map?
-            var geoCoordinate = this.mapWeatherInformation.Center;
-
-            StoreLocation(geoCoordinate);
+            // TODO: Could Center be null?
+            StoreLocation(this.mapWeatherInformation.Center, this.LocationTextCity.Text, this.LocationTextCountry.Text);
         }
+
+        private void ShowProgressBar()
+        {
+            GetCurrentLocationButton.IsEnabled = false;
+            GetCurrentLocationButton.Visibility = Visibility.Collapsed;
+            SaveLocationButton.IsEnabled = false;
+            SaveLocationButton.Visibility = Visibility.Collapsed;
+            ProgressBarRemoteData.IsEnabled = true;
+            ProgressBarRemoteData.Visibility = Visibility.Visible;
+        }
+
+        private void RemoveProgressBar()
+        {
+            GetCurrentLocationButton.IsEnabled = true;
+            GetCurrentLocationButton.Visibility = Visibility.Visible;
+            SaveLocationButton.IsEnabled = true;
+            SaveLocationButton.Visibility = Visibility.Visible;
+            ProgressBarRemoteData.IsEnabled = false;
+            ProgressBarRemoteData.Visibility = Visibility.Collapsed;
+        }
+
+
 
         private void ZoomOutButton_Click(object sender, RoutedEventArgs e)
         {
