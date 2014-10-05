@@ -157,6 +157,11 @@
           <target state="new">On</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Settings page, switch notifications on</note>
         </trans-unit>
+        <trans-unit id="Resx/MainPageRemoteDataError" translate="yes" xml:space="preserve">
+          <source>No data available</source>
+          <target state="new">No data available</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Main pange, default message when there is no remote data</note>
+        </trans-unit>
         <trans-unit id="Resx/SettingsTileNotificationSwitchOff" translate="yes" xml:space="preserve">
           <source>Off</source>
           <target state="new">Off</target>

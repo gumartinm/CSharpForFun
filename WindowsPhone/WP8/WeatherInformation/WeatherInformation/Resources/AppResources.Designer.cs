@@ -295,6 +295,15 @@ namespace WeatherInformation.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a No data available.
+        /// </summary>
+        public static string MainPageRemoteDataError {
+            get {
+                return ResourceManager.GetString("MainPageRemoteDataError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a City, country.
         /// </summary>
         public static string MainPageTitle {

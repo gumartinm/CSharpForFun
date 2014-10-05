@@ -322,4 +322,8 @@
     <value>On</value>
     <comment>Settings page, switch notifications on</comment>
   </data>
+  <data name="MainPageRemoteDataError" xml:space="preserve">
+    <value>No data available</value>
+    <comment>Main pange, default message when there is no remote data</comment>
+  </data>
 </root>

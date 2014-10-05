@@ -11,7 +11,6 @@ using WeatherInformation.Resources;
 using WeatherInformation.ViewModels;
 using System.Threading.Tasks;
 using WeatherInformation.Model.JsonDataParser;
-using Microsoft.Phone.Shell;
 
 namespace WeatherInformation
 {
@@ -36,8 +35,6 @@ namespace WeatherInformation
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-
-            CreateFlipTile();
 
             // If _isNewPageInstance is true, the page constuctor has been called, so
             // state may need to be restored.
@@ -65,9 +62,20 @@ namespace WeatherInformation
                 locationItem = db.Locations.Where(location => location.IsSelected).FirstOrDefault();
             }
 
+            // Empty UI
+            this.CurrentData.Visibility = Visibility.Collapsed;
+            this.ForecastData.Visibility = Visibility.Collapsed;
+            this.ProgressBarRemoteData.Visibility = Visibility.Collapsed;
+            this.NoDataAvailable.Visibility = Visibility.Collapsed;
+
             if (locationItem == null)
             {
                 // Nothing to do.
+                // Show error message.
+                this.CurrentData.Visibility = Visibility.Collapsed;
+                this.ForecastData.Visibility = Visibility.Collapsed;
+                this.ProgressBarRemoteData.Visibility = Visibility.Collapsed;
+                this.NoDataAvailable.Visibility = Visibility.Visible;
                 return;
             }
 
@@ -76,11 +84,49 @@ namespace WeatherInformation
             WeatherData weatherData = (Application.Current as WeatherInformation.App).ApplicationDataObject;
             if (!IsDataFresh(locationItem.LastRemoteDataUpdate) || weatherData == null)
             {
-                // Load remote data (aynchronous way by means of async/await)
-
                 // Gets the data from the web.
-                (Application.Current as WeatherInformation.App).ApplicationDataObject =
-                    await GetRemoteDataAsync(locationItem);
+                this.CurrentData.Visibility = Visibility.Collapsed;
+                this.ForecastData.Visibility = Visibility.Collapsed;
+                this.ProgressBarRemoteData.Visibility = Visibility.Visible;
+                this.NoDataAvailable.Visibility = Visibility.Collapsed;
+
+                await GetRemoteDataAndUpdateUI(locationItem);
+            }
+            else
+            {
+                this.CurrentData.Visibility = Visibility.Visible;
+                this.ForecastData.Visibility = Visibility.Visible;
+                this.ProgressBarRemoteData.Visibility = Visibility.Collapsed;
+                this.NoDataAvailable.Visibility = Visibility.Collapsed;
+
+                UpdateUI(weatherData);
+            }
+        }
+
+        private void UpdateUI(WeatherData weatherData)
+        {
+            if (weatherData != null)
+            {
+                _mainViewModel.LoadData(weatherData);
+            }
+        }
+
+        async private Task GetRemoteDataAndUpdateUI(Location locationItem)
+        {
+            // Load remote data (aynchronous way by means of async/await)
+            try
+            {
+                // Without ConfigureAwait(false) await returns data on the calling thread.
+                WeatherData weatherData = await GetRemoteDataAsync(locationItem);
+
+                this.CurrentData.Visibility = Visibility.Visible;
+                this.ForecastData.Visibility = Visibility.Visible;
+                this.ProgressBarRemoteData.Visibility = Visibility.Collapsed;
+                this.NoDataAvailable.Visibility = Visibility.Collapsed;
+
+                UpdateUI(weatherData);
+
+                (Application.Current as WeatherInformation.App).ApplicationDataObject = weatherData;
 
                 using (var db = new LocationDataContext(LocationDataContext.DBConnectionString))
                 {
@@ -89,23 +135,15 @@ namespace WeatherInformation
                     db.SubmitChanges();
                 }
             }
-
-            // Call UpdateUI on the UI thread.
-            // Without ConfigureAwait(false) await returns data on the calling thread. In this case the calling one
-            // is the UI thread. So, I can save the call to Dispatcher.BeginInvoke.
-            //Dispatcher.BeginInvoke(() => UpdateUI());
-            UpdateUI();
-        }
-
-        void UpdateUI()
-        {
-            // Set the ApplicationData and ApplicationDataStatus members of the ViewModel
-            WeatherData weatherData = (Application.Current as WeatherInformation.App).ApplicationDataObject;
-
-            if (weatherData != null)
+            catch(Exception e)
             {
-                _mainViewModel.LoadData(weatherData);
+                // Empty UI and show error message
+                this.CurrentData.Visibility = Visibility.Collapsed;
+                this.ForecastData.Visibility = Visibility.Collapsed;
+                this.ProgressBarRemoteData.Visibility = Visibility.Collapsed;
+                this.NoDataAvailable.Visibility = Visibility.Visible;
             }
+
         }
 
         private void LongListSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -172,22 +210,6 @@ namespace WeatherInformation
         private void Settings_Click(object sender, EventArgs e)
         {
             NavigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative));
-        }
-
-        private void CreateFlipTile()
-        {
-            ShellTile tile = ShellTile.ActiveTiles.FirstOrDefault(
-                x => x.NavigationUri.ToString().Contains("flip"));
-            tile = ShellTile.ActiveTiles.First();
-            var activeTiles = ShellTile.ActiveTiles;
-
-            var tileData = new FlipTileData();
-            tileData.Title = "GUSTAVO RULES";
-            tileData.BackTitle = "Gustavo Rules Back";
-            tileData.BackContent = "Gustavo Back Content";
-            tileData.WideBackContent = "Gustavo Wid Back Content";
-            tile.Update(tileData);
-
         }
 
         // Código de ejemplo para compilar una ApplicationBar traducida
