@@ -24,6 +24,11 @@ namespace WeatherInformation.Model
             currentReverseGeocodeQuery.QueryAsync();
         }
 
+        /// <summary>
+        /// It must be running in main thread.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventData"></param>
         private void QueryCompletedCallback(object sender, QueryCompletedEventArgs<IList<MapLocation>> eventData)
         {
             // Commenting out because I have to disable progress dialog even if the async task was cancelled.

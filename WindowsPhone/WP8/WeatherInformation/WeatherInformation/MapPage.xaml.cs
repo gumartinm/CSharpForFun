@@ -10,15 +10,19 @@ using System.Windows.Media;
 using Microsoft.Phone.Maps.Controls;
 using System.Threading.Tasks;
 using WeatherInformation.Model;
+using System.IO.IsolatedStorage;
 
 namespace WeatherInformation
 {
     public partial class MapPage : PhoneApplicationPage, ReverseGeoCode.IReverseGeoCode
     {
         private bool _isNewPageInstance;
-        private ReverseGeoCode _reverseGeoCodeOnProgress;
+        private ReverseGeoCode _reverseOnProgress;
+        private Geolocator _geolocator;
         // TODO: how big is a MapLayer object?
         private MapOverlay _locationOverlay;
+        private Location _restoreLocation;
+        private GeoCoordinate _restoreReverseOnProgress;
 
         public MapPage()
         {
@@ -29,64 +33,33 @@ namespace WeatherInformation
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var geolocator = new Geolocator();
-            if (geolocator.LocationStatus != PositionStatus.Ready)
-            {
-                GetCurrentLocationButton.IsEnabled = false;
-            }
+            AskForLocationConsent();
 
-            GeoCoordinate restoreReverseOnProgress = null;
-            Location restoreLocation = null;
             if (_isNewPageInstance)
             {
                 if (State.Count > 0)
                 {
-                    restoreReverseOnProgress = (GeoCoordinate)State["ReverseGeoCoorDinateOnProgress"];
-                    restoreLocation = (Location)State["CurrentChosenMapLocation"];
+                    if (State.ContainsKey("ReverseGeoCoorDinateOnProgress"))
+                    {
+                        this._restoreReverseOnProgress = (GeoCoordinate)State["ReverseGeoCoorDinateOnProgress"];
+                    }
+                    this._restoreLocation = (Location)State["CurrentChosenMapLocation"];
+                }
+
+                UpdateLocationStatus();
+            }
+            else
+            {
+                if (this._geolocator != null)
+                {
+                    this._geolocator.StatusChanged += GeolocationStatusCallback;
                 }
             }
             // Set _isNewPageInstance to false. If the user navigates back to this page
             // and it has remained in memory, this value will continue to be false.
             _isNewPageInstance = false;
 
-            Location location;
-            if (restoreLocation != null)
-            {
-                location = restoreLocation;
-            }
-            else if (_locationOverlay != null)
-            {
-                location = CoordinateHelper.GeoCoordinateToLocation(
-                    _locationOverlay.GeoCoordinate,
-                    LocationTextCity.Text,
-                    LocationTextCountry.Text);
-            }
-            else
-            {
-                using (var db = new LocationDataContext(LocationDataContext.DBConnectionString))
-                {
-                    // Define the query to gather all of the to-do items.
-                    // var toDoItemsInDB = from Location location in _locationDB.Locations where location.IsSelected select location;
-                    location = db.Locations.Where(locationItem => locationItem.IsSelected).FirstOrDefault();
-                }
-            }
-
-
-            if (location != null)
-            {
-                UpdateMap(CoordinateHelper.LocationToGeoCoordinate(location),
-                          location.City, location.Country);
-            }
-
-            if (restoreReverseOnProgress != null)
-            {
-                ShowProgressBar();
-                ReverseGeocodeAndUpdateMap(restoreReverseOnProgress);
-            }
-            else
-            {
-                RemoveProgressBar();
-            }
+            RestoreUI();
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -99,10 +72,20 @@ namespace WeatherInformation
                     LocationTextCity.Text,
                     LocationTextCountry.Text);
 
-                if (_reverseGeoCodeOnProgress != null)
+                if (_reverseOnProgress != null)
                 {
-                    State["ReverseGeoCoorDinateOnProgress"] = _reverseGeoCodeOnProgress.CoorDinate;
-                }  
+                    State["ReverseGeoCoorDinateOnProgress"] = _reverseOnProgress.CoorDinate;
+                }
+            }
+
+            if (_geolocator != null)
+            {
+                _geolocator.StatusChanged -= GeolocationStatusCallback;
+            }
+
+            if (_reverseOnProgress != null)
+            {
+                _reverseOnProgress.Page = null;
             }
         }
 
@@ -110,28 +93,33 @@ namespace WeatherInformation
         {
             UpdateMap(geoCoordinate, city, country);
             RemoveProgressBar();
-            _reverseGeoCodeOnProgress = null;
+            _reverseOnProgress = null;
         }
 
-        private async Task GetCurrentLocationAndUpdateMap()
+        private async Task GetCurrentLocationAndUpdateMap(Geolocator geolocator)
         {
-            var geolocator = new Geolocator();
-            geolocator.DesiredAccuracyInMeters = 50;
-            geolocator.ReportInterval = 1000;
+            try
+            {
+                var geoposition = await geolocator.GetGeopositionAsync(
+                                    maximumAge: TimeSpan.FromSeconds(1),
+                                    timeout: TimeSpan.FromSeconds(10)
+                                );
 
-            var geoposition = await geolocator.GetGeopositionAsync(
-                maximumAge: TimeSpan.FromSeconds(1),
-                timeout: TimeSpan.FromSeconds(10)
-                );
-            // TODO: check if the following is true:
-            // Without ConfigureAwait(false) await returns data on the calling thread. (AFAIK for this Context)
-            // otherwise I should call: Dispatcher.BeginInvoke(() => ReverseGeocodeAndUpdateMap(currentGeoCoordinate));
+                var currentGeoCoordinate = CoordinateHelper.ConvertGeocoordinate(geoposition.Coordinate);
+                ShowProgressBar();
+                ReverseGeocodeAndUpdateMap(currentGeoCoordinate);
+            }
+            catch (Exception ex)
+            {
+                // TODO: hopefully using main thread when Exception.
+                if ((uint)ex.HResult == 0x80004004)
+                {
+                    // Location is disabled in phone settings.
+                }
 
-            // TODO: What is going to happend when Timeout? Exception or geposition will be null value.
-            //       Should I check for null value in case of Timeout?
-            var currentGeoCoordinate = CoordinateHelper.ConvertGeocoordinate(geoposition.Coordinate);
-            ShowProgressBar();
-            ReverseGeocodeAndUpdateMap(currentGeoCoordinate);
+                // TODO: not sure if when exception I will be using the calling thread calling the await method.
+                Dispatcher.BeginInvoke(new UpdateLocationButtonDelegate(this.UpdateLocationButton), false);
+            }
         }
 
         private void ReverseGeocodeAndUpdateMap(GeoCoordinate geoCoordinate)
@@ -142,14 +130,14 @@ namespace WeatherInformation
                 CoorDinate = geoCoordinate
             };
 
-            if (_reverseGeoCodeOnProgress != null)
+            if (_reverseOnProgress != null)
             {
                 // GC may release old object.
-                _reverseGeoCodeOnProgress.Page = null;
+                _reverseOnProgress.Page = null;
             }
 
-            _reverseGeoCodeOnProgress = reverseGeoCode;
-            _reverseGeoCodeOnProgress.DoReverseGeocode(geoCoordinate);
+            _reverseOnProgress = reverseGeoCode;
+            _reverseOnProgress.DoReverseGeocode(geoCoordinate);
         }
 
         private void UpdateMap(GeoCoordinate geoCoordinate, string city, string country)
@@ -238,12 +226,11 @@ namespace WeatherInformation
         // http://stackoverflow.com/questions/4521435/what-specific-values-can-a-c-sharp-double-represent-that-a-sql-server-float-can
         private void StoreLocation(GeoCoordinate geocoordinate, string city, string country)
         {
-            Location locationItem = null;
             using (var db = new LocationDataContext(LocationDataContext.DBConnectionString))
             {
                 // Define the query to gather all of the to-do items.
                 // var toDoItemsInDB = from Location location in _locationDB.Locations where location.IsSelected select location;
-                locationItem = db.Locations.Where(location => location.IsSelected).FirstOrDefault();
+                var locationItem = db.Locations.Where(location => location.IsSelected).FirstOrDefault();
 
                 if (locationItem != null)
                 {
@@ -295,16 +282,14 @@ namespace WeatherInformation
 
         private async void GetCurrentLocationButton_Click(object sender, RoutedEventArgs e)
         {
-            //Geolocator geolocator = new Geolocator();
-            //geolocator.DesiredAccuracyInMeters = 50;
-            //if (geolocator.LocationStatus != PositionStatus.Ready)
-            //{
-            //    // TODO: to use ToastPrompt from the Coding4Fun Toolkit (using NuGet)
-            //    return;
-            //}
+            if (_geolocator == null)
+            {
+                // Nothing to do.
+                return;
+            }
             
             // TODO: if exception from here application will crash (I guess)
-            await this.GetCurrentLocationAndUpdateMap();
+            await this.GetCurrentLocationAndUpdateMap(_geolocator);
         }
 
         private void SaveLocationButton_Click(object sender, RoutedEventArgs e)
@@ -313,9 +298,123 @@ namespace WeatherInformation
             StoreLocation(this.mapWeatherInformation.Center, this.LocationTextCity.Text, this.LocationTextCountry.Text);
         }
 
+        private async void UpdateLocationStatus()
+        {
+            if ((bool)IsolatedStorageSettings.ApplicationSettings["LocationConsent"] != true)
+            {
+                // The user has opted out of Location.
+                GetCurrentLocationButton.IsEnabled = false;
+                return;
+            }
+
+            _geolocator = new Geolocator();
+            _geolocator.DesiredAccuracyInMeters = 50;
+            _geolocator.ReportInterval = 1000;
+
+            try
+            {
+                _geolocator.StatusChanged += GeolocationStatusCallback;
+                var geoposition = await _geolocator.GetGeopositionAsync(
+                                    maximumAge: TimeSpan.FromSeconds(1),
+                                    timeout: TimeSpan.FromSeconds(10)
+                                );
+            }
+            catch(Exception ex)
+            {
+                if ((uint)ex.HResult == 0x80004004)
+                {
+                    // Location is disabled in phone settings.
+                }
+
+                // TODO: not sure if when exception I will be using the calling thread calling the await method.
+                Dispatcher.BeginInvoke(new UpdateLocationButtonDelegate(this.UpdateLocationButton), false);
+            }
+        }
+
+        // TODO: how to do it just with lambda expressions?
+        delegate void UpdateLocationButtonDelegate(bool isEnabled);
+        private void UpdateLocationButton(bool isEnabled)
+        {
+            GetCurrentLocationButton.IsEnabled = isEnabled;
+        }
+
+        private void GeolocationStatusCallback(Geolocator sender, StatusChangedEventArgs eventData)
+        {
+            if (eventData.Status == PositionStatus.Ready)
+            {
+                Dispatcher.BeginInvoke(new UpdateLocationButtonDelegate(this.UpdateLocationButton), true);
+            }
+            else
+            {
+                Dispatcher.BeginInvoke(new UpdateLocationButtonDelegate(this.UpdateLocationButton), false);
+            }
+        }
+
+        private void AskForLocationConsent()
+        {
+            if (!IsolatedStorageSettings.ApplicationSettings.Contains("LocationConsent"))
+            {
+                MessageBoxResult result =
+                    MessageBox.Show("This app accesses your phone's location. Is that ok?",
+                    "Location", MessageBoxButton.OKCancel);
+
+                if (result == MessageBoxResult.OK)
+                {
+                    IsolatedStorageSettings.ApplicationSettings["LocationConsent"] = true;
+                }
+                else
+                {
+                    IsolatedStorageSettings.ApplicationSettings["LocationConsent"] = false;
+                }
+
+                IsolatedStorageSettings.ApplicationSettings.Save();
+            }
+        }
+
+        private void RestoreUI()
+        {
+            Location location;
+            if (this._restoreLocation != null)
+            {
+                location = this._restoreLocation;
+            }
+            else if (this._locationOverlay != null)
+            {
+                location = CoordinateHelper.GeoCoordinateToLocation(
+                    _locationOverlay.GeoCoordinate,
+                    LocationTextCity.Text,
+                    LocationTextCountry.Text);
+            }
+            else
+            {
+                using (var db = new LocationDataContext(LocationDataContext.DBConnectionString))
+                {
+                    // Define the query to gather all of the to-do items.
+                    // var toDoItemsInDB = from Location location in _locationDB.Locations where location.IsSelected select location;
+                    location = db.Locations.Where(locationItem => locationItem.IsSelected).FirstOrDefault();
+                }
+            }
+
+
+            if (location != null)
+            {
+                UpdateMap(CoordinateHelper.LocationToGeoCoordinate(location),
+                          location.City, location.Country);
+            }
+
+            if (this._restoreReverseOnProgress != null)
+            {
+                ShowProgressBar();
+                ReverseGeocodeAndUpdateMap(this._restoreReverseOnProgress);
+            }
+            else
+            {
+                RemoveProgressBar();
+            }
+        }
+
         private void ShowProgressBar()
         {
-            GetCurrentLocationButton.IsEnabled = false;
             GetCurrentLocationButton.Visibility = Visibility.Collapsed;
             SaveLocationButton.IsEnabled = false;
             SaveLocationButton.Visibility = Visibility.Collapsed;
@@ -325,7 +424,6 @@ namespace WeatherInformation
 
         private void RemoveProgressBar()
         {
-            GetCurrentLocationButton.IsEnabled = true;
             GetCurrentLocationButton.Visibility = Visibility.Visible;
             SaveLocationButton.IsEnabled = true;
             SaveLocationButton.Visibility = Visibility.Visible;
