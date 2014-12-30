@@ -5,13 +5,21 @@ namespace Example.RemoteAgents.GTKLinux
 	public partial class MainWindow
 	{
 		private global::Gtk.VBox vbox3;
+
 		private global::Gtk.TextView RemoteDate;
+
 		private global::Gtk.HBox hbox1;
+
 		private global::Gtk.ScrolledWindow GtkScrolledWindow;
+
 		private global::Gtk.TextView TextToSend;
+
 		private global::Gtk.SpinButton SpinButtonNumbers;
+
 		private global::Gtk.HBox hbox2;
+
 		private global::Gtk.Button ButtonGetDate;
+
 		private global::Gtk.Button SendDataButton;
 
 		protected virtual void Build ()

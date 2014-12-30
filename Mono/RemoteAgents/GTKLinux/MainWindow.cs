@@ -1,6 +1,5 @@
 ﻿using System;
 using Gtk;
-using System.Threading.Tasks;
 using Example.RemoteAgents.GTKLinux.View;
 using NLog;
 
@@ -32,7 +31,7 @@ namespace Example.RemoteAgents.GTKLinux
             }
             catch (Exception exception)
             {
-                logger.ErrorException("ButtonGetDateClicked error: ", exception);
+                logger.Error("ButtonGetDateClicked error: ", exception);
             }
         }
 
@@ -44,7 +43,7 @@ namespace Example.RemoteAgents.GTKLinux
             }
             catch (Exception exception)
             {
-                logger.ErrorException("SendDataButtonClicked error: ", exception);
+                logger.Error("SendDataButtonClicked error: ", exception);
             }
         }
     }
