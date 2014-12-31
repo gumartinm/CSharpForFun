@@ -3,6 +3,9 @@ using System;
 
 namespace GumartinM.JsonRPC4NET
 {
+	/// <summary>
+	/// Json rpc client exception.
+	/// </summary>
     public class JsonRpcClientException : System.Exception
     {
         /// <summary>
@@ -16,7 +19,7 @@ namespace GumartinM.JsonRPC4NET
         private readonly JToken _data;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Example.RemoteAgents.GTKLinux.Model.JsonRpcClientException"/> class.
+		/// Initializes a new instance of the <see cref="GumartinM.JsonRPC4NET.JsonRpcClientException"/> class.
         /// </summary>
         /// <param name="code">Code.</param>
         /// <param name="message">Message.</param>

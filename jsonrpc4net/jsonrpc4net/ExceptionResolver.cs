@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace GumartinM.JsonRPC4NET
 {
+	/// <summary>
+	/// Exception resolver.
+	/// </summary>
     public class ExceptionResolver
     {
         /// <summary>

@@ -1,10 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
 using NLog;
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,6 +11,9 @@ using System.Text;
 
 namespace GumartinM.JsonRPC4NET
 {
+	/// <summary>
+	/// Json rpc http async client.
+	/// </summary>
     public class JsonRpcHttpAsyncClient
     {
         /// <summary>
@@ -103,6 +104,7 @@ namespace GumartinM.JsonRPC4NET
         /// <returns>The async.</returns>
         /// <param name="uri">URI.</param>
         /// <param name="method">Method.</param>
+		/// <param name="jsonData">JsonData.</param>
         /// <param name="cancellation">Cancellation.</param>
         /// <typeparam name="TResult">The 1st type parameter.</typeparam>
         async private Task<POSTResult<TResult>> PostAsync<TResult>(string uri, string method, string jsonData, CancellationToken cancellation)
@@ -127,11 +129,15 @@ namespace GumartinM.JsonRPC4NET
             }
         }
 
+		/// <summary>
+		/// Reads the response async.
+		/// </summary>
+		/// <returns>The response async.</returns>
+		/// <param name="content">Content.</param>
+		/// <typeparam name="TResult">The 1st type parameter.</typeparam>
         async private Task<POSTResult<TResult>> ReadResponseAsync<TResult>(HttpContent content)
         {
-            /**
-             * Taken from HttpContent.cs ReadAsStringAsync() Mono implementation.
-             */
+            // Taken from HttpContent.cs ReadAsStringAsync() Mono implementation.
             Encoding encoding;
             if (content.Headers != null && content.Headers.ContentType != null && content.Headers.ContentType.CharSet != null)
             {
