@@ -1,0 +1,21 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoDevelop.HelloWorld", "MonoDevelop.HelloWorld\MonoDevelop.HelloWorld.csproj", "{809465B8-CF04-41ED-B1C5-2C8EF6C5E73B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{809465B8-CF04-41ED-B1C5-2C8EF6C5E73B}.Debug|x86.ActiveCfg = Debug|x86
+		{809465B8-CF04-41ED-B1C5-2C8EF6C5E73B}.Debug|x86.Build.0 = Debug|x86
+		{809465B8-CF04-41ED-B1C5-2C8EF6C5E73B}.Release|x86.ActiveCfg = Release|x86
+		{809465B8-CF04-41ED-B1C5-2C8EF6C5E73B}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		description = Just a simple Addin for MonoDevelopment IDE
+		version = 1.0
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Addin
+    name        = "Hello World Addin"
+    id          = "MonoDevelop.HelloWorld"
+    namespace   = "MonoDevelop.HelloWorld"
+    author      = "Gustavo Martin Morcuende"
+    copyright   = "Apache License, Version 2"
+    url         = "http://gumartinm.name"
+    description = "Just a simple Addin for MonoDevelopment IDE"
+    category    = "HelloWorld Category"
+    version     = "1.0">
+
+    <Runtime>
+    </Runtime>
+    <Extension path = "/MonoDevelop/Ide/Commands">
+       <Command id = "MonoDevelop.HelloWorld.Commands.ShowFiles"
+                 _label = "Show Files in Project"
+                 description = "Show Files in Project"
+                 defaultHandler = "MonoDevelop.HelloWorld.ShowFilesCommandHandler" />
+    </Extension>
+
+    <Extension path = "/MonoDevelop/Ide/MainMenu">
+        <ItemSet id = "HelloWorld" _label = "Hello World" insertafter = "Run" >
+            <CommandItem id = "MonoDevelop.HelloWorld.Commands.ShowFiles" />
+            <SeparatorItem/>
+            <CommandItem id = "MonoDevelop.HelloWorld.Commands.ShowFiles"/>
+        </ItemSet>
+    </Extension>
+
+</Addin>
+
