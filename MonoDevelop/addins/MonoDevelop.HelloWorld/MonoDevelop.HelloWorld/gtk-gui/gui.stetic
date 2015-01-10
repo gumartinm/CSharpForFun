@@ -8,10 +8,10 @@
     <widget-library name="MonoDevelop.Ide, Version=2.6.0.0, Culture=neutral" />
     <widget-library name="../bin/Release/MonoDevelop.HelloWorld.dll" internal="true" />
   </import>
-  <widget class="Gtk.Dialog" id="MonoDevelop.HelloWorld.ShowFilesDialog" design-size="400 300">
+  <widget class="Gtk.Dialog" id="MonoDevelop.HelloWorld.ShowFilesDialog" design-size="521 300">
     <property name="MemberName" />
     <property name="WindowPosition">CenterOnParent</property>
-    <property name="Buttons">3</property>
+    <property name="Buttons">2</property>
     <property name="HelpButton">False</property>
     <child internal-child="VBox">
       <widget class="Gtk.VBox" id="dialog1_VBox">
@@ -57,6 +57,40 @@
                 <property name="AutoSize">True</property>
               </packing>
             </child>
+            <child>
+              <widget class="Gtk.HBox" id="hbox2">
+                <property name="MemberName" />
+                <property name="Spacing">6</property>
+                <child>
+                  <placeholder />
+                </child>
+                <child>
+                  <widget class="Gtk.Button" id="ShowFilesButton">
+                    <property name="MemberName" />
+                    <property name="CanFocus">True</property>
+                    <property name="Type">TextOnly</property>
+                    <property name="Label" translatable="yes">ShowFiles</property>
+                    <property name="UseUnderline">True</property>
+                    <signal name="Clicked" handler="OnButtonShowFilesClickEvent" />
+                  </widget>
+                  <packing>
+                    <property name="Position">1</property>
+                    <property name="AutoSize">True</property>
+                    <property name="Expand">False</property>
+                    <property name="Fill">False</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder />
+                </child>
+              </widget>
+              <packing>
+                <property name="Position">2</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
           </widget>
           <packing>
             <property name="Position">0</property>
@@ -70,23 +104,8 @@
         <property name="MemberName" />
         <property name="Spacing">10</property>
         <property name="BorderWidth">5</property>
-        <property name="Size">3</property>
+        <property name="Size">2</property>
         <property name="LayoutStyle">End</property>
-        <child>
-          <widget class="Gtk.Button" id="ShowFilesButton">
-            <property name="MemberName" />
-            <property name="CanFocus">True</property>
-            <property name="Type">TextOnly</property>
-            <property name="Label" translatable="yes">ShowFiles</property>
-            <property name="UseUnderline">True</property>
-            <property name="ResponseId">0</property>
-            <signal name="Clicked" handler="OnButtonShowFilesClickEvent" />
-          </widget>
-          <packing>
-            <property name="Expand">False</property>
-            <property name="Fill">False</property>
-          </packing>
-        </child>
         <child>
           <widget class="Gtk.Button" id="buttonCancel">
             <property name="MemberName" />
@@ -99,7 +118,6 @@
             <property name="label">gtk-cancel</property>
           </widget>
           <packing>
-            <property name="Position">1</property>
             <property name="Expand">False</property>
             <property name="Fill">False</property>
           </packing>
@@ -116,7 +134,7 @@
             <property name="label">gtk-ok</property>
           </widget>
           <packing>
-            <property name="Position">2</property>
+            <property name="Position">1</property>
             <property name="Expand">False</property>
             <property name="Fill">False</property>
           </packing>

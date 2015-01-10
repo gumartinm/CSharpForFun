@@ -12,16 +12,6 @@ namespace MonoDevelop.HelloWorld
 		{
 			this.project = project;
 			this.Build ();
-
-			var fileNames = new StringBuilder ();
-			fileNames.Append ("Project name: " + project.Name);
-			fileNames.Append (Environment.NewLine);
-			foreach (var file in project.Files)
-			{
-				fileNames.Append(file.Name);
-				fileNames.Append (Environment.NewLine);
-			}
-			this.ShowFilesTextView.Buffer.Text = fileNames.ToString ();
 		}
 
 		protected void OnButtonShowFilesClickEvent (object sender, EventArgs e)
