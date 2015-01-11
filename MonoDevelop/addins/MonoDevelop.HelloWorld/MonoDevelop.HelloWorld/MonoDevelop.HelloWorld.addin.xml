@@ -15,15 +15,26 @@
  limitations under the License.
 -->
 <Addin
-    name        = "Hello World Addin"
     id          = "MonoDevelop.HelloWorld"
     namespace   = "MonoDevelop.HelloWorld"
-    author      = "Gustavo Martin Morcuende"
-    copyright   = "Apache License, Version 2"
-    url         = "http://gumartinm.name"
-    description = "Just a simple Addin for MonoDevelopment IDE"
-    category    = "HelloWorld Category"
     version     = "1.0">
+
+    <Header>
+        <Name>Hello World Addin</Name>
+        <Name locale="ca-ES">Hola Món Addin</Name>
+        <Name locale="de-DE">Hallo Welt Addin</Name>
+        <Name locale="es-ES">Hola Mundo Addin</Name>
+        <Author>Gustavo Martin Morcuende</Author>
+        <Copyright>Apache License, Version 2</Copyright>
+        <Url>http://gumartinm.name</Url>
+        <Description>Just a simple Addin for MonoDevelopment IDE</Description>
+        <Category>HelloWorld Category</Category>
+        <UpdateRank>Important</UpdateRank>
+        <ReleaseNotes>
+            {{1.0, 2015-01-11}}
+            Release notes for 1.0: My first MonoDevelop Addin.
+        </ReleaseNotes>
+    </Header>
 
     <Runtime>
     </Runtime>
