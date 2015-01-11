@@ -14,11 +14,18 @@
   See the License for the specific language governing permissions and
  limitations under the License.
 -->
+<!--
+    Using addin file instead of C# annotations (there are different ways, this seems easier).
+-->
 <Addin
     id          = "MonoDevelop.HelloWorld"
     namespace   = "MonoDevelop.HelloWorld"
     version     = "1.0">
 
+    <!--
+        The Header field:
+        http://www.monodevelop.com/developers/articles/publishing-an-addin/
+    -->
     <Header>
         <Name>Hello World Addin</Name>
         <Name locale="ca-ES">Hola Món Addin</Name>
@@ -28,6 +35,9 @@
         <Copyright>Apache License, Version 2</Copyright>
         <Url>http://gumartinm.name</Url>
         <Description>Just a simple Addin for MonoDevelopment IDE</Description>
+        <Description locale="ca-ES">Un simple Addin per MonoDevelopment IDE</Description>
+        <Description locale="de-DE">Eine einfache Addin für MonoDevelopment IDE</Description>
+        <Description locale="es-ES">Un sencillo Addin para MonoDevelopment IDE</Description>
         <Category>HelloWorld Category</Category>
         <UpdateRank>Important</UpdateRank>
         <ReleaseNotes>
@@ -52,6 +62,25 @@
             <CommandItem id = "MonoDevelop.HelloWorld.Commands.ShowFiles"/>
         </ItemSet>
     </Extension>
+
+    <!--
+        Localization of Add-ins (there are different ways):
+        https://monoaddins.codeplex.com/wikipage?title=Localization%20of%20Add-ins
+    -->
+    <Localizer type="StringTable">
+        <Locale id="ca-ES">
+            <Msg id="Hello World" str="Hola Món" />
+            <Msg id="Show Files in Project" str="Mostrar arxius en el projecte" />
+        </Locale>
+        <Locale id="de-DE">
+            <Msg id="Hello World" str="Hallo Welt" />
+            <Msg id="Show Files in Project" str="Dateien im Projekt zeigen" />
+        </Locale>
+        <Locale id="es-ES">
+            <Msg id="Hello World" str="Hola Mundo" />
+            <Msg id="Show Files in Project" str="Mostrar Archivos en Proyecto" />
+        </Locale>
+    </Localizer>
 
 </Addin>
 
