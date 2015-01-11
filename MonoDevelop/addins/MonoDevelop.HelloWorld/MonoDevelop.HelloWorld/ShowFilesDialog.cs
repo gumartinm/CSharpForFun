@@ -14,6 +14,7 @@
 * limitations under the License.
 */
 using System;
+using System.Linq;
 using MonoDevelop.Projects;
 using System.Text;
 
@@ -34,11 +35,13 @@ namespace MonoDevelop.HelloWorld
 			var fileNames = new StringBuilder ();
 			fileNames.Append ("Project name: " + project.Name);
 			fileNames.Append (Environment.NewLine);
-			foreach (var file in project.Files)
+			// IT DOESN'T FIND ALL REFERENCES IN PROJECT!!! WHAT CAN I DO??? :(
+			project.GetItemFiles (true).ForEach (file =>
 			{
-				fileNames.Append(file.Name);
+				fileNames.Append (file.FullPath);
 				fileNames.Append (Environment.NewLine);
-			}
+			});
+
 			this.ShowFilesTextView.Buffer.Text = fileNames.ToString ();
 		}
 	}
