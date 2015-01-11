@@ -30,7 +30,7 @@
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="ShowScrollbars">True</property>
-                    <property name="Text" translatable="yes">Hello World Addin</property>
+                    <property name="Text" translatable="yes" context="yes" comments="Hello World Addin Text">Hello World Addin Tip|Hello World Addin</property>
                   </widget>
                 </child>
               </widget>
@@ -69,7 +69,7 @@
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Type">TextOnly</property>
-                    <property name="Label" translatable="yes">ShowFiles</property>
+                    <property name="Label" translatable="yes" context="yes" comments="ShowFiles Button">ShowFiles Tip|ShowFiles</property>
                     <property name="UseUnderline">True</property>
                     <signal name="Clicked" handler="OnButtonShowFilesClickEvent" />
                   </widget>
