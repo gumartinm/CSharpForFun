@@ -1,6 +1,6 @@
 1. Create Addin:
 
-xbuild (MonoDevelop.HelloWorld.sln being in the same path)
+xbuild /property:Configuration=Release (MonoDevelop.HelloWorld.sln being in the same path)
 
 
 2. Packaging an add-in, from: http://www.monodevelop.com/developers/articles/publishing-an-addin/
