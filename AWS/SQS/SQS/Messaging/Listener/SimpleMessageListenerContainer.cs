@@ -1,15 +1,21 @@
 ﻿namespace Example.AWS.SQS.Messaging.Listener
 {
+	using System;
 	using Amazon.SQS;
 	using Amazon.SQS.Model;
+	using NLog;
 
 	public class SimpleMessageListenerContainer
 	{
-		private readonly IAmazonSQS _amazonSQS;
+		private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-		public SimpleMessageListenerContainer(IAmazonSQS amazonSQS)
+		private readonly IAmazonSQS _amazonSQS;
+		private readonly IMessageListener _messageListener;
+
+		public SimpleMessageListenerContainer(IAmazonSQS amazonSQS, IMessageListener messageListener)
 		{
 			_amazonSQS = amazonSQS;
+			_messageListener = messageListener;
 		}
 
 		public IAmazonSQS GetAmazonSQS()
@@ -17,27 +23,45 @@
 			return _amazonSQS;
 		}
 
+		public Logger GetLogger()
+		{
+			return _logger;
+		}
+
+		public IMessageListener GetMessageListener()
+		{
+			return _messageListener;
+		}
+
 		private class AsynchronousMessageListener
 		{
-			private readonly QueueAttributes _queueAttributes;
 			private readonly SimpleMessageListenerContainer _simpleMessageListenerContainer;
+			private readonly QueueAttributes _queueAttributes;
+			private readonly string _logicalQueueName;
 
 			public AsynchronousMessageListener(SimpleMessageListenerContainer simpleMessageListenerContainer,
-			                                   QueueAttributes queueAttributes)
+			                                   QueueAttributes queueAttributes,
+			                                   string logicalQueueName)
 			{
-				this._simpleMessageListenerContainer = simpleMessageListenerContainer;
-				this._queueAttributes = queueAttributes;
+				_simpleMessageListenerContainer = simpleMessageListenerContainer;
+				_queueAttributes = queueAttributes;
+				_logicalQueueName = logicalQueueName;
 			}
 
-			public void DoWork()
+			public void DoRun()
 			{
-				ReceiveMessageResponse receiveMessageResponse = this._simpleMessageListenerContainer
-				                                                    .GetAmazonSQS().ReceiveMessage(this._queueAttributes.ReceiveMessageRequest());
+				ReceiveMessageResponse receiveMessageResponse = _simpleMessageListenerContainer
+				                                               		.GetAmazonSQS().ReceiveMessage(_queueAttributes.ReceiveMessageRequest());
 
-				receiveMessageResponse.Messages.ForEach((Message message) => message);
+				receiveMessageResponse.Messages.ForEach((Message message) =>
+				{
+					MessageExecutor messageExecutor = new MessageExecutor(_simpleMessageListenerContainer,
+					                                                      _logicalQueueName,
+					                                                      message,
+					                                                      _queueAttributes);
+					messageExecutor.DoRun();
+				});
 			}
-
-
 		}
 
 		private class MessageExecutor
@@ -49,73 +73,80 @@
 			private readonly bool _hasRedrivePolicy;
 			private readonly SqsMessageDeletionPolicy _deletionPolicy;
 
-			private MessageExecutor(SimpleMessageListenerContainer simpleMessageListenerContainer,
+			public MessageExecutor(SimpleMessageListenerContainer simpleMessageListenerContainer,
 									string logicalQueueName, Message message, QueueAttributes queueAttributes)
 			{
-				this._simpleMessageListenerContainer = simpleMessageListenerContainer;
-				this._logicalQueueName = logicalQueueName;
-				this._message = message;
-				this._queueUrl = queueAttributes.ReceiveMessageRequest().QueueUrl;
-				this._hasRedrivePolicy = queueAttributes.HasRedrivePolicy();
-				this._deletionPolicy = queueAttributes.DeletionPolicy();
+				_simpleMessageListenerContainer = simpleMessageListenerContainer;
+				_logicalQueueName = logicalQueueName;
+				_message = message;
+				_queueUrl = queueAttributes.ReceiveMessageRequest().QueueUrl;
+				_hasRedrivePolicy = queueAttributes.HasRedrivePolicy();
+				_deletionPolicy = queueAttributes.DeletionPolicy();
 			}
 
-		public void run()
-		{
-			string receiptHandle = this._message.ReceiptHandle;
-			org.springframework.messaging.Message<String> queueMessage = getMessageForExecution();
-			try
+			public void DoRun()
 			{
-				executeMessage(queueMessage);
-				ApplyDeletionPolicyOnSuccess(receiptHandle);
+				string receiptHandle = _message.ReceiptHandle;
+				string body = MessageForExecution();
+				try
+				{
+					ExecuteMessage(body);
+					ApplyDeletionPolicyOnSuccess(receiptHandle);
+				}
+				catch (Exception exception)
+				{
+					ApplyDeletionPolicyOnError(receiptHandle, exception);
+				}
 			}
-			catch (MessagingException messagingException)
+
+			private void ExecuteMessage(string message)
 			{
-				applyDeletionPolicyOnError(receiptHandle, messagingException);
+				_simpleMessageListenerContainer.GetMessageListener().Run(message);
+			}
+
+			private void ApplyDeletionPolicyOnSuccess(string receiptHandle)
+			{
+				if (_deletionPolicy == SqsMessageDeletionPolicy.ON_SUCCESS ||
+						_deletionPolicy == SqsMessageDeletionPolicy.ALWAYS ||
+						_deletionPolicy == SqsMessageDeletionPolicy.NO_REDRIVE)
+				{
+					DeleteMessage(receiptHandle);
+				}
+			}
+
+			private void ApplyDeletionPolicyOnError(string receiptHandle, Exception exception)
+			{
+				if (_deletionPolicy == SqsMessageDeletionPolicy.ALWAYS ||
+						(_deletionPolicy == SqsMessageDeletionPolicy.NO_REDRIVE && !_hasRedrivePolicy))
+				{
+					DeleteMessage(receiptHandle);
+				}
+				else if (_deletionPolicy == SqsMessageDeletionPolicy.ON_SUCCESS)
+				{
+					_simpleMessageListenerContainer.GetLogger().Error(exception, "Exception encountered while processing message.");
+				}
+			}
+
+			private void DeleteMessage(string receiptHandle)
+			{
+					_simpleMessageListenerContainer.GetAmazonSQS().DeleteMessage(new DeleteMessageRequest(_queueUrl, receiptHandle));
+			}
+
+			private string MessageForExecution()
+			{
+				// DO I REALLY NEED TO SEND ACKNOWLEDGMENT TO SQS?? :(
+
+				//HashMap<String, Object> additionalHeaders = new HashMap<>();
+				//additionalHeaders.put(QueueMessageHandler.LOGICAL_RESOURCE_ID, _logicalQueueName);
+				//if (_deletionPolicy == SqsMessageDeletionPolicy.NEVER)
+				//{
+				//	string receiptHandle = _message.ReceiptHandle;
+				//		QueueMessageAcknowledgment acknowledgment = new QueueMessageAcknowledgment(_simpleMessageListenerContainer.GetAmazonSQS(), _queueUrl, receiptHandle);
+				//	additionalHeaders.put(QueueMessageHandler.ACKNOWLEDGMENT, acknowledgment);
+				//}
+
+				return _message.Body;
 			}
 		}
-
-		private void ApplyDeletionPolicyOnSuccess(string receiptHandle)
-		{
-			if (this._deletionPolicy == SqsMessageDeletionPolicy.ON_SUCCESS ||
-					this._deletionPolicy == SqsMessageDeletionPolicy.ALWAYS ||
-					this._deletionPolicy == SqsMessageDeletionPolicy.NO_REDRIVE)
-			{
-				DeleteMessage(receiptHandle);
-			}
-		}
-
-		private void ApplyDeletionPolicyOnError(string receiptHandle, MessagingException messagingException)
-		{
-			if (this._deletionPolicy == SqsMessageDeletionPolicy.ALWAYS ||
-					(this._deletionPolicy == SqsMessageDeletionPolicy.NO_REDRIVE && !this._hasRedrivePolicy))
-			{
-				DeleteMessage(receiptHandle);
-			}
-			else if (this._deletionPolicy == SqsMessageDeletionPolicy.ON_SUCCESS)
-			{
-				getLogger().error("Exception encountered while processing message.", messagingException);
-			}
-		}
-
-		private void DeleteMessage(string receiptHandle)
-		{
-				this._simpleMessageListenerContainer.GetAmazonSQS().DeleteMessage(new DeleteMessageRequest(this._queueUrl, receiptHandle));
-		}
-
-		private org.springframework.messaging.Message<String> getMessageForExecution()
-		{
-			HashMap<String, Object> additionalHeaders = new HashMap<>();
-			additionalHeaders.put(QueueMessageHandler.LOGICAL_RESOURCE_ID, this._logicalQueueName);
-			if (this.deletionPolicy == SqsMessageDeletionPolicy.NEVER)
-			{
-				String receiptHandle = this.message.getReceiptHandle();
-				QueueMessageAcknowledgment acknowledgment = new QueueMessageAcknowledgment(SimpleMessageListenerContainer.this.getAmazonSqs(), this.queueUrl, receiptHandle);
-				additionalHeaders.put(QueueMessageHandler.ACKNOWLEDGMENT, acknowledgment);
-			}
-
-			return createMessage(this.message, additionalHeaders);
-		}
-	}
 	}
 }

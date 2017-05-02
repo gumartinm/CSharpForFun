@@ -18,42 +18,42 @@
 		public QueueAttributes(bool hasRedrivePolicy, SqsMessageDeletionPolicy deletionPolicy, string destinationUrl,
 							   int? maxNumberOfMessages, int? visibilityTimeout, int? waitTimeOut)
 		{
-			this._hasRedrivePolicy = hasRedrivePolicy;
-			this._deletionPolicy = deletionPolicy;
-			this._destinationUrl = destinationUrl;
-			this._maxNumberOfMessages = maxNumberOfMessages;
-			this._visibilityTimeout = visibilityTimeout;
-			this._waitTimeOut = waitTimeOut;
+			_hasRedrivePolicy = hasRedrivePolicy;
+			_deletionPolicy = deletionPolicy;
+			_destinationUrl = destinationUrl;
+			_maxNumberOfMessages = maxNumberOfMessages;
+			_visibilityTimeout = visibilityTimeout;
+			_waitTimeOut = waitTimeOut;
 		}
 
 		public bool HasRedrivePolicy()
 		{
-			return this._hasRedrivePolicy;
+			return _hasRedrivePolicy;
 		}
 
 		public ReceiveMessageRequest ReceiveMessageRequest()
 		{
-			ReceiveMessageRequest receiveMessageRequest = new ReceiveMessageRequest(this._destinationUrl).
-					AttributeNames.(ReceivingAttributes).
-					withMessageAttributeNames(ReceivingMessageAttributes);
+			ReceiveMessageRequest receiveMessageRequest = new ReceiveMessageRequest(this._destinationUrl);
+			receiveMessageRequest.AttributeNames.Add(ReceivingAttributes);
+			receiveMessageRequest.MessageAttributeNames.Add(ReceivingMessageAttributes);
 
-			if (this._maxNumberOfMessages != null)
+			if (_maxNumberOfMessages != null)
 			{
-				receiveMessageRequest.MaxNumberOfMessages = this._maxNumberOfMessages.Value;
+				receiveMessageRequest.MaxNumberOfMessages = _maxNumberOfMessages.Value;
 			}
 			else
 			{
 				receiveMessageRequest.MaxNumberOfMessages = DefaultMaxNumOfMessages;
 			}
 
-			if (this._visibilityTimeout != null)
+			if (_visibilityTimeout != null)
 			{
-				receiveMessageRequest.VisibilityTimeout = this._visibilityTimeout.Value;
+				receiveMessageRequest.VisibilityTimeout = _visibilityTimeout.Value;
 			}
 
-			if (this._waitTimeOut != null)
+			if (_waitTimeOut != null)
 			{
-				receiveMessageRequest.WaitTimeSeconds = this._waitTimeOut.Value;
+				receiveMessageRequest.WaitTimeSeconds = _waitTimeOut.Value;
 			}
 
 			return receiveMessageRequest;
@@ -61,7 +61,7 @@
 
 		public SqsMessageDeletionPolicy DeletionPolicy()
 		{
-			return this._deletionPolicy;
+			return _deletionPolicy;
 		}
 	}
 }

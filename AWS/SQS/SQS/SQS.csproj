@@ -33,18 +33,22 @@
     <Reference Include="AWSSDK.SQS">
       <HintPath>..\packages\AWSSDK.SQS.3.3.2\lib\net45\AWSSDK.SQS.dll</HintPath>
     </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\packages\NLog.4.4.8\lib\net45\NLog.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="NLog.xsd" />
+    <None Include="NLog.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Service\Impl\SQSMessageListenerServiceImpl.cs" />
     <Compile Include="Service\IMessageListenerService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Messaging\Listener\QueueAttributes.cs" />
     <Compile Include="Messaging\Listener\SqsMessageDeletionPolicy.cs" />
     <Compile Include="Messaging\Listener\SimpleMessageListenerContainer.cs" />
-    <Compile Include="Messaging\IMessage.cs" />
+    <Compile Include="Messaging\IMessageListener.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Service\" />
