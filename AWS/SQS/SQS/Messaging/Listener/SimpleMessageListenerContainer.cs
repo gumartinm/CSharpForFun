@@ -1,6 +1,7 @@
 ﻿namespace Example.AWS.SQS.Messaging.Listener
 {
 	using System;
+	using System.Collections.Generic;
 	using System.Threading;
 	using Amazon.SQS;
 	using Amazon.SQS.Model;
@@ -8,32 +9,58 @@
 
 	public class SimpleMessageListenerContainer
 	{
-		private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+		private const string SimpleMessageListenerThreadName = "SimpleMessageListenerContainer-Thread";
 
+		private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+		private readonly string _destinationUrl;
 		private readonly IAmazonSQS _amazonSQS;
 		private readonly IMessageListener _messageListener;
-		private readonly QueueAttributes _queueAttributes;
 		private readonly string _logicalQueueName;
 
+		public int? MaxNumberOfMessages { get; set; }
+		public int? VisibilityTimeout { get; set; }
+		public int? WaitTimeOut { get; set; }
 		public int BackOffTime { get; set; }
+		public SqsMessageDeletionPolicy DeletionPolicy { get; set; }
 
 		public SimpleMessageListenerContainer(IAmazonSQS amazonSQS,
 		                                      IMessageListener messageListener,
-		                                      QueueAttributes queueAttributes,
-		                                      string logicalQueueName)
+		                                      string logicalQueueName,
+		                                      string destinationUrl)
 		{
 			_amazonSQS = amazonSQS;
 			_messageListener = messageListener;
-			_queueAttributes = queueAttributes;
 			_logicalQueueName = logicalQueueName;
+			_destinationUrl = destinationUrl;
+
 			BackOffTime = 10000;
+			DeletionPolicy = SqsMessageDeletionPolicy.ALWAYS;
 		}
 
 		public void DoInit()
 		{
-			AsynchronousMessageListener worker = new AsynchronousMessageListener(this, _queueAttributes, _logicalQueueName);
-			Thread thread = new Thread(worker.DoRun);
+			bool hasRedrivePolicy = HasRedrivePolicy();
+
+			var queueAttributes = new QueueAttributes(hasRedrivePolicy, DeletionPolicy, _destinationUrl, MaxNumberOfMessages, VisibilityTimeout, WaitTimeOut);
+
+			var worker = new AsynchronousMessageListener(this, queueAttributes, _logicalQueueName);
+			var thread = new Thread(worker.DoRun);
+			thread.Name = SimpleMessageListenerThreadName;
 			thread.Start();
+		}
+
+		private bool HasRedrivePolicy()
+		{
+			var attributeNames = new List<string>();
+			attributeNames.Add(QueueAttributeName.RedrivePolicy);
+
+			var attributesRequest = new GetQueueAttributesRequest();
+			attributesRequest.QueueUrl = _destinationUrl;
+			attributesRequest.AttributeNames = attributeNames;
+
+			var attributesResponse = _amazonSQS.GetQueueAttributes(attributesRequest);
+
+			return attributesResponse.Attributes.ContainsKey(QueueAttributeName.RedrivePolicy);
 		}
 
 		private class AsynchronousMessageListener
@@ -60,8 +87,8 @@
 					}
 					catch (Exception exception) {
 						_simpleMessageListenerContainer
-							._logger.Warn(exception, "An Exception occurred while polling queue '{}'. The failing operation will be " +
-						                                 "retried in {} milliseconds", _logicalQueueName, _simpleMessageListenerContainer.BackOffTime);
+							._logger.Warn(exception, "An Exception occurred while polling queue '{0}'. The failing operation will be " +
+						                                 "retried in {1} milliseconds", _logicalQueueName, _simpleMessageListenerContainer.BackOffTime);
 						Thread.Sleep(_simpleMessageListenerContainer.BackOffTime);
 					}
 				}
@@ -74,7 +101,7 @@
 
 				receiveMessageResponse.Messages.ForEach((Message message) =>
 				{
-					MessageExecutor messageExecutor = new MessageExecutor(_simpleMessageListenerContainer,
+					var messageExecutor = new MessageExecutor(_simpleMessageListenerContainer,
 																		  _logicalQueueName,
 																		  message,
 																		  _queueAttributes);

@@ -22,6 +22,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
+    <DefineConstants></DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
@@ -43,18 +44,21 @@
     <None Include="NLog.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Service\IMessageListenerService.cs" />
+    <Compile Include="Service\SQSMessageListenerServiceImpl.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Messaging\Listener\QueueAttributes.cs" />
     <Compile Include="Messaging\Listener\SqsMessageDeletionPolicy.cs" />
     <Compile Include="Messaging\Listener\SimpleMessageListenerContainer.cs" />
     <Compile Include="Messaging\Listener\IMessageListener.cs" />
+    <Compile Include="Messaging\Config\SimpleMessageListenerContainerFactory.cs" />
+    <Compile Include="AWSConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Service\" />
     <Folder Include="Service\Impl\" />
     <Folder Include="Messaging\" />
     <Folder Include="Messaging\Listener\" />
+    <Folder Include="Messaging\Config\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
