@@ -1,6 +1,7 @@
 ﻿namespace Example.AWS.SQS.Messaging.Listener
 {
 	using System;
+	using System.Threading;
 	using Amazon.SQS;
 	using Amazon.SQS.Model;
 	using NLog;
@@ -11,26 +12,28 @@
 
 		private readonly IAmazonSQS _amazonSQS;
 		private readonly IMessageListener _messageListener;
+		private readonly QueueAttributes _queueAttributes;
+		private readonly string _logicalQueueName;
 
-		public SimpleMessageListenerContainer(IAmazonSQS amazonSQS, IMessageListener messageListener)
+		public int BackOffTime { get; set; }
+
+		public SimpleMessageListenerContainer(IAmazonSQS amazonSQS,
+		                                      IMessageListener messageListener,
+		                                      QueueAttributes queueAttributes,
+		                                      string logicalQueueName)
 		{
 			_amazonSQS = amazonSQS;
 			_messageListener = messageListener;
+			_queueAttributes = queueAttributes;
+			_logicalQueueName = logicalQueueName;
+			BackOffTime = 10000;
 		}
 
-		public IAmazonSQS GetAmazonSQS()
+		public void DoInit()
 		{
-			return _amazonSQS;
-		}
-
-		public Logger GetLogger()
-		{
-			return _logger;
-		}
-
-		public IMessageListener GetMessageListener()
-		{
-			return _messageListener;
+			AsynchronousMessageListener worker = new AsynchronousMessageListener(this, _queueAttributes, _logicalQueueName);
+			Thread thread = new Thread(worker.DoRun);
+			thread.Start();
 		}
 
 		private class AsynchronousMessageListener
@@ -50,15 +53,31 @@
 
 			public void DoRun()
 			{
-				ReceiveMessageResponse receiveMessageResponse = _simpleMessageListenerContainer
-				                                               		.GetAmazonSQS().ReceiveMessage(_queueAttributes.ReceiveMessageRequest());
+				while (true)
+				{
+					try {
+						DoRunThrowable();
+					}
+					catch (Exception exception) {
+						_simpleMessageListenerContainer
+							._logger.Warn(exception, "An Exception occurred while polling queue '{}'. The failing operation will be " +
+						                                 "retried in {} milliseconds", _logicalQueueName, _simpleMessageListenerContainer.BackOffTime);
+						Thread.Sleep(_simpleMessageListenerContainer.BackOffTime);
+					}
+				}
+			}
+
+			public void DoRunThrowable()
+			{
+				ReceiveMessageResponse receiveMessageResponse = 
+					_simpleMessageListenerContainer._amazonSQS.ReceiveMessage(_queueAttributes.ReceiveMessageRequest());
 
 				receiveMessageResponse.Messages.ForEach((Message message) =>
 				{
 					MessageExecutor messageExecutor = new MessageExecutor(_simpleMessageListenerContainer,
-					                                                      _logicalQueueName,
-					                                                      message,
-					                                                      _queueAttributes);
+																		  _logicalQueueName,
+																		  message,
+																		  _queueAttributes);
 					messageExecutor.DoRun();
 				});
 			}
@@ -88,20 +107,18 @@
 			{
 				string receiptHandle = _message.ReceiptHandle;
 				string body = MessageForExecution();
-				try
-				{
+				try {
 					ExecuteMessage(body);
 					ApplyDeletionPolicyOnSuccess(receiptHandle);
 				}
-				catch (Exception exception)
-				{
+				catch (Exception exception) {
 					ApplyDeletionPolicyOnError(receiptHandle, exception);
 				}
 			}
 
 			private void ExecuteMessage(string message)
 			{
-				_simpleMessageListenerContainer.GetMessageListener().Run(message);
+				_simpleMessageListenerContainer._messageListener.Run(message);
 			}
 
 			private void ApplyDeletionPolicyOnSuccess(string receiptHandle)
@@ -123,13 +140,13 @@
 				}
 				else if (_deletionPolicy == SqsMessageDeletionPolicy.ON_SUCCESS)
 				{
-					_simpleMessageListenerContainer.GetLogger().Error(exception, "Exception encountered while processing message.");
+					_simpleMessageListenerContainer._logger.Error(exception, "Exception encountered while processing message.");
 				}
 			}
 
 			private void DeleteMessage(string receiptHandle)
 			{
-					_simpleMessageListenerContainer.GetAmazonSQS().DeleteMessage(new DeleteMessageRequest(_queueUrl, receiptHandle));
+				_simpleMessageListenerContainer._amazonSQS.DeleteMessage(new DeleteMessageRequest(_queueUrl, receiptHandle));
 			}
 
 			private string MessageForExecution()

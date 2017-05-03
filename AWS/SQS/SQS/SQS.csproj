@@ -48,7 +48,7 @@
     <Compile Include="Messaging\Listener\QueueAttributes.cs" />
     <Compile Include="Messaging\Listener\SqsMessageDeletionPolicy.cs" />
     <Compile Include="Messaging\Listener\SimpleMessageListenerContainer.cs" />
-    <Compile Include="Messaging\IMessageListener.cs" />
+    <Compile Include="Messaging\Listener\IMessageListener.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Service\" />

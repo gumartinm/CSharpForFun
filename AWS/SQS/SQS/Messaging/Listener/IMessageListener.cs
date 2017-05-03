@@ -1,4 +1,4 @@
-﻿namespace Example.AWS.SQS.Messaging
+﻿namespace Example.AWS.SQS.Messaging.Listener
 {
 	public interface IMessageListener
 	{	
