@@ -1,0 +1,73 @@
+Esto es lo que dotnet dice justo despues de descomprimir una nueva versión en /opt/dotnet y lanzarlo por primera vez :/
+dotnet clean --configuration release
+
+Welcome to .NET Core!
+---------------------
+Learn more about .NET Core @ https://aka.ms/dotnet-docs. Use dotnet --help to see available commands or go to https://aka.ms/dotnet-cli-docs.
+
+Telemetry
+--------------
+The .NET Core tools collect usage data in order to improve your experience. The data is anonymous and does not include command-line arguments. The data is collected by Microsoft and shared with the community.
+You can opt out of telemetry by setting a DOTNET_CLI_TELEMETRY_OPTOUT environment variable to 1 using your favorite shell.
+You can read more about .NET Core tools telemetry @ https://aka.ms/dotnet-cli-telemetry.
+
+
+##############################################################################################################################################################################
+
+
+
+
+dotnet clean --configuration release  <---- borra los archivos generados en directorio Release
+dotnet clean --configuration Debug    <---- borra los archivos generados en directorio Debug
+
+dotnet restore --no-cache --verbosity d
+
+
+- framework definido en ./nombre_proyecto.csproj: <TargetFramework>netcoreapp1.1</TargetFramework>
+dotnet build -f netcoreapp1.1 -c release --no-incremental --verbosity d
+dotnet build -f netcoreapp1.1 -c Debug --no-incremental --verbosity d
+Mejor no usar la opcion -f pòrque no me funciona, me da errores :(
+dotnet build -c release --no-incremental --verbosity d
+dotnet build -c Debug --no-incremental --verbosity d
+
+
+cd ./nombre_proyecto_tests/  <----- hay que meterse en el proyecto :(
+dotnet test --no-build -c release --verbosity d
+dotnet test --no-build -c Debug --verbosity d
+
+
+cd ./nombre_proyecto/
+export ASPNETCORE_ENVIRONMENT=Production
+dotnet run -f netcoreapp1.1 --configuration release
+
+
+NO HAY SNAPSHOT EN NUGET, supongo que habría que jugar con el minor version o algo así :(
+dotnet pack --no-build --include-source --configuration release --verbosity d /p:Version=1.0.1
+
+
+La configuracion global de NuGet que parece usar dotnet se encuentra aquí: ~/.nuget/NuGet/NuGet.Config
+
+dotnet nuget locals all -l
+info : http-cache: /home/gustavo/.local/share/NuGet/v3-cache
+info : global-packages: /home/gustavo/.nuget/packages/
+info : temp: /tmp/NuGetScratch
+
+
+
+
+
+#################################################################################################################################################################################
+
+
+Como debugear en remoto una aplicación .NET Core. La aplicación corre con dotnet en mi PC con Linux y el Visual Studio en mi PC con Windows.
+Se necesita un Visual Studio 15.3 o mayor :(
+
+Instalar VSDBG en el lado Linux: curl -sSL https://aka.ms/getvsdbgsh | bash /dev/stdin -v vs2017u1 -l ~/vsdbg
+
+https://github.com/Microsoft/MIEngine/wiki/Offroad-Debugging-of-.NET-Core-on-Linux---OSX-from-Visual-Studio
+
+En mi PC con Linux donde lanzo la aplicación he tenido que poner un enlace a dotnet (la version que tengo ahora es la 1.0.4) tal que así:
+ln -sf /opt/dotnet/ubuntu-1.0.4/dotnet /usr/local/bin/     Parece ser que solo busca el dotnet en /usr/local/bin/  :(
+
+En el lado Windows, donde se ejecuta el Visual Studio necesito un archivo llamado launch.json que será ejecutado por Visual Studio desde la Ventana de Comandos tal que así:
+DebugAdapterHost.Launch /LaunchJson:"<path-to-the-launch.json-file-you-saved>"
